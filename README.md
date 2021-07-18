@@ -1,0 +1,2 @@
+# Productivity-Companion
+Being productive and leaping towards perfection always been a topic of high regard in the present world. Practices like to-do listing, session tracking, task scheduling, pomodoro technique, music studying etc. are proven to be more effective. In this project we intend to integrate these practices into a single application, which would be of great help to not only us but to many scholars worldwide. 
