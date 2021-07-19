@@ -1,6 +1,6 @@
 #include "InputField.h"
 
-
+//default constructor
 udh::inputField::inputField()
 {
 	font.loadFromFile("Fonts/ArialCE.ttf");
@@ -20,11 +20,14 @@ udh::inputField::inputField()
 	edit.setBtnSize(sf::Vector2f(50.f, 20.f));
 
 }
-void udh::inputField::setdata(std::string a)
+
+void udh::inputField::setdata(std::string str)
 {
-	text = a;
+	text = str;
 	textdata.setString(text);
 }
+
+
 void udh::inputField::drawtext(sf::RenderWindow* window)
 {
 	window->draw(textdata);
@@ -45,10 +48,7 @@ sf::Font udh::inputField::getfont()
 {
 	return font;
 }
-void udh::inputField::changecolor(sf::RenderWindow* window)
-{
-	textdata.setFillColor(sf::Color::Red);
-}
+
 void udh::inputField::setdone()
 {
 	this->completed = true;
