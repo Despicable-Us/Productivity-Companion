@@ -42,10 +42,12 @@ namespace udh
 		void setpressed();
 		void releasePressed();
 		sf::FloatRect getbounds();
+		sf::Vector2f getPosition();
 		bool getstate();
 		bool IsEditing();
 		bool isclicked(sf::Event event, sf::RenderWindow& window);
 		bool ispressed(sf::Event event, sf::RenderWindow& window);
+
 	};
 }
 

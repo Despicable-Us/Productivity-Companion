@@ -3,18 +3,18 @@
 //default constructor
 udh::inputField::inputField()
 {
-	font.loadFromFile("Fonts/ArialCE.ttf");
+	font.loadFromFile("Fonts\\static\\RobotoMono-Medium.ttf");
 	textdata.setFont(font);
-	textdata.setCharacterSize(23);
-	textdata.setFillColor(sf::Color::Magenta);
+	textdata.setCharacterSize(20);
+	textdata.setFillColor(sf::Color(0,0,0));
 
 	del.setBtnTextFont(font);
 	del.setTextColor(sf::Color::Magenta);
-	del.setTextSize(20);
-	del.setbtntext("delete");
+	del.setTextSize(12);
+	del.setbtntext("DELETE");
 	del.setBtnSize(sf::Vector2f(60.f, 20.f));
 
-	edit.setTextSize(20);
+	edit.setTextSize(12);
 	edit.setBtnTextFont(font);
 	edit.setTextColor(sf::Color::Magenta);
 	edit.setBtnSize(sf::Vector2f(50.f, 20.f));
@@ -58,14 +58,14 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 {
 	if (!textlist.empty())
 	{
-		float i = 50;
+		float i = 180;
 		for (std::vector<udh::inputField>::iterator itr = textlist.begin(); itr < textlist.end(); itr++)
 		{
 			itr->setposition(sf::Vector2f(50.f, i));
 			//setting up mark done button
 			itr->done.setBtnPosition(sf::Vector2f(20.f, i + 5));
-			itr->done.setBtnSize(sf::Vector2f(20.f, 20.f));
-			itr->done.setbtnRect(sf::FloatRect(20.f, i + 5, 20.f, 20.f));
+			itr->done.setBtnSize(sf::Vector2f(18.f, 18.f));
+			itr->done.setbtnRect(sf::FloatRect(20.f, i + 5, 18.f, 18.f));
 
 			//setting up delete button
 			itr->del.setBtnPosition(sf::Vector2f(600.f, i + 5));
@@ -73,7 +73,7 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			itr->del.setTextPos();
 
 			//seting up edit button
-			itr->edit.setbtntext("edit");
+			itr->edit.setbtntext("EDIT");
 			itr->edit.setBtnPosition({ 670.f, i + 5 });
 			itr->edit.setbtnRect({ 670.f,i + 5,50.f,20.f });
 			itr->edit.setTextPos();
@@ -84,15 +84,15 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			itr->drawtext(window);
 			if (itr->completed == true)
 			{
-				itr->done.setbtncolor(sf::Color::Green);
-				itr->crossline.setPosition(sf::Vector2f(50, i + 15));
-				itr->crossline.setFillColor(sf::Color::Green);
-				itr->crossline.setSize({ itr->gettext().getGlobalBounds().width, 2 });
+				itr->done.setbtncolor(sf::Color(50,200,50));
+				itr->crossline.setPosition(sf::Vector2f(50, i + 12));
+				itr->crossline.setFillColor(sf::Color(50,200,50));
+				itr->crossline.setSize({ itr->gettext().getGlobalBounds().width+1, 3 });
 				window->draw(itr->crossline);
 			}
 			else
 			{
-				itr->done.setbtncolor(sf::Color::White);
+				itr->done.setbtncolor(sf::Color(235, 235, 235));
 			}
 			i += 50;
 		}
@@ -114,12 +114,14 @@ void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, s
 		else if (itr->del.ispressed(event, *window))
 		{
 			std::cout << "deleted\n";
+			itr->del.setbtncolor(sf::Color(150, 140, 220));
 			textlist.erase(itr);
 			break;
 		}
 		else if (itr->edit.ispressed(event, *window))
 		{
 			itredit = itr;
+			itr->edit.setbtncolor(sf::Color(150, 140, 220));
 			sample.setdata(itr->getdata());
 			textarea.setEditing();
 			textarea.setbtntext("");
@@ -162,13 +164,14 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 					a.push_back('\n');
 					sampletext.setdata(a);
 					edititr->setdata(a);
+					edititr->edit.setbtncolor(sf::Color(235, 235, 235));
 					sampletext.setdata("");
 					a.erase();
 					textarea.unsetEditing();
 					textarea.releasePressed();
 				}
 			}
-			else if (a.length() <= 40)
+			else if (a.length() <= 45)
 			{
 				a.pop_back();
 				a.push_back(b);
@@ -218,7 +221,7 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					a = "";
 				}
 			}
-			else if (a.length() <= 40 && !a.empty())
+			else if (a.length() <= 45 && !a.empty())
 			{
 				a.pop_back();
 				a.push_back(b);

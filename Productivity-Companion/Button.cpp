@@ -3,10 +3,14 @@
 			Empty BUTTON constructor
 			\brief Constructor
 		*/
-udh::Button::Button() { }
+udh::Button::Button()
+{
+	this->shape.setFillColor(sf::Color(235, 235, 235));
+}
 udh::Button::Button(sf::Font& font)
 {
 	this->setBtnTextFont(font);
+	this->shape.setFillColor(sf::Color(235, 235, 235));
 }
 
 /*
@@ -26,6 +30,7 @@ udh::Button::Button(std::string btnText, sf::Vector2f btnDmn, sf::Vector2f btnPo
 	this->text.setString(this->btnText);
 	this->setTextSize(20);
 	this->setTextPos();
+	this->shape.setFillColor(sf::Color(235,235,235));
 	this->text.setFillColor(sf::Color::Black);
 	btnRect = sf::FloatRect(btnPos.x, btnPos.y, btnDmn.x, btnDmn.y);
 }
@@ -93,8 +98,9 @@ void udh::Button::setTextPos()
 	sf::FloatRect tB = this->text.getGlobalBounds();
 	sf::FloatRect sB = this->shape.getGlobalBounds();
 	sf::Vector2f textPos;
-	textPos = sf::Vector2f(sB.left + sB.width / 2 - tB.width / 2, sB.top + sB.height / 2 - tB.height / 2 - tB.height / 3);
+	textPos = sf::Vector2f(sB.left+(sB.width / 2 - tB.width / 2), sB.top+(sB.height - tB.height)/3);
 	this->text.setPosition(textPos);
+
 }
 sf::FloatRect  udh::Button::getbounds()
 {
@@ -104,7 +110,10 @@ void udh::Button::setbtntext(const char* a)
 {
 	this->text.setString(a);
 }
-
+sf::Vector2f udh::Button::getPosition()
+{
+	return this->shape.getPosition();
+}
 void udh::Button::setEditing()
 {
 	this->editing = true;

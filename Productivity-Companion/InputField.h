@@ -6,6 +6,7 @@
 #include"SFML/Graphics.hpp"
 #include<string.h>
 #include"button.h"
+#include <Windows.h>
 namespace udh
 {
 	class inputField

@@ -5,28 +5,47 @@
 #include<iostream>
 #include<vector>
 #include "button.h"
+
+
 int main()
 {
-	const char* dir = "C:\\Users\\dell\\source\\repos\\SFML-I\\SFML-I\\task.db";
+
 	std::vector<udh::inputField>::iterator editTaskItr;
 	udh::inputField sampletext;
 	udh::inputField dummyTask;
-	dummyTask.setdata("db testing success");
 	sf::Font  fonts;
-	fonts.loadFromFile("Fonts/ArialCE.ttf");
-	udh::Button textarea("add task", { 700.f,25.f }, { 10.f,10.f }, fonts);
+	fonts.loadFromFile("Fonts\\KaushanScript-Regular.ttf");
+	/////////////////////////////////////////////////////////
+	// Backgound for Todo
+	sf::Texture cover;
+	if (!cover.loadFromFile("./TextureImages/TodoTexture.jpg"))
+	{
+		std::cerr << "error loading texture\n";
+	}
+	sf::Sprite TodoImage;
+	TodoImage.setTexture(cover);
+	int x, y;
+	x = cover.getSize().x;
+	y = cover.getSize().y - 100;
+	TodoImage.setTextureRect({0,0,x,y});
+	TodoImage.setScale(0.75,0.3);
+	////////////////////////////////////////////////////////
+
+	float y1 = 0.3 * y+10;
+	udh::Button textarea("add task", { 580.f,25.f }, { 80.f,y1 }, fonts);
 	std::string a;
 	std::vector<udh::inputField> textList;
-	sf::RenderWindow window(sf::VideoMode(740, 560), "Text Box");
+	sf::RenderWindow window(sf::VideoMode(740, 560), "My Todos");
 	sf::Event event;
-	sf::RectangleShape rectangle2(sf::Vector2f(730.f, 500.f));
-	rectangle2.setPosition(sf::Vector2f(5.f, 45.f));
-	rectangle2.setFillColor(sf::Color(10, 50, 20));
-	rectangle2.setOutlineColor(sf::Color(0, 80, 0));
+	sf::RectangleShape rectangle2(sf::Vector2f(730.f, 560-(y1+39)));
+	rectangle2.setPosition(sf::Vector2f(5.f, y1+35));
+	rectangle2.setFillColor(sf::Color(200, 180, 200));
+	rectangle2.setOutlineColor(sf::Color(80, 80, 80));
 	rectangle2.setOutlineThickness(2.f);
 	//adjusting position of input text wrt to input text area.
 	sampletext.setposition(sf::Vector2f(textarea.getbounds().left + 20,
-		(textarea.getbounds().top + (textarea.getbounds().height - sampletext.gettext().getCharacterSize()) / 2) / 2));
+		textarea.getPosition().y));
+	std::cout << textarea.getPosition().y;
 	//main loop or game loop
 	while (window.isOpen())
 	{
@@ -62,10 +81,11 @@ int main()
 		}
 
 		//clearing window
-		window.clear(sf::Color(10, 50, 20));
+		window.clear(sf::Color(200, 180, 200));
 		//drawing textarea 
-		textarea.drawTo(window);
 		window.draw(rectangle2);
+		textarea.drawTo(window);
+		window.draw(TodoImage);
 		sampletext.drawtext(&window);
 		udh::drawlist(textList, &window);
 		window.display();
