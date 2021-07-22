@@ -31,7 +31,7 @@ int main()
 	TodoImage.setScale(0.75,0.3);
 	////////////////////////////////////////////////////////
 
-	float y1 = 0.3 * y+10;
+	float y1(0.3 * y+10);
 	udh::Button textarea("add task", { 580.f,25.f }, { 80.f,y1 }, fonts);
 	std::string a;
 	std::vector<udh::inputField> textList;
