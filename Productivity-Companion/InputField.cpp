@@ -114,7 +114,6 @@ void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, s
 		else if (itr->del.ispressed(event, *window))
 		{
 			std::cout << "deleted\n";
-			itr->del.setbtncolor(sf::Color(150, 140, 220));
 			textlist.erase(itr);
 			break;
 		}
