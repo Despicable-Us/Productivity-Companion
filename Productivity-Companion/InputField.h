@@ -2,11 +2,14 @@
 #ifndef INPUT_FIELD
 #define INPUT_FIELD
 
+#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 #include"SFML/Graphics.hpp"
 #include<string.h>
 #include"button.h"
 #include <Windows.h>
+#include <time.h>
+
 namespace udh
 {
 	class inputField
@@ -14,6 +17,8 @@ namespace udh
 		std::string text; 
 		sf::Text textdata;
 		sf::Font font;
+		struct tm *timecreated;
+		char timebuffer[40];
 	public:
 		sf::RectangleShape crossline;
 		bool completed = false;
@@ -64,6 +69,16 @@ namespace udh
 		/// sets completed to true
 		/// </summary>
 		void setdone();
+
+		void setstatus(bool a)
+		{
+			this->completed = a;
+		}
+
+		void setCreationTime();
+
+		bool getstatus();
+		
 	};
 
 	/// <summary>

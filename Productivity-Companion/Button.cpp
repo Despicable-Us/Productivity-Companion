@@ -6,6 +6,7 @@
 udh::Button::Button()
 {
 	this->shape.setFillColor(sf::Color(235, 235, 235));
+	this->btnRect={ 0.f,0.f,10.f,5.f };
 }
 udh::Button::Button(sf::Font& font)
 {

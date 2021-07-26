@@ -3,21 +3,26 @@
 //default constructor
 udh::inputField::inputField()
 {
-	font.loadFromFile("Fonts\\static\\RobotoMono-Medium.ttf");
-	textdata.setFont(font);
-	textdata.setCharacterSize(20);
-	textdata.setFillColor(sf::Color(0,0,0));
+	this->font.loadFromFile("Fonts\\static\\RobotoMono-Medium.ttf");
+	this->textdata.setFont(font);
+	this->textdata.setCharacterSize(20);
+	this->textdata.setFillColor(sf::Color(0,0,0));
+	this->textdata.setString("");
+	this->del.setBtnTextFont(font);
+	this->del.setTextColor(sf::Color::Magenta);
+	this->del.setTextSize(12);
+	this->del.setBtnSize(sf::Vector2f(60.f, 20.f));
 
-	del.setBtnTextFont(font);
-	del.setTextColor(sf::Color::Magenta);
-	del.setTextSize(12);
-	del.setbtntext("DELETE");
-	del.setBtnSize(sf::Vector2f(60.f, 20.f));
+	this->edit.setTextSize(12);
+	this->edit.setBtnTextFont(font);
+	this->edit.setTextColor(sf::Color::Magenta);
+	this->edit.setBtnSize(sf::Vector2f(50.f, 20.f));
 
-	edit.setTextSize(12);
-	edit.setBtnTextFont(font);
-	edit.setTextColor(sf::Color::Magenta);
-	edit.setBtnSize(sf::Vector2f(50.f, 20.f));
+	std::time_t current;
+	std::time (&current);
+	(this->timecreated) = std::localtime(&current);
+	strftime(this->timebuffer, 40, "%a %b %d %Y", this->timecreated);
+	this->setposition({ 0.f, 0.f });
 
 }
 
@@ -54,6 +59,19 @@ void udh::inputField::setdone()
 	this->completed = true;
 }
 
+bool udh::inputField::getstatus()
+{
+	return this->completed;
+}
+
+void udh::inputField::setCreationTime()
+{
+	time_t current;
+	time(&current);
+	this->timecreated = localtime(&current);
+	strftime(this->timebuffer, 40, "%a %b %d %Y\n", this->timecreated);
+	std::cout << this->timebuffer;
+}
 void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* window)
 {
 	if (!textlist.empty())
@@ -70,6 +88,7 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			//setting up delete button
 			itr->del.setBtnPosition(sf::Vector2f(600.f, i + 5));
 			itr->del.setbtnRect(sf::FloatRect(600.f, i + 5, 50.f, 20.f));
+			itr->del.setbtntext("DELETE");
 			itr->del.setTextPos();
 
 			//seting up edit button
@@ -215,6 +234,7 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					a.pop_back();
 					a.push_back('\n');
 					sampletext.setdata(a);
+					sampletext.setCreationTime();
 					textlist.push_back(sampletext);
 					sampletext.setdata("");
 					a = "";
