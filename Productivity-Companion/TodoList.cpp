@@ -5,20 +5,21 @@
 #include<iostream>
 #include<vector>
 #include "button.h"
+#include "Database.h"
 
-
+std::vector<udh::inputField> textList;
+sf::RenderWindow window(sf::VideoMode(740, 560), "My Todos");
+udh::inputField sampletext;
 int main()
 {
 
 	std::vector<udh::inputField>::iterator editTaskItr;
-	udh::inputField sampletext;
-	udh::inputField dummyTask;
 	sf::Font  fonts;
 	fonts.loadFromFile("Fonts\\KaushanScript-Regular.ttf");
 	/////////////////////////////////////////////////////////
 	// Backgound for Todo
 	sf::Texture cover;
-	if (!cover.loadFromFile("./TextureImages/TodoTexture.jpg"))
+	if (!cover.loadFromFile("./TextureImages/TodoTexture1.jpg"))
 	{
 		std::cerr << "error loading texture\n";
 	}
@@ -29,13 +30,10 @@ int main()
 	y = cover.getSize().y - 100;
 	TodoImage.setTextureRect({0,0,x,y});
 	TodoImage.setScale(0.75,0.3);
-	////////////////////////////////////////////////////////
 
 	float y1(0.3 * y+10);
 	udh::Button textarea("add task", { 580.f,25.f }, { 80.f,y1 }, fonts);
 	std::string a;
-	std::vector<udh::inputField> textList;
-	sf::RenderWindow window(sf::VideoMode(740, 560), "My Todos");
 	sf::Event event;
 	sf::RectangleShape rectangle2(sf::Vector2f(730.f, 560-(y1+39)));
 	rectangle2.setPosition(sf::Vector2f(5.f, y1+35));
@@ -45,7 +43,18 @@ int main()
 	//adjusting position of input text wrt to input text area.
 	sampletext.setposition(sf::Vector2f(textarea.getbounds().left + 20,
 		textarea.getPosition().y));
-	std::cout << textarea.getPosition().y;
+	////////////////////////////////////////////////////////////////
+	//database creating and loading
+	udh::createDB("Productivity_companion.db");
+	udh::createTaskTable("Productivity_companion.db");
+	udh::LoadTaskList("Productivity_companion.db");
+	sampletext.setdata("");
+	sampletext.setstatus(false);
+	for (std::vector<udh::inputField>::iterator itr = textList.begin(); itr < textList.end(); itr++)
+	{
+		std::cout << itr->getdata();
+	}
+	///////////////////////////////////////////////////////////////
 	//main loop or game loop
 	while (window.isOpen())
 	{
@@ -55,6 +64,12 @@ int main()
 			//checking of close button is cliked
 			if (event.type == sf::Event::Closed)
 			{
+				udh::deleteData("Productivity_companion.db");
+				udh::createTaskTable("Productivity_companion.db");
+				for (std::vector<udh::inputField>::iterator itr = textList.begin(); itr < textList.end(); itr++)
+				{
+					udh::insertTaskData("Productivity_companion.db", *itr);
+				}
 				window.close();
 			}
 			//checking if textarea is clicked
