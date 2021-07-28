@@ -5,14 +5,6 @@
 #include "timeSetter.h"
 #include "toggleMusic.h"
 
-#define LIGHT_GREEN 54,115,0
-
-sf::Color lightGreen = sf::Color(LIGHT_GREEN);
-sf::Color yellow = sf::Color(228, 228, 163);
-sf::Color darkGreen = sf::Color(85, 152, 12);
-sf::Color blue = sf::Color(81, 163, 135);
-
-
 int main() {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
