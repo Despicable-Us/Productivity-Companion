@@ -21,11 +21,18 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="InputField.h" />
+    <ClInclude Include="Points.h" />
+    <ClInclude Include="timeSetter.h" />
+    <ClInclude Include="toggleMusic.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="InputField.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Points.cpp" />
+    <ClCompile Include="timeSetter.cpp" />
     <ClCompile Include="TodoList.cpp" />
+    <ClCompile Include="toggleMusic.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

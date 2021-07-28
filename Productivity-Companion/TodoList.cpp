@@ -7,7 +7,7 @@
 #include "button.h"
 
 
-int main()
+int main1()
 {
 
 	std::vector<udh::inputField>::iterator editTaskItr;
@@ -94,4 +94,5 @@ int main()
 	{
 		std::cout << itr->getdata();
 	}
+	return 0;
 }
