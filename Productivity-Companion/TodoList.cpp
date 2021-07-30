@@ -16,6 +16,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(760, 675), "My Todos",sf::Style::Titlebar|sf::Style::Close,settings);
 	sf::View TaskView({0.f,0.f,760.f,675.f});
 	sf::RectangleShape scrollBar;
+	scrollBar.setFillColor(sf::Color(100, 100, 100));
 	sf::CircleShape c1(15.f), c2(15.f);
 	c1.setFillColor(sf::Color(235, 235, 235));
 	c2.setFillColor(sf::Color(235, 235, 235));
@@ -67,7 +68,7 @@ int main()
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				int size= textList.size()*50;
+				int size= textList.size()*40;
 				while (!event.KeyReleased)
 				{
 					continue;
@@ -75,7 +76,7 @@ int main()
 				if (viewPos < size - 455)
 				{
 					TaskView.move(0.f, 50.f);
-					viewPos += 50;
+					viewPos += 40;
 				}
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -87,7 +88,7 @@ int main()
 				if (viewPos != 0)
 				{
 					TaskView.move(0.f, -50.f);
-					viewPos -= 50;
+					viewPos -= 40;
 				}
 			}
 			//checking of close button is cliked
@@ -117,9 +118,7 @@ int main()
 			{
 				sampletext.setdata("");
 				//checking if user marked any task complete
-				//window.setView(TaskView);
 				udh::checkAction(event, textList, &window, editTaskItr, sampletext, textarea);
-				//window.setView(window.getDefaultView());
 			}
 		}
 
@@ -134,11 +133,14 @@ int main()
 		sampletext.drawtext(&window);
 		window.setView(TaskView);
 		udh::drawlist(textList, &window);
+		if (textList.size() > 11)
+		{
+			int size = textList.size() * 40;
+			scrollBar.setSize(sf::Vector2f(18.f,207025/size));
+			scrollBar.setPosition(sf::Vector2f(741.f,viewPos+viewPos*455/size));
+			window.draw(scrollBar);
+		}
 		window.setView(window.getDefaultView());
 		window.display();
-	}
-	for (std::vector<udh::inputField>::iterator itr = textList.begin(); itr < textList.end(); itr++)
-	{
-		std::cout << itr->getdata();
 	}
 }

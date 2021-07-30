@@ -94,11 +94,18 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 		float i = 0;
 		for (std::vector<udh::inputField>::iterator itr = textlist.begin(); itr < textlist.end(); itr++)
 		{
-			itr->setposition(sf::Vector2f(50.f, i));
+			sf::CircleShape cL(15.f), cR(15.f);
+			sf::RectangleShape Rect;
+			Rect.setSize({700.f, 30.f});
+			Rect.setPosition({ 20.f,i });
+			cL.setPosition(5.f, i);
+			cR.setPosition(705.f, i);
+			itr->setposition(sf::Vector2f(50.f, i+2));
 			//setting up mark done button
 			itr->done.setBtnPosition(sf::Vector2f(20.f, i + 5));
 			itr->done.setBtnSize(sf::Vector2f(18.f, 18.f));
 			itr->done.setbtnRect(sf::FloatRect(20.f, i + 5, 18.f, 18.f));
+			itr->done.setoutline(sf::Color(150, 150, 150), 2);
 
 			//setting up delete button
 			itr->del.setBtnPosition(sf::Vector2f(600.f, i + 5));
@@ -112,6 +119,9 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			itr->edit.setbtnRect({ 670.f,i + 5,50.f,20.f });
 			itr->edit.setTextPos();
 
+			window->draw(Rect);
+			window->draw(cL);
+			window->draw(cR);
 			itr->edit.drawTo(*window);
 			itr->del.drawTo(*window);
 			itr->done.drawTo(*window);
@@ -119,7 +129,7 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			if (itr->completed == true)
 			{
 				itr->done.setbtncolor(sf::Color(50,200,50));
-				itr->crossline.setPosition(sf::Vector2f(50, i + 12));
+				itr->crossline.setPosition(sf::Vector2f(50, i + 14));
 				itr->crossline.setFillColor(sf::Color(50,200,50));
 				itr->crossline.setSize({ itr->gettext().getGlobalBounds().width+1, 3 });
 				window->draw(itr->crossline);
@@ -128,7 +138,7 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			{
 				itr->done.setbtncolor(sf::Color(235, 235, 235));
 			}
-			i += 50;
+			i += 40;
 		}
 	}
 }
