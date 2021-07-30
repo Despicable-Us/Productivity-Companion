@@ -17,13 +17,15 @@ udh::inputField::inputField()
 	this->edit.setBtnTextFont(font);
 	this->edit.setTextColor(sf::Color::Magenta);
 	this->edit.setBtnSize(sf::Vector2f(50.f, 20.f));
-
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//assigning day when task was created
 	std::time_t current;
 	std::time (&current);
-	(this->timecreated) = std::localtime(&current);
-	strftime(this->timebuffer, 40, "%a %b %d %Y", this->timecreated);
-	this->setposition({ 0.f, 0.f });
-
+	struct tm* timecreated;
+	timecreated = std::localtime(&current);
+	this->creationDay = timecreated->tm_year * 365 + timecreated->tm_mon * 30 + timecreated->tm_mday;
+	////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
 
 void udh::inputField::setdata(std::string str)
@@ -32,23 +34,26 @@ void udh::inputField::setdata(std::string str)
 	textdata.setString(text);
 }
 
-
 void udh::inputField::drawtext(sf::RenderWindow* window)
 {
 	window->draw(textdata);
 }
+
 std::string udh::inputField::getdata()
 {
-	return text;
+	return this->text;
 }
+
 sf::Text udh::inputField::gettext()
 {
 	return textdata;
 }
+
 void udh::inputField::setposition(sf::Vector2f position)
 {
 	textdata.setPosition(position);
 }
+
 sf::Font udh::inputField::getfont()
 {
 	return font;
@@ -63,20 +68,30 @@ bool udh::inputField::getstatus()
 {
 	return this->completed;
 }
+int udh::inputField::getDay()
+{
+	return this->creationDay;
+}
 
+void udh::inputField::setday(int a)
+{
+	this->creationDay = a;
+}
 void udh::inputField::setCreationTime()
 {
 	time_t current;
 	time(&current);
-	this->timecreated = localtime(&current);
-	strftime(this->timebuffer, 40, "%a %b %d %Y\n", this->timecreated);
-	std::cout << this->timebuffer;
+	struct tm* timecreated = localtime(&current);
+	char timebuffer[40];
+	strftime(timebuffer, 40, "%a %b %d %Y\n",timecreated);
+	std::cout << timebuffer;
 }
+
 void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* window)
 {
 	if (!textlist.empty())
 	{
-		float i = 180;
+		float i = 0;
 		for (std::vector<udh::inputField>::iterator itr = textlist.begin(); itr < textlist.end(); itr++)
 		{
 			itr->setposition(sf::Vector2f(50.f, i));
@@ -117,6 +132,7 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 		}
 	}
 }
+
 void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, sf::RenderWindow* window,
 	std::vector<udh::inputField>::iterator& itredit, udh::inputField& sample, udh::Button& textarea)
 {
@@ -147,6 +163,7 @@ void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, s
 		}
 	}
 }
+
 void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>::iterator& edititr,
 	udh::Button& textarea)
 {
@@ -199,6 +216,7 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 		}
 	}
 }
+
 void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea)
 {
 	unsigned char b;

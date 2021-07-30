@@ -3,7 +3,7 @@
 
 #include "database.h"
 #include<vector>
-extern	udh::inputField sampletext;
+extern udh::inputField sampletext;
 extern std::vector<udh::inputField> textList;
 int udh::createDB(const char* s)
 {
@@ -13,7 +13,7 @@ int udh::createDB(const char* s)
 	exit = sqlite3_open(s, &DB);
 	sqlite3_close(DB);
 
-	return 0;
+	return exit;
 }
 
 int udh::createTaskTable(const char* s)
@@ -24,11 +24,12 @@ int udh::createTaskTable(const char* s)
 	std::string sql = "CREATE TABLE IF NOT EXISTS TASKS("
 		"ID INTEGER PRIMARY KEY AUTOINCREMENT, "
 		"Task      TEXT NOT NULL, "
-		"Status INTEGER);";
+		"Status INTEGER,"
+		"Day INTEGER);";
 
+		int exit = 0;
 	try
 	{
-		int exit = 0;
 		exit = sqlite3_open(s, &DB);
 		/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 		exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
@@ -44,20 +45,18 @@ int udh::createTaskTable(const char* s)
 	{
 		std::cerr << e.what();
 	}
-	return 0;
+	return exit;
 }
 //insert OK!!
 int udh::insertTaskData(const char* s, udh::inputField data)
 {
 	sqlite3* DB;
 	char* messageError;
-	std::string sql = "INSERT INTO TASKS (Task,Status) VALUES('" + data.getdata() + "', '" +
-						std::to_string(data.getstatus()) + "');";
-	//std::string sql = "INSERT INTO TASKS (Task,Done) VALUES('stupid boy', '1');";
-	//char* qry = const_cast<char*>(sql.c_str());
-
+	std::string task = data.getdata();
+	//task.replace(task.find("'"), 2, "''");
+	std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task + "', '" +
+						std::to_string(data.getstatus()) +"','"+std::to_string(data.getDay())+ "');";
 	int exit = sqlite3_open(s, &DB);
-	std::cout << exit;
 	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
@@ -144,13 +143,8 @@ int udh::callback(void* NotUsed, int argc, char** argv, char** azColName)
 	}
 	else
 		sampletext.setstatus(true);
+	sampletext.setday(std::stoi(argv[3]));
 	textList.push_back(sampletext);
-	for (int i = 1; i < argc; i++) {
-		// column name and value
-		std::cout <<i<< azColName[i] << ": " << argv[i] << "\t";
-	}
-	std::cout << std::endl;
-
 	return 0;
 }
 

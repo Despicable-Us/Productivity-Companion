@@ -1,4 +1,5 @@
 #include "Button.h"
+extern int viewPos;
 /*
 			Empty BUTTON constructor
 			\brief Constructor
@@ -201,7 +202,7 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 bool udh::Button::ispressed(sf::Event event, sf::RenderWindow& window)
 {
 	//static bool state;
-	sf::Vector2i mouseCursorPos = { event.mouseButton.x,event.mouseButton.y };
+	sf::Vector2i mouseCursorPos = { sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y-220+viewPos};
 	if (this->btnRect.contains((sf::Vector2f)mouseCursorPos))
 	{
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)

@@ -17,8 +17,7 @@ namespace udh
 		std::string text; 
 		sf::Text textdata;
 		sf::Font font;
-		struct tm *timecreated;
-		char timebuffer[40];
+		int creationDay;
 	public:
 		sf::RectangleShape crossline;
 		bool completed = false;
@@ -40,7 +39,7 @@ namespace udh
 		void drawtext(sf::RenderWindow* window);
 
 		/// <summary>
-		/// 
+		/// member function
 		/// </summary>
 		/// <returns>
 		/// string data available in text data member>
@@ -78,6 +77,10 @@ namespace udh
 		void setCreationTime();
 
 		bool getstatus();
+
+		int getDay();
+
+		void setday(int a);
 		
 	};
 
