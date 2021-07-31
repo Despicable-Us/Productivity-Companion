@@ -15,22 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InputField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InputField.cpp">
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TodoList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="ArialCE.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="audio\1 A.M Study Session- lofi hip hopchill beats.ogg" />
+    <None Include="audio\Late Night Melancholy - (EA7) CHILL Lofi Piano BeatStudy Session(1 hour Loop).ogg" />
+    <None Include="audio\Monoman (study, chill, relax)  peaceful relaxing music.ogg" />
   </ItemGroup>
 </Project>

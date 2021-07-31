@@ -19,13 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="InputField.h" />
+    <ClInclude Include="menu.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="InputField.cpp" />
-    <ClCompile Include="TodoList.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="ArialCE.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="audio\1 A.M Study Session- lofi hip hopchill beats.ogg" />
+    <None Include="audio\Late Night Melancholy - (EA7) CHILL Lofi Piano BeatStudy Session(1 hour Loop).ogg" />
+    <None Include="audio\Monoman (study, chill, relax)  peaceful relaxing music.ogg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
