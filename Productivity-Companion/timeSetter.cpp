@@ -18,8 +18,8 @@ void dial::timeSetter::initialSetup(sf::RenderWindow& window,int a)
     if (!this->pauseSound.openFromFile("Sounds/paused.ogg")) {
         throw "Paused sound failed to load";
     }
-    this->timeUpSound.setVolume(50);
-    this->pauseSound.setVolume(50);
+    /*this->timeUpSound.setVolume(50);
+    this->pauseSound.setVolume(50);*/
 
     if (a == 1) { this->timeUpSound.play(); this->updatePoints(this->stopTime); }
     if (a == 2) { this->pauseSound.play(); this->updatePoints(-10.0f); }

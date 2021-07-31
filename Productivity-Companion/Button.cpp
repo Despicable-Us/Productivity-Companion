@@ -1,4 +1,5 @@
 #include "Button.h"
+extern int viewPos;
 /*
 			Empty BUTTON constructor
 			\brief Constructor
@@ -6,6 +7,7 @@
 udh::Button::Button()
 {
 	this->shape.setFillColor(sf::Color(235, 235, 235));
+	this->btnRect={ 0.f,0.f,10.f,5.f };
 }
 udh::Button::Button(sf::Font& font)
 {
@@ -166,6 +168,12 @@ void udh::Button::btnEvents(sf::Event& event, sf::RenderWindow& window, std::fun
 		}
 	}
 }
+
+void udh::Button::setoutline(sf::Color color, int width)
+{
+	this->shape.setOutlineColor(color);
+	this->shape.setOutlineThickness(width);
+}
 bool udh::Button::getstate()
 {
 	return state;
@@ -200,7 +208,7 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 bool udh::Button::ispressed(sf::Event event, sf::RenderWindow& window)
 {
 	//static bool state;
-	sf::Vector2i mouseCursorPos = { event.mouseButton.x,event.mouseButton.y };
+	sf::Vector2i mouseCursorPos = { sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y-220+viewPos};
 	if (this->btnRect.contains((sf::Vector2f)mouseCursorPos))
 	{
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)

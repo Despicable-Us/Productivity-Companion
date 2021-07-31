@@ -21,6 +21,7 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="timeSetter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -28,6 +29,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="toggleMusic.h">
+=======
+    <ClInclude Include="Database.h">
+>>>>>>> 0672dacce81055242d5b68c6fd7ac383ee8cf2dd
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,6 +45,7 @@
     <ClCompile Include="TodoList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="timeSetter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,5 +58,16 @@
     <ClCompile Include="toggleMusic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+=======
+    <ClCompile Include="Database.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sqlite-amalgamation-3360000\sqlite3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+>>>>>>> 0672dacce81055242d5b68c6fd7ac383ee8cf2dd
   </ItemGroup>
 </Project>

@@ -47,6 +47,7 @@ namespace udh
 		bool IsEditing();
 		bool isclicked(sf::Event event, sf::RenderWindow& window);
 		bool ispressed(sf::Event event, sf::RenderWindow& window);
+		void setoutline(sf::Color col, int width);
 
 	};
 }
