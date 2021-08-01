@@ -100,7 +100,7 @@ void udh::Button::setTextPos()
 	sf::FloatRect tB = this->text.getGlobalBounds();
 	sf::FloatRect sB = this->shape.getGlobalBounds();
 	sf::Vector2f textPos;
-	textPos = sf::Vector2f(sB.left+(sB.width / 2 - tB.width / 2), sB.top+(sB.height - tB.height)/3);
+	textPos = sf::Vector2f(sB.left+(sB.width / 2 - tB.width / 2), sB.top+(sB.height - tB.height)/5);
 	this->text.setPosition(textPos);
 
 }

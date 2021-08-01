@@ -6,10 +6,10 @@
 #include "button.h"
 #include "Database.h"
 
-std::vector<udh::inputField> textList;
-udh::inputField sampletext;
-int viewPos;
-int main()
+extern std::vector<udh::inputField> textList;
+extern udh::inputField sampletext;
+extern int viewPos;
+int todo()
 {
 	sf::ContextSettings settings;
 	sf::RenderWindow window(sf::VideoMode(760, 675), "My Todos",sf::Style::Titlebar|sf::Style::Close,settings);
@@ -57,7 +57,6 @@ int main()
 	udh::createDB("Productivity_companion.db");
 	udh::createTaskTable("Productivity_companion.db");
 	udh::LoadTaskList("Productivity_companion.db");
-	std::cout << "\nsize:" << textList.size()<<"\n";
 	sampletext.setdata("");
 	sampletext.setstatus(false);
 	///////////////////////////////////////////////////////////////
@@ -144,4 +143,5 @@ int main()
 		window.setView(window.getDefaultView());
 		window.display();
 	}
+	return 0;
 }
