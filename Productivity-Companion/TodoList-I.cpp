@@ -12,41 +12,42 @@ int viewPos;
 int main()
 {
 	sf::ContextSettings settings;
-	settings.antialiasingLevel = 8;
 	sf::RenderWindow window(sf::VideoMode(760, 675), "My Todos",sf::Style::Titlebar|sf::Style::Close,settings);
 	sf::View TaskView({0.f,0.f,760.f,675.f});
 	sf::RectangleShape scrollBar;
-	scrollBar.setFillColor(sf::Color(100, 100, 100));
 	sf::CircleShape c1(15.f), c2(15.f);
+	sf::Font  fonts;
+	std::vector<udh::inputField>::iterator editTaskItr;
+	sf::Texture cover;
+	sf::Sprite TodoImage;
+	udh::Button textarea("add task", { 580.f,30.f }, { 80.f,180 }, fonts);
+	std::string a;
+	sf::Event event;
+
+
+	settings.antialiasingLevel = 8;
+	scrollBar.setFillColor(sf::Color(100, 100, 100));
 	c1.setFillColor(sf::Color(235, 235, 235));
 	c2.setFillColor(sf::Color(235, 235, 235));
 	c1.setPosition(65.f, 180.f);
 	c2.setPosition(645.f, 180.f);
 	scrollBar.setPosition(741,169);
-	std::vector<udh::inputField>::iterator editTaskItr;
-	sf::Font  fonts;
 	fonts.loadFromFile("Fonts\\KaushanScript-Regular.ttf");
 	/////////////////////////////////////////////////////////
 	// Backgound for Todo
-	sf::Texture cover;
 	if (!cover.loadFromFile("./TextureImages/TodoTexture1.jpg"))
 	{
 		std::cerr << "error loading texture\n";
 	}
-	sf::Sprite TodoImage;
 	TodoImage.setTexture(cover);
 	int x, y;
 	x = cover.getSize().x;
 	y = cover.getSize().y;
-	std::cout <<"\ny=" <<y<<"\n";
 	TodoImage.setTextureRect({0,0,x,y});
 	TodoImage.setScale(0.75,0.39);
 
 	
-	udh::Button textarea("add task", { 580.f,30.f }, { 80.f,180 }, fonts);
 	TaskView.setViewport({0.f,0.3259,1.f,1.f});
-	std::string a;
-	sf::Event event;
 
 	//adjusting position of input text wrt to input text area.
 	sampletext.setposition(sf::Vector2f(textarea.getbounds().left + 20,
