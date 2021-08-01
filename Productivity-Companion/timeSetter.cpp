@@ -77,7 +77,7 @@ void dial::timeSetter::initialSetup(sf::RenderWindow& window,int a)
     this->knobPressing = 0;
     this->stopPressed = 0;
 
-    this->initiatePoints();     //Points class
+    this->initiatePoints(window);     //Points class
     
 
 }
@@ -146,7 +146,7 @@ std::vector<sf::Vector3f> dial::timeSetter::findEachMinpos()
 
     std::vector<sf::Vector3f> five_pos1;
     for (float y = b - r; y < b + r; y += 0.1f) {
-        float x = pow(((pow(r, 2) - (pow((y - b), 2)))), 0.5) + a;
+        float x = float(pow(((pow(r, 2) - (pow((y - b), 2)))), 0.5) + a);
         float time = timeInMinutes(sf::Vector2f(x, y));
         
         five_pos1.push_back(sf::Vector3f(time, x, y));
@@ -159,7 +159,7 @@ std::vector<sf::Vector3f> dial::timeSetter::findEachMinpos()
         
     }
     for (float y = b + r; y >= b - r; y -= 0.1f) {
-        float x = pow(((pow(r, 2) - (pow((y - b), 2)))), 0.5) + a;
+        float x = float(pow(((pow(r, 2) - (pow((y - b), 2)))), 0.5) + a);
         float time = timeInMinutes(sf::Vector2f(-x + float(2 * a), y));
         
         five_pos1.push_back(sf::Vector3f(time, -x + float(2 * a), y));
@@ -189,7 +189,7 @@ float dial::timeSetter::timeInMinutes(sf::Vector2f pos)
     float y3 = pos.y;
 
     float area = (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
-    float angle = asin(area * 2 / (rad * rad)) * (180 / 3.14);
+    float angle = float(asin(area * 2 / (rad * rad)) * (180 / 3.14));
 
     if (x3 > x1 && y3 > y1) {
         angle = 90 + (90 - angle);
@@ -206,7 +206,7 @@ float dial::timeSetter::timeInMinutes(sf::Vector2f pos)
 
 sf::Vector2f dial::timeSetter::posForTime(float time)
 {
-    int index = time / 5;
+    int index = int(time / 5);
     sf::Vector2f pos = sf::Vector2f(this->fiveMult_pos1[index].y, this->fiveMult_pos1[index].z);
     return pos;
 }
@@ -454,7 +454,7 @@ void dial::timeSetter::printTicking(sf::RenderWindow& window, int& tickingFlag, 
         window.draw(this->timeText);
 
         //getting stopPos for fillers from eachMinPos
-        sf::Vector2f stopPos = sf::Vector2f(this->eachMinPos[min].y, this->eachMinPos[min].z);
+        sf::Vector2f stopPos = sf::Vector2f(this->eachMinPos[int(min)].y, this->eachMinPos[int(min)].z);
         //updating fillers
         if (min) { //to not print the filler when time becomes zero
             for (auto it = all_pos.begin(); it != all_pos.end(); ++it) {

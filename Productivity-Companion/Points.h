@@ -23,7 +23,7 @@ protected:
 
 public:
 	//initiates points(sf::Text) and display components
-	void initiatePoints();
+	void initiatePoints(sf::RenderWindow &);
 	//updates points : after timer is stopped or it completes
 	void updatePoints(float a);
 	//displays all the components
