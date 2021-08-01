@@ -27,8 +27,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="btn.cpp" />
+    <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="InputField.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Pop_Up_Message.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="Session_Tracker.cpp" />
