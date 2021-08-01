@@ -657,7 +657,6 @@ int session_tracker::delete_session_tab(const char* s, std::string name)
 {
 	sqlite3* DB;
 	char* messageError;
-	std::cout << "Going to delete" + name << std::endl;
 	std::string sql = "DELETE FROM SESSION WHERE session_name = '" + name + "';"
 					  "DELETE FROM SESSION_LIST WHERE session_id_name = '" + name + "';";
 

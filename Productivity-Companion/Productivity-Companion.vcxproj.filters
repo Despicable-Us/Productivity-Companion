@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="InputField.h">
+    <ClInclude Include="Btn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Btn.h">
+    <ClInclude Include="InputField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pop_Up_Message.h">
@@ -32,10 +32,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InputField.cpp">
+    <ClCompile Include="btn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="btn.cpp">
+    <ClCompile Include="sqlite3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -48,9 +51,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Session_Tracker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

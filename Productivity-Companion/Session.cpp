@@ -176,7 +176,22 @@ void Session::Init_Variables()
 			std::time_t t = std::time(NULL);
 			std::tm* tm = std::localtime(&t);
 			start_time.clear();
-			start_time = std::to_string(tm->tm_hour) + ":";
+			
+			if (tm->tm_hour == 0)
+			{
+				start_time += std::to_string(12) + ":";
+			}
+			else if (tm->tm_hour > 12)
+			{
+				start_time += std::to_string(tm->tm_hour - 12) + ":";
+			}
+			else
+			{
+				start_time += std::to_string(tm->tm_hour) + ":";
+			}
+
+			//tm->tm_hour > 12 ? start_time += std::to_string(tm->tm_hour - 12) + ":" : start_time += std::to_string(tm->tm_hour) + ":";
+			//start_time = std::to_string(tm->tm_hour) + ":";
 			tm->tm_min < 10 ? start_time += "0" + std::to_string(tm->tm_min) : start_time += std::to_string(tm->tm_min);
 			tm->tm_hour > 12 ? start_time += " pm" : start_time += " am";
 			start_timer = time_to_str;
@@ -194,7 +209,22 @@ void Session::Init_Variables()
 			std::time_t t = std::time(NULL);
 			std::tm* tm = std::localtime(&t);
 			end_time.clear();
-			end_time = std::to_string(tm->tm_hour) + ":";
+
+			if (tm->tm_hour == 0)
+			{
+				end_time += std::to_string(12) + ":";
+			}
+			else if (tm->tm_hour > 12)
+			{
+				end_time += std::to_string(tm->tm_hour - 12) + ":";
+			}
+			else
+			{
+				end_time += std::to_string(tm->tm_hour) + ":";
+			}
+
+			//tm->tm_hour > 12 ? end_time += std::to_string(tm->tm_hour - 12) + ":" : end_time += std::to_string(tm->tm_hour) + ":";
+			//end_time = std::to_string(tm->tm_hour) + ":";
 			tm->tm_min < 10 ? end_time += "0" + std::to_string(tm->tm_min) : end_time += std::to_string(tm->tm_min);
 			tm->tm_hour > 12 ? end_time += " pm" : end_time += " am";
 			time_data[0] = "Time Stamp: " + start_time + " - " + end_time;
@@ -209,7 +239,6 @@ void Session::Init_Variables()
 			ms = mili_sec;
 
 			duration = Timer_Duration(start_vec, end_vec);
-			
 			duration = "Duration: " + duration;
 			
 			time_data[1] = duration;
@@ -217,9 +246,7 @@ void Session::Init_Variables()
 			records_table.clear();
 			
 			Map_To_Records_Vec();
-			
 			new_data_added_vec.push_back({ date_string, time_data[0], time_data[1] });
-			
 			added_vectors = new_data_added_vec;
 			timer_string = time_to_str;
 		}
@@ -303,7 +330,6 @@ void Session::Create_Toggle_Btn()
 /// </summary>
 void Session::Load_Clock_Components()
 {
-	std::cout << total_time << std::endl;
 	std::vector<int> total_time_int_vec;
 	std::string temp;
 	if (!total_time.empty())
@@ -389,7 +415,6 @@ void Session::Get_DB_Data()
 /// </summary>
 void Session::Update_DB_Data()
 {
-	std::cout << time_to_str << std::endl;
 	if (!new_data_added_vec.empty())
 	{
 		session_detail::insert_data(dir, time_to_str);
@@ -436,12 +461,6 @@ std::string Session::Timer_Duration(std::vector<int> start, std::vector<int> end
 {
 	std::vector<std::string> dura_vec(4);
 	int temp;
-	for (auto item : start)
-		std::cout << item << " ";
-	std::cout << std::endl;
-	for (auto item : end)
-		std::cout << item << " ";
-	std::cout << std::endl;
 	for (int i = end.size() - 1; i >= 0; --i)
 	{
 		temp = i;
