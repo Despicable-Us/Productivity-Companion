@@ -1,6 +1,8 @@
 #pragma once
 #include "SFML/Graphics.hpp"
-#include <stdc++.h>
+#include <map>
+#include <iterator>
+#include <iomanip>
 #include "Btn.h"
 #include <vector>
 #include <iostream>
