@@ -8,7 +8,7 @@ Pop_Up_Message::Pop_Up_Message(std::string name, sf::Font& font)
 {
 	this->session_name = name;
 	this->rect_size = { 380.f, 150.f };
-	this->rect_pos = { 380.f, 337.5f };
+	this->rect_pos = { 380.f, 300.5f };
 	this->Load_Font();
 	this->Set_Components();
 	this->Set_Dimension();
@@ -34,14 +34,13 @@ void Pop_Up_Message::Set_Components()
 
 	this->input_func = [&]()
 	{
-		std::cout << "Hey there" << std::endl;
+		confirm_func();
 	};
 
 	this->confirm_func = [&]()
 	{
 		if (this->session_name == this->input_field_string)
 		{
-			std::cout << "FOUND IT" << std::endl;
 			*overlay = false;
 			*popup = false;
 			*run_delete = true;

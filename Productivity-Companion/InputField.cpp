@@ -335,6 +335,11 @@ void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event, std::fun
 				}
 			}
 		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+		{
+			entered_field_string = bufferString;
+			func();
+		}
 	}
 	else
 	{

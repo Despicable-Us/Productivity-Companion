@@ -198,21 +198,28 @@ void Session::Init_Variables()
 			tm->tm_min < 10 ? end_time += "0" + std::to_string(tm->tm_min) : end_time += std::to_string(tm->tm_min);
 			tm->tm_hour > 12 ? end_time += " pm" : end_time += " am";
 			time_data[0] = "Time Stamp: " + start_time + " - " + end_time;
-			mili_sec = int(t2 / 10);
-			ms = int(t2 / 10);
+			
 			end_timer = time_to_str;
 			std::vector<int> start_vec, end_vec;
 			std::string temp;
 			start_vec = this->Convert_Data(start_timer);
 			end_vec = this->Convert_Data(end_timer);
+			
+			mili_sec = end_vec[3];
+			ms = mili_sec;
 
 			duration = Timer_Duration(start_vec, end_vec);
+			
 			duration = "Duration: " + duration;
+			
 			time_data[1] = duration;
 			data_to_map[date_string].push_back(time_data);
 			records_table.clear();
+			
 			Map_To_Records_Vec();
+			
 			new_data_added_vec.push_back({ date_string, time_data[0], time_data[1] });
+			
 			added_vectors = new_data_added_vec;
 			timer_string = time_to_str;
 		}
@@ -427,24 +434,37 @@ void Session::Map_To_Records_Vec()
 /// <returns>Duration in string</returns>
 std::string Session::Timer_Duration(std::vector<int> start, std::vector<int> end)
 {
-	std::vector<std::string> dura_vec;
+	std::vector<std::string> dura_vec(4);
+	int temp;
+	for (auto item : start)
+		std::cout << item << " ";
+	std::cout << std::endl;
+	for (auto item : end)
+		std::cout << item << " ";
+	std::cout << std::endl;
 	for (int i = end.size() - 1; i >= 0; --i)
 	{
+		temp = i;
 		if (end[i] < start[i])
 		{
 			if (i == end.size() - 1)
 			{
 				end[i] += 100;
-				end[int(i - 1)]--;
+				temp--;
+				end[temp]--;
+				
 			}
 			else
 			{
 				end[i] += 60;
-				end[int(i - 1)]--;
+				temp--;
+				end[temp]--;
 			}
 		}
+		
 		dura_vec.insert(dura_vec.begin(), std::to_string(end[i] - start[i]));
 	}
+	
 	for (int i = 0; i < 2; i++)
 	{
 		if (dura_vec[i].size() == 1)
@@ -483,19 +503,6 @@ std::vector<int> Session::Convert_Data(std::string data_time)
 /// <param name="event">Events from the main window</param>
 /// <param name="show_session">Boolean to control the display.</param>
 /// <param name="show_button">Boolean to control the display.</param>
-//void Session::Run_Events(sf::RenderWindow& window, sf::Event& event, bool &show_session, bool &show_button)
-//{
-//	toggle_btn->BtnEvents(window, event, Btn_Trigger);
-//	home_btn->BtnEvents(window, event, Home_Btn_Trigger);
-//	Timer_Run_Event();
-//	if (home_btn_clicked)
-//	{
-//		show_session = false;
-//		show_button = true;
-//		home_btn_clicked = false;
-//	}
-//}
-
 void Session::Run_Events(sf::RenderWindow& window, sf::Event& event, bool& show_session, bool& show_button, bool& update_total_time_list)
 {
 	toggle_btn->BtnEvents(window, event, Btn_Trigger);
@@ -519,7 +526,6 @@ void Session::Timer_Run_Event()
 	{
 		t1 = clock.getElapsedTime().asSeconds();
 		t2 = clock.getElapsedTime().asMilliseconds();
-
 		if (mili_sec > 0)
 		{
 			if (t2 / 10 >= 1)

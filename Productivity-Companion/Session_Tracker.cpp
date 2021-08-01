@@ -166,7 +166,6 @@ void Session_Tracker::Init_Variables()
 	this->btn_show = true;
 	this->show_session = false;
 	this->show_session_tab = true;
-	//this->dir = "C:\\Users\\Progosta\\Desktop\\Tori Laure\\Session Tracker\\Session Tracker\\Session.db";
 	this->dir = "Session.db";
 	this->update_total_time_list = false;
 	this->btn_event_func = [&]()
@@ -287,7 +286,6 @@ void Session_Tracker::Update_Rects()
 			}
 			session_tab = Session_Tab(input_texts.back(), initial_pos, session_tab_size, roboto_font);
 			session_tab_vec.push_back(Session_Tab(session_tab));
-			//new_input_texts.push_back(input_texts.back());
 			session_tracker::insert_new_session(dir, input_texts.back());
 			db_session_list_data.push_back(input_texts.back());
 		}
@@ -389,11 +387,14 @@ void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& eve
 {
 	if (show_session_tab)
 	{
-		add_session_btn->BtnEvents(window, event, add_rect, btn_hide);
-		for (size_t i = 0; i < session_tab_vec.size(); ++i)
+		if (!show_pop_up)
 		{
-			session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
-			session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
+			add_session_btn->BtnEvents(window, event, add_rect, btn_hide);
+			for (size_t i = 0; i < session_tab_vec.size(); ++i)
+			{
+				session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
+				session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
+			}
 		}
 	}
 	if (show_session)
