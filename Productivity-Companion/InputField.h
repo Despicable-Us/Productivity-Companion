@@ -1,39 +1,59 @@
 #pragma once
-#ifndef INPUT_FIELD
-#define INPUT_FIELD
 
-#include<iostream>
-#include"SFML/Graphics.hpp"
-#include<string.h>
-#include"button.h"
-namespace udh
+#include "SFML/Graphics.hpp"
+#include <iostream>
+#include <functional>
+#include <ctime>
+
+class InputField
 {
-	class inputField
-	{
-		std::string text;
-		sf::Text textdata;
-		sf::Font font;
 	public:
-		sf::RectangleShape crossline;
-		bool completed = false;
-		udh::Button done;
-		udh::Button del;
-		udh::Button edit;
-		inputField();
-		void setdata(std::string a);
-		void drawtext(sf::RenderWindow* window);
-		std::string getdata();
-		sf::Text gettext();
-		void setposition(sf::Vector2f position);
-		sf::Font getfont();
-		void changecolor(sf::RenderWindow* window);
-		void setdone();
-	};
-	void drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* window);
-	void checkAction(sf::Event event, std::vector<udh::inputField>& textlist, sf::RenderWindow* window,
-		std::vector<udh::inputField>::iterator& itredit, udh::inputField& sample, udh::Button& textarea);
-	void editTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>::iterator& edititr,
-		udh::Button& textarea);
-	void addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea);
-}
-#endif // !INPUT_FIELD
+		// UI Components
+		sf::RectangleShape shape;
+		sf::CircleShape Cleft, Cright;
+		sf::Text text;
+		sf::Font inputFont;
+
+		// Supporting data members
+		std::string inputText;
+		std::string bufferString;
+		std::string savedString;
+		size_t charSize = 16;
+		float fieldWidth = 300.f;
+		float padX = 14.f;
+		float padY = 5.f;
+		
+		// Boolean data members
+		bool isFocused = false;
+		bool mouseHeld = false;
+
+		// Vectors and Rects
+		sf::Vector2i mousePos;
+		sf::Vector2f mousePosView;
+		sf::Vector2f inputFieldPos;
+		sf::Vector2f rectSize;
+		sf::FloatRect textBounds;
+		sf::FloatRect wholeInputRect;
+		sf::FloatRect rectBounds;
+
+		// Constructors and destructors
+		InputField() {} // default 
+
+		InputField(sf::Vector2f fieldPos, sf::Font& font);
+
+		~InputField() {}
+
+		void LoadText();
+		void SetText(std::string inText);
+		void CreateInputShape();
+		void SetWholeRect();
+		void InputEvent(sf::RenderWindow& window, sf::Event& event, bool& inputHide, 
+						bool& btnHide, std::vector<std::string>& inputTexts,
+						bool& enter_pressed);
+		void InputEvent(sf::RenderWindow& window, sf::Event& event, 
+			std::function<void()> func);
+		void InputEvent(sf::RenderWindow& window, sf::Event& event,
+			std::function<void()> func, std::string& entered_field_string);
+
+		void DrawTo(sf::RenderWindow& window);
+};
