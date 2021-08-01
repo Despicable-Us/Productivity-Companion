@@ -166,7 +166,8 @@ void Session_Tracker::Init_Variables()
 	this->btn_show = true;
 	this->show_session = false;
 	this->show_session_tab = true;
-	this->dir = "C:\\Users\\Progosta\\Desktop\\Tori Laure\\Session Tracker\\Session Tracker\\Session.db";
+	//this->dir = "C:\\Users\\Progosta\\Desktop\\Tori Laure\\Session Tracker\\Session Tracker\\Session.db";
+	this->dir = "Session.db";
 	this->update_total_time_list = false;
 	this->btn_event_func = [&]()
 	{

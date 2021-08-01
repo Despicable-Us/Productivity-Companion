@@ -227,7 +227,8 @@ void Session::Init_Variables()
 	this->scroll_bar.setFillColor(sf::Color(DATE_BAR_C));
 	this->scroll_bar.setPosition({ 741.f, 0.f });
 	this->scroll_bar.setSize({ 18.f, 207025 / ((records_table.size() + 1) * 35.f) });
-	this->dir = "C:\\Users\\Progosta\\Desktop\\Tori Laure\\Session Tracker\\Session Tracker\\Session.db";
+	//this->dir = "C:\\Users\\Progosta\\Desktop\\Tori Laure\\Session Tracker\\Session Tracker\\Session.db";
+	this->dir = "Session.db";
 }
 
 /// <summary>
