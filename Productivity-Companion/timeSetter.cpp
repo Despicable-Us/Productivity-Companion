@@ -44,8 +44,8 @@ void dial::timeSetter::initialSetup(sf::RenderWindow& window,int a)
     this->playButton.setRotation(90.f);
     this->playButton.rotate(0.f);
 
-    this->stopButton.setSize(sf::Vector2f(playBtnRad * 1.4, playBtnRad * 1.4));
-    this->stopButton.setOrigin(playBtnRad * 1.4 / 2.0f, playBtnRad * 1.4 / 2.f);
+    this->stopButton.setSize(sf::Vector2f(playBtnRad * 1.4f, playBtnRad * 1.4f));
+    this->stopButton.setOrigin(playBtnRad * 1.4f / 2.0f, playBtnRad * 1.4f / 2.f);
     this->stopButton.setFillColor(sf::Color(PLAY_AND_PAUSE_COLOR));
     this->stopButton.setPosition(this->mainCircle.getPosition());
 
@@ -91,11 +91,11 @@ std::vector<sf::Vector2f> dial::timeSetter::findAllPos()
     float r = mainCircle.getRadius();
     std::vector<sf::Vector2f> all_pos;
     for (float y = b - r; y < b + r; y += 0.1f) {
-        float x = sqrt((pow(r, 2) - (pow((y - b), 2)))) + a;
+        float x = float(sqrt((pow(r, 2) - (pow((y - b), 2)))) + a); //sqrt returns double
         all_pos.push_back(sf::Vector2f(x, y));
     }
     for (float y = b + r; y >= b - r; y -= 0.1f) {
-        float x = sqrt((pow(r, 2) - (pow((y - b), 2)))) + a;
+        float x = float(sqrt((pow(r, 2) - (pow((y - b), 2)))) + a); //sqrt returns double
         all_pos.push_back(sf::Vector2f(-x + float(2 * a), y));
     }
     return all_pos;
@@ -109,7 +109,7 @@ std::vector<sf::Vector3f> dial::timeSetter::find5MultPos()
 
     std::vector<sf::Vector3f> five_pos1;
     for (float y = b - r; y < b + r; y += 0.1f) {
-        float x = sqrt((pow(r, 2) - (pow((y - b), 2)))) + a;
+        float x = float(sqrt((pow(r, 2) - (pow((y - b), 2)))) + a); //sqrt returns double
         float time = timeInMinutes(sf::Vector2f(x, y));
         if (int(time) % 5 == 0) {
             five_pos1.push_back(sf::Vector3f(time, x, y));
@@ -122,7 +122,7 @@ std::vector<sf::Vector3f> dial::timeSetter::find5MultPos()
         }
     }
     for (float y = b + r; y >= b - r; y -= 0.1f) {
-        float x = sqrt((pow(r, 2) - (pow((y - b), 2)))) + a;
+        float x = float(sqrt((pow(r, 2) - (pow((y - b), 2)))) + a); //sqrt returns double
         float time = timeInMinutes(sf::Vector2f(-x + float(2 * a), y));
         if (int(time) % 5 == 0) {
             five_pos1.push_back(sf::Vector3f(time, -x + float(2 * a), y));
