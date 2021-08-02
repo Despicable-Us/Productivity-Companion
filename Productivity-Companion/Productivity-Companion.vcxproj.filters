@@ -5,11 +5,15 @@
     <ClCompile Include="Points.cpp" />
     <ClCompile Include="timeSetter.cpp" />
     <ClCompile Include="toggleMusic.cpp" />
+    <ClCompile Include="btn.cpp" />
+    <ClCompile Include="musicOptions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Points.h" />
     <ClInclude Include="timeSetter.h" />
     <ClInclude Include="toggleMusic.h" />
+    <ClInclude Include="Btn.h" />
+    <ClInclude Include="musicOptions.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

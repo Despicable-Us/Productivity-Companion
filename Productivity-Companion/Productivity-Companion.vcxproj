@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Btn.h" />
+    <ClInclude Include="musicOptions.h" />
     <ClInclude Include="Points.h" />
     <ClInclude Include="timeSetter.h" />
     <ClInclude Include="toggleMusic.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="btn.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="musicOptions.cpp" />
     <ClCompile Include="Points.cpp" />
     <ClCompile Include="timeSetter.cpp" />
     <ClCompile Include="toggleMusic.cpp" />

@@ -24,7 +24,7 @@ void dial::timeSetter::initialSetup(sf::RenderWindow& window,int a)
     if (a == 1) { this->timeUpSound.play(); this->updatePoints(this->stopTime); }
     if (a == 2) { this->pauseSound.play(); this->updatePoints(-10.0f); }
     
-    sf::Vector2f position = sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.50f); //------------>change Position here
+    sf::Vector2f position = sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.8f); //------------>change Position here
 
     this->mainCircle.setRadius(150.f);
     this->mainCircle.setPosition(position);
@@ -273,8 +273,8 @@ void dial::timeSetter::pointKnob()
     if (a1 > a) {
         this->knobCircle.setPosition(sf::Vector2f(x1, y1));
         //not letting user to set time below 25 mins
-        if (this->timeInMinutes(sf::Vector2f(x1, y1)) < 25.0f) {
-            sf::Vector2f pos = sf::Vector2f(fiveMult_pos1[5].y, fiveMult_pos1[5].z);
+        if (this->timeInMinutes(sf::Vector2f(x1, y1)) < 5.0f) {
+            sf::Vector2f pos = sf::Vector2f(fiveMult_pos1[1].y, fiveMult_pos1[1].z);
             this->knobCircle.setPosition(pos);
         }
         //not letting user to set time from 120 mins to 25 mins directly
@@ -290,8 +290,8 @@ void dial::timeSetter::pointKnob()
     //updating the last time in minutes DIVISIBLE BY FIVE
     int time = int(this->timeInMinutes(this->knobCircle.getPosition()));
     this->stopTime = time - float(time % 5);
-    if (this->stopTime < 25.0f) {   //not letting user set time < 25 mins
-        this->stopTime = 25.0f;
+    if (this->stopTime < 5.0f) {   //not letting user set time < 25 mins
+        this->stopTime = 5.0f;
     }
     this->stop_pos = this->posForTime(this->stopTime);
 }
@@ -468,11 +468,16 @@ void dial::timeSetter::printTicking(sf::RenderWindow& window, int& tickingFlag, 
 
         //timer complete
         if (std::string(this->timeText.getString()) == "00 : 00") {
+            if (this->isPlaying) {              //Stopping the music
+                this->pauseActiveMusic();
+            }
             tickingFlag = 0;
+            timerTicking = 0;                   //for toggleMusic.h
             this->initialSetup(window,1);
         }
     }
-    else{                   //timer stopped
+    else{ 
+                //timer stopped
         tickingFlag = 0;
         stopPressed = 0;
         this->stopTime = 25;
@@ -525,6 +530,28 @@ void dial::timeSetter::dialPollEvents(sf::RenderWindow &window,sf::Event& event)
             }
         }
     }
+    if (this->tickingFlag == 2) this->timerTicking = 1; //timerTicking in toogle.h
+    if (this->stopPressed == 2) this->timerTicking = 0;
+
+    if (this->toggleStatus) {
+        if (this->tickingFlag == 2) {                 //if play button is pressed music plays
+            if (!this->isPlaying) {
+                this->playActiveMusic();
+            }
+        }
+        if (this->stopPressed) {        //if stop button is pressed music stops
+            this->timerTicking = 0;         //togglemusic.h
+            if (this->isPlaying) {
+                this->pauseActiveMusic();
+            }
+        }   
+    }
+    if (timerTicking && this->toggleStatus && !this->interruptedOnce) { //if the timer has started and user opts to listen to music
+        if (!this->isPlaying) {
+            this->playActiveMusic();
+        }
+    }
+
     this->togglePollEvent(window, event); //---------------------------------------------------------------------
 }
 

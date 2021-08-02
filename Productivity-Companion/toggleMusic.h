@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include "musicOptions.h"
 
 
 //while inheriting this class 
@@ -14,17 +15,19 @@
 // 5. run drawbutton 
 
 namespace TOGGLE {
-	class ToggleMusic
+	class ToggleMusic:public musicOptions
 	{
 		sf::RectangleShape btnRect;
 		sf::CircleShape btnCirc1;
 		sf::CircleShape btnCirc2;
 		sf::CircleShape slideCirc;
 		sf::Music lofiMusic;
-
-		int toggleStatus; 
 		int btnClickedStatus; //for functions running on main
 	public:
+		int interruptedOnce;
+		int toggleInterrupt;
+		int timerTicking;
+		int toggleStatus; 
 		ToggleMusic(sf::RenderWindow&);
 
 		//for click detection
@@ -33,9 +36,6 @@ namespace TOGGLE {
 		//if clicked it changes status (from off to on and vice-versa)
 		//also calls another function to run if it is on (for now plays music)
 		void changeToggleStatus();
-
-		//plays the music
-		void playMusic(int);
 
 		//functions that run on main
 		void toggledrawComponents(sf::RenderWindow &); // updates toggle button according to toggleStatus and draws them

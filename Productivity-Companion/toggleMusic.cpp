@@ -4,7 +4,7 @@ TOGGLE::ToggleMusic::ToggleMusic(sf::RenderWindow& window)
 {
 	float length = 25.0f;
 	float height = 35.0f;
-	sf::Vector2f pos = sf::Vector2f(window.getSize().x - 80.0f, window.getSize().y - 150.0f);
+	sf::Vector2f pos = sf::Vector2f(50.0f, window.getSize().y - 125.0f);
 	this->btnRect.setPosition(pos);
 	this->btnRect.setSize(sf::Vector2f(length, height));
 	this->btnRect.setOrigin(sf::Vector2f(length/2 , height/2));
@@ -36,6 +36,12 @@ TOGGLE::ToggleMusic::ToggleMusic(sf::RenderWindow& window)
 
 	this->toggleStatus = 0;
 	this->btnClickedStatus = 0;
+	this->toggleInterrupt = 0;
+	this->interruptedOnce = 0;
+	this->timerTicking = 0;
+
+	//added for musci options
+	this->musicOptInitialSetup();
 }
 
 int TOGGLE::ToggleMusic::checkInBtn(sf::Vector2f pos)
@@ -49,19 +55,8 @@ int TOGGLE::ToggleMusic::checkInBtn(sf::Vector2f pos)
 void TOGGLE::ToggleMusic::changeToggleStatus()
 {
 	this->toggleStatus = !this->toggleStatus;
-	this->playMusic(this->toggleStatus);
-}
 
-void TOGGLE::ToggleMusic::playMusic(int status)
-{
-	if (status) {
-		this->lofiMusic.play();
-	}
-	else {
-		this->lofiMusic.pause();
-	}
 }
-
 
 //functions running on main
 
@@ -83,6 +78,12 @@ void TOGGLE::ToggleMusic::toggledrawComponents(sf::RenderWindow&window)
 	window.draw(this->btnCirc1);
 	window.draw(this->btnCirc2);
 	window.draw(this->slideCirc);
+
+	//added for music Options
+	if (this->toggleStatus) {
+		this->musicOptDrawComponents(window);
+	}
+
 }
 
 void TOGGLE::ToggleMusic::togglePollEvent(sf::RenderWindow & window,sf::Event& event)
@@ -106,6 +107,10 @@ void TOGGLE::ToggleMusic::togglePollEvent(sf::RenderWindow & window,sf::Event& e
 			}
 		}
 	}
+	//added for music options
+	if (this->toggleStatus) {
+		this->musicOptPollEvents(window, event);
+	}
 	//if(toggleStatus) then check for events in provided music options (Rishav ko portion)
 
 }
@@ -114,7 +119,23 @@ void TOGGLE::ToggleMusic::toggleUpadteFromEvent()
 {
 	if (this->btnClickedStatus == 2) {
 		this->changeToggleStatus();
-		this->btnClickedStatus = 0;
+		this->btnClickedStatus = 0;	
 	}
-}
 
+	//addded for music options
+	if (this->toggleStatus) {
+		this->musicOptUpdateFromEvents();
+		if (toggleInterrupt && timerTicking) {
+			std::cout << "Yo toggle interrupt leyy garda chaleko" << std::endl;
+			this->playActiveMusic();
+			this->toggleInterrupt = 0;
+		}
+	}
+	if ((!this->toggleStatus) && isPlaying) {
+		std::cout << "paused here";
+		this->pauseActiveMusic();
+		this->toggleInterrupt = 1;
+		this->interruptedOnce = 0;
+	}
+	
+}

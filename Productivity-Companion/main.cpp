@@ -4,8 +4,13 @@
 
 #include "timeSetter.h"
 #include "toggleMusic.h"
+#include "Btn.h"
 
 int main() {
+    sf::Font font;
+    if (!font.loadFromFile("Fonts/Roboto-Medium.ttf")) {
+        throw "Font in musicOptions is not loading";
+    }
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 8;
 
@@ -30,9 +35,8 @@ int main() {
             timeDial.dialPollEvents(window, event);
         }
         timeDial.dialUpdateFromEvents(window);
-
         window.clear(sf::Color(BACKGROUND_COLOR));
-        timeDial.dialDrawComponents(window);     
+        timeDial.dialDrawComponents(window);
         window.display();
     }
 	return 0;
