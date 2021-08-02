@@ -25,6 +25,7 @@ class Btn
 
 		// String and other
 		std::string btnText;
+		std::string btnId;
 
 		// Initialized values
 		float fixFactor = 4.5f;
@@ -37,7 +38,7 @@ class Btn
 
 		// Constructors and Destructor
 		Btn() {}
-		Btn(std::string BtnText, sf::Vector2f btnPos,uint8_t charSize, sf::Font& font);
+		Btn(std::string BtnText, sf::Vector2f btnPos, uint8_t charSize, sf::Font& font, const std::string& id = "");
 		~Btn() {}
 
 		void LoadText();
@@ -46,11 +47,13 @@ class Btn
 		void SetText();
 		void SetBtnRect();
 		void SetFillColor(sf::Color color);
+		void SetTextColor(sf::Color color);
 		void BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, bool &btnHide);
 		void BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func);
 		void BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, std::string name, std::string& selected_session_name);
 		void BtnEvents(sf::RenderWindow& window, sf::Event& event, bool& btn_show);
 		void BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, bool& first, bool& second);
+		std::string BtnEvents(sf::RenderWindow& window, sf::Event& event);
 		void DrawTo(sf::RenderWindow &window);
 };
 

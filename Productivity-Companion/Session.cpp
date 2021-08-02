@@ -190,8 +190,6 @@ void Session::Init_Variables()
 				start_time += std::to_string(tm->tm_hour) + ":";
 			}
 
-			//tm->tm_hour > 12 ? start_time += std::to_string(tm->tm_hour - 12) + ":" : start_time += std::to_string(tm->tm_hour) + ":";
-			//start_time = std::to_string(tm->tm_hour) + ":";
 			tm->tm_min < 10 ? start_time += "0" + std::to_string(tm->tm_min) : start_time += std::to_string(tm->tm_min);
 			tm->tm_hour > 12 ? start_time += " pm" : start_time += " am";
 			start_timer = time_to_str;
@@ -223,8 +221,6 @@ void Session::Init_Variables()
 				end_time += std::to_string(tm->tm_hour) + ":";
 			}
 
-			//tm->tm_hour > 12 ? end_time += std::to_string(tm->tm_hour - 12) + ":" : end_time += std::to_string(tm->tm_hour) + ":";
-			//end_time = std::to_string(tm->tm_hour) + ":";
 			tm->tm_min < 10 ? end_time += "0" + std::to_string(tm->tm_min) : end_time += std::to_string(tm->tm_min);
 			tm->tm_hour > 12 ? end_time += " pm" : end_time += " am";
 			time_data[0] = "Time Stamp: " + start_time + " - " + end_time;
@@ -386,8 +382,8 @@ void Session::Today_Date()
 /// </summary>
 void Session::Create_Home_Btn()
 {
-	home_btn = new Btn("Back", { 55.f, 30.f }, 14, roboto_font);
-	home_btn->SetFillColor(sf::Color(DATE_BAR_C));
+	home_btn = new Btn("Back", { 710.f, 30.f }, 14, roboto_font);
+	home_btn->SetFillColor(sf::Color(244, 16,56));
 	home_btn->text.setFillColor(sf::Color::White);
 	home_btn_clicked = false;
 }

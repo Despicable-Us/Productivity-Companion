@@ -1,16 +1,18 @@
 #include "Btn.h"
 
-Btn::Btn(std::string BtnText, sf::Vector2f btnPos, uint8_t charSize, sf::Font& font)
-{
+Btn::Btn(std::string BtnText, sf::Vector2f btnPos, uint8_t charSize, sf::Font& font, const std::string& id) {
 	this->btnText = BtnText;
 	this->inputBtnPos = btnPos;
 	this->uiFont = font;
 	this->charSize = charSize;
+	this->btnId = id;
 	LoadText();
 	SetBtnShape();
 	SetText();
 	SetBtnRect();
 }
+
+
 
 void Btn::LoadText()
 {
@@ -70,6 +72,11 @@ void Btn::SetFillColor(sf::Color color)
 	this->shape.setFillColor(color);
 	this->C1.setFillColor(color);
 	this->C2.setFillColor(color);
+}
+
+void Btn::SetTextColor(sf::Color color)
+{
+	text.setFillColor(color);
 }
 
 void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, bool &btnHide)
@@ -288,6 +295,54 @@ void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<vo
 	this->shape.setScale(btnScale, btnScale);
 	this->C1.setScale(btnScale, btnScale);
 	this->C2.setScale(btnScale, btnScale);
+}
+
+std::string Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event)
+{
+	text.setFillColor(sf::Color::White);
+	mousePos = sf::Mouse::getPosition(window);
+	mousePosView = static_cast<sf::Vector2f>(mousePos);
+
+	if (this->wholeBtnRect.contains(this->mousePosView))
+	{
+		this->SetFillColor(sf::Color(252, 218, 97));
+		text.setFillColor(sf::Color::Black);
+		if (!mouseInside)
+		{
+			this->btnScale = 1.02f;
+			mouseInside = true;
+		}
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (!mouseHeld)
+			{
+				mouseHeld = true;
+				return btnId;
+			}
+			else if (mouseHeld)
+			{
+				this->btnScale = 0.99f;
+			}
+		}
+		else
+		{
+			mouseHeld = false;
+			this->btnScale = 1.02f;
+		}
+	}
+	else
+	{
+		text.setFillColor(sf::Color::White);
+		this->SetFillColor(sf::Color(121, 131, 140));
+		this->btnScale = 1.f;
+		mouseInside = false;
+	}
+
+	this->shape.setScale(btnScale, btnScale);
+	this->C1.setScale(btnScale, btnScale);
+	this->C2.setScale(btnScale, btnScale);
+	return "";
 }
 
 

@@ -190,9 +190,6 @@ void Session_Tracker::Init_Variables()
 
 	this->pop_up = new Pop_Up_Message("Something", this->roboto_font);
 	show_pop_up = false;
-
-
-
 }
 
 /// <summary>
@@ -234,7 +231,7 @@ void Session_Tracker::Init_UI_Components()
 	this->input_session_field = new InputField({ win_sizeF.x / 2, 110.f }, roboto_font);
 
 	this->home_back_btn = new Btn("Home", { 55.f, 30.f }, 14, this->roboto_font);
-	this->home_back_btn->SetFillColor(sf::Color(41, 41, 41));
+	this->home_back_btn->SetFillColor(sf::Color(23,137, 252));
 	this->home_back_btn->text.setFillColor(sf::Color::White);
 	this->home_back_btn_clicked = false;
 	this->home_back_btn_func = [&]()

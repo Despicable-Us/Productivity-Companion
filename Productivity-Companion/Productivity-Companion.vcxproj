@@ -22,19 +22,27 @@
     <ClInclude Include="Btn.h" />
     <ClInclude Include="Icon.h" />
     <ClInclude Include="InputField.h" />
+    <ClInclude Include="musicOptions.h" />
+    <ClInclude Include="Points.h" />
     <ClInclude Include="Pop_Up_Message.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="Session_Tracker.h" />
+    <ClInclude Include="timeSetter.h" />
+    <ClInclude Include="toggleMusic.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="Icon.cpp" />
     <ClCompile Include="InputField.cpp" />
+    <ClCompile Include="musicOptions.cpp" />
+    <ClCompile Include="Points.cpp" />
     <ClCompile Include="Pop_Up_Message.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="Session_Tracker.cpp" />
     <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="timeSetter.cpp" />
+    <ClCompile Include="toggleMusic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
