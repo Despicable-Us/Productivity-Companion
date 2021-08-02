@@ -125,7 +125,7 @@ class Session_Tracker
 
 		// EVENTS
 		void Run_Inside_Event(sf::RenderWindow& window, sf::Event& event, sf::View& view);
-		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event);
+		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app);
 		void Render_In_Main_Window(sf::RenderWindow& window);
 		void Render_In_View(sf::RenderWindow& window);
 
@@ -148,6 +148,10 @@ class Session_Tracker
 		Pop_Up_Message* pop_up;
 		bool show_pop_up;
 		bool delete_db_data;
+
+		Btn* home_back_btn;
+		std::function<void()> home_back_btn_func;
+		bool home_back_btn_clicked;
 };
 
 // DATABASE RELATED

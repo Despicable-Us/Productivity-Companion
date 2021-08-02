@@ -30,6 +30,9 @@
     <ClInclude Include="Session_Tracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Icon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="btn.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Session_Tracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Icon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Homepage.cpp">

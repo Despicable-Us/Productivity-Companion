@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Btn.h" />
+    <ClInclude Include="Icon.h" />
     <ClInclude Include="InputField.h" />
     <ClInclude Include="Pop_Up_Message.h" />
     <ClInclude Include="Session.h" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Homepage.cpp" />
+    <ClCompile Include="Icon.cpp" />
     <ClCompile Include="InputField.cpp" />
     <ClCompile Include="Pop_Up_Message.cpp" />
     <ClCompile Include="Session.cpp" />

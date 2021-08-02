@@ -386,7 +386,7 @@ void Session::Today_Date()
 /// </summary>
 void Session::Create_Home_Btn()
 {
-	home_btn = new Btn("Home", { 55.f, 30.f }, 14, roboto_font);
+	home_btn = new Btn("Back", { 55.f, 30.f }, 14, roboto_font);
 	home_btn->SetFillColor(sf::Color(DATE_BAR_C));
 	home_btn->text.setFillColor(sf::Color::White);
 	home_btn_clicked = false;

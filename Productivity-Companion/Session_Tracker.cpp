@@ -190,6 +190,9 @@ void Session_Tracker::Init_Variables()
 
 	this->pop_up = new Pop_Up_Message("Something", this->roboto_font);
 	show_pop_up = false;
+
+
+
 }
 
 /// <summary>
@@ -229,6 +232,15 @@ void Session_Tracker::Init_UI_Components()
 		input_hide = false;
 	};
 	this->input_session_field = new InputField({ win_sizeF.x / 2, 110.f }, roboto_font);
+
+	this->home_back_btn = new Btn("Home", { 55.f, 30.f }, 14, this->roboto_font);
+	this->home_back_btn->SetFillColor(sf::Color(41, 41, 41));
+	this->home_back_btn->text.setFillColor(sf::Color::White);
+	this->home_back_btn_clicked = false;
+	this->home_back_btn_func = [&]()
+	{
+		this->home_back_btn_clicked = true;
+	};
 }
 
 /// <summary>
@@ -302,10 +314,11 @@ void Session_Tracker::Update_Rects()
 /// <param name="window">Main window to render to</param>
 void Session_Tracker::Render_In_Main_Window(sf::RenderWindow& window)
 {
+
 	if (show_session_tab)
 	{
 		window.draw(this->background);
-		
+		home_back_btn->DrawTo(window);
 		if (!btn_hide)
 		{
 			add_session_btn->DrawTo(window);
@@ -383,7 +396,7 @@ void Session_Tracker::Render_In_View(sf::RenderWindow& window)
 /// </summary>
 /// <param name="window"></param>
 /// <param name="event"></param>
-void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event)
+void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app)
 {
 	if (show_session_tab)
 	{
@@ -395,6 +408,13 @@ void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& eve
 				session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
 				session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
 			}
+		}
+		home_back_btn->BtnEvents(window, event, home_back_btn_func);
+		if (home_back_btn_clicked)
+		{
+			run_main_window = true;
+			run_app = false;
+			home_back_btn_clicked = false;
 		}
 	}
 	if (show_session)
@@ -419,8 +439,10 @@ void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& eve
 		db_total_time_string.clear();
 		session_tab_vec.clear();
 		Get_DB_Data();
-
 	}
+
+
+
 }
 
 /// <summary>
