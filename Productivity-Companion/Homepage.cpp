@@ -45,7 +45,7 @@ int main()
 	scroll_view.setViewport(sf::FloatRect(0.f, VIEW_START, 1.f, 1.f));
 	sf::Texture sec_back;
 	if (!sec_back.loadFromFile("Images/sec_back6.jpg"))
-		throw "Lauda lai";
+		throw "Error in loading the font.";
 
 	sf::Sprite sec_back_sprite(sec_back);
 	sec_back_sprite.setPosition({ 0.f,226.f });
@@ -100,7 +100,7 @@ int main()
 	// APP OBJECTS INSTANCIATIONS
 	dial::timeSetter timeDial(window);   // POMO TIMER
 	Session_Tracker session_app(window); // SESSION TRACKER
-	TodoList todolist;
+	TodoList todolist;					 // TO-DO LIST
 	todolist.LoadTodoList();
 
 	// APP NAMES
@@ -132,7 +132,6 @@ int main()
 		{
 			if (window.hasFocus())
 			{
-
 				if (run_session_tracker)
 				{
 					session_app.Run_Inside_Event(window, event, scroll_view);
@@ -143,7 +142,7 @@ int main()
 				}
 				if (run_todo_list)
 				{
-					todolist.RunTodo(window, event, scroll_view);
+					todolist.RunTodo(window, event, scroll_view, run_main_window, run_todo_list);
 				}
 				if (event.type == sf::Event::Closed)
 				{
@@ -151,6 +150,7 @@ int main()
 				}
 			}
 		}
+
 
 		if (run_main_window&&window.hasFocus())
 		{
@@ -174,7 +174,11 @@ int main()
 			window.clear(sf::Color(35, 40, 52));
 		}
 		
-		window.clear(sf::Color::White);
+		if (run_todo_list)
+		{
+			window.setTitle("To-do List");
+			window.clear(sf::Color::White);
+		}
 
 		// VIEW
 		window.setView(scroll_view);

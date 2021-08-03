@@ -1,5 +1,6 @@
 #include "Icon.h"
 extern int viewPos;
+
 Icon::Icon()
 {
 }

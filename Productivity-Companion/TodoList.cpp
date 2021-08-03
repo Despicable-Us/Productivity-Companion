@@ -21,6 +21,17 @@ TodoList::TodoList() :c1(15.f), c2(15.f),
 	sampletext.setdata("");
 	sampletext.setstatus(false);
 	sampletext.setposition(sf::Vector2f(textarea.getbounds().left + 10,textarea.getPosition().y + 5.f));
+
+	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
+		throw "Error in loading the font 'Roboto-Medium.ttf'";
+
+	home_back_btn = new Btn("Home", { 55.f, 30.f }, 14, this->roboto_font);
+	this->home_back_btn_clicked = false;
+
+	this->home_back_btn_func = [&]()
+	{
+		home_back_btn_clicked = true;
+	};
 }
 void TodoList::LoadTodoList()
 {
@@ -32,7 +43,7 @@ void TodoList::LoadTodoList()
 	sampletext.setstatus(false);
 }
 
-void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& TaskView)
+void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& TaskView, bool& run_main_window, bool& run_app)
 {
 	int size = textList.size() * 40;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
@@ -116,6 +127,14 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		//checking if user marked any task complete
 		udh::checkAction(event, textList, &window, editTaskItr, sampletext, textarea);
 	}
+	home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
+	if (home_back_btn_clicked)
+	{
+		std::cout << "Hello World" << std::endl;
+		home_back_btn_clicked = false;
+		run_main_window = true;
+		run_app = false;
+	}
 }
 
 void TodoList::DrawTodoMainWindow(sf::RenderWindow& window)
@@ -125,6 +144,7 @@ void TodoList::DrawTodoMainWindow(sf::RenderWindow& window)
 	window.draw(c1);
 	window.draw(c2);
 	sampletext.drawtext(&window);
+	home_back_btn->DrawTo(window);
 }
 
 void TodoList::DrawTodoView(sf::RenderWindow& window)
