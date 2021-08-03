@@ -278,7 +278,6 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					textlist.push_back(sampletext);
 					sampletext.setdata("");
 					a = "";
-					textarea.unSetAdding();
 				}
 			}
 			else if (a.length() <= 65 && !a.empty())

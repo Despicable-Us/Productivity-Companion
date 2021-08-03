@@ -130,25 +130,29 @@ int main()
 	{
 		while (window.pollEvent(event))
 		{
-			if (run_session_tracker)
+			if (window.hasFocus())
 			{
-				session_app.Run_Inside_Event(window, event, scroll_view);
-			}
-			if (run_pomo_timer)
-			{
-				timeDial.dialPollEvents(window, event);
-			}
-			if (run_todo_list)
-			{
-				todolist.RunTodo(window, event, scroll_view);
-			}
-			if (event.type == sf::Event::Closed)
-			{
-				window.close();
+
+				if (run_session_tracker)
+				{
+					session_app.Run_Inside_Event(window, event, scroll_view);
+				}
+				if (run_pomo_timer)
+				{
+					timeDial.dialPollEvents(window, event);
+				}
+				if (run_todo_list)
+				{
+					todolist.RunTodo(window, event, scroll_view);
+				}
+				if (event.type == sf::Event::Closed)
+				{
+					window.close();
+				}
 			}
 		}
 
-		if (run_main_window)
+		if (run_main_window&&window.hasFocus())
 		{
 			pomo_timer_icon.Run_Outside_Event(window, event, pomo_timer_func);
 			session_tracker_icon.Run_Outside_Event(window, event, session_tracker_func);

@@ -103,7 +103,6 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 	{
 		if (!textarea.IsEditing())
 		{
-			textarea.setAddding();
 			udh::addTask(sampletext, a, event, textList, textarea);
 		}
 		else

@@ -209,10 +209,13 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 	}
 	else if (!this->btnRect.contains((sf::Vector2f)mouseCursorPos) && event.mouseButton.button == sf::Mouse::Left)
 	{
-		if (!this->editing && !this->getAdding())
+		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			this->setbtntext("Add Task");
-			this->state = false;
+			if (!this->IsEditing())
+			{
+				this->setbtntext("Add Task");
+				this->state = false;
+			}
 		}
 	}
 	else
