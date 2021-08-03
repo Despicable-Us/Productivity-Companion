@@ -8,25 +8,27 @@ udh::inputField::inputField()
 	this->textdata.setFillColor(sf::Color(0,0,0));
 	this->textdata.setString("");
 	this->textdata.setCharacterSize(16);
-
-	this->del.setBtnTextFont(font);
-	this->del.setTextColor(sf::Color::Magenta);
-	this->del.setTextSize(12);
-	this->del.setBtnSize(sf::Vector2f(60.f, 20.f));
-
-	this->edit.setTextSize(12);
-	this->edit.setBtnTextFont(font);
-	this->edit.setTextColor(sf::Color::Magenta);
-	this->edit.setBtnSize(sf::Vector2f(50.f, 20.f));
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Icon loading and setting
+	this->loadIconTexture();
+
 	//assigning day when task was created
 	std::time_t current;
 	std::time (&current);
 	struct tm* timecreated;
 	timecreated = std::localtime(&current);
 	this->creationDay = timecreated->tm_year * 365 + timecreated->tm_mon * 30 + timecreated->tm_mday;
-	////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+
+void udh::inputField::loadIconTexture()
+{
+	if (!del_tex.loadFromFile("TextureImages/dust-bin1.png"))
+		throw "Error in loading the 'dust_bin.png'";
+	if (!edit_tex.loadFromFile("TextureImages/pencil.png"))
+		throw "Error in loading the 'pencil.png'";
+	del_icon = Icon(del_tex);
+	edit_icon = Icon(edit_tex);
+
 }
 
 void udh::inputField::setdata(std::string str)
@@ -85,7 +87,6 @@ void udh::inputField::setCreationTime()
 	struct tm* timecreated = localtime(&current);
 	char timebuffer[40];
 	strftime(timebuffer, 40, "%a %b %d %Y\n",timecreated);
-	std::cout << timebuffer;
 }
 
 void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* window)
@@ -113,25 +114,23 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			itr->done.setbtnRect(sf::FloatRect(20.f, i + 5, 18.f, 18.f));
 			itr->done.setoutline(sf::Color(150, 150, 150), 2);
 
-			//setting up delete button
-			itr->del.setBtnPosition(sf::Vector2f(600.f, i + 5));
-			itr->del.setbtnRect(sf::FloatRect(600.f, i + 5, 50.f, 20.f));
-			itr->del.setbtntext("DELETE");
-			itr->del.setTextPos();
-
-			//seting up edit button
-			itr->edit.setbtntext("EDIT");
-			itr->edit.setBtnPosition({ 670.f, i + 5 });
-			itr->edit.setbtnRect({ 670.f,i + 5,50.f,20.f });
-			itr->edit.setTextPos();
+			itr->del_icon.Set_Icon_Pos({630.f, i+15});
+			
 
 			window->draw(Rect);
 			window->draw(cL);
 			window->draw(cR);
-			itr->edit.drawTo(*window);
-			itr->del.drawTo(*window);
+
 			itr->done.drawTo(*window);
+			itr->del_icon.Draw_To(*window);
+			if (!itr->completed)
+			{
+				itr->edit_icon.Set_Icon_Pos({ 680.f, i + 15 });
+				itr->edit_icon.Draw_To(*window);
+
+			}
 			itr->drawtext(window);
+
 			if (itr->completed == true)
 			{
 				itr->done.setbtncolor(sf::Color(40, 40, 40));
@@ -162,15 +161,18 @@ void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, s
 				itr->completed = true;
 			else
 				itr->completed = false;
-			std::cout << itr->completed;
+			//std::cout << itr->completed;
 		}
-		else if (itr->del.ispressed(event, *window))
+
+		else if (itr->del_icon.Run_Outside_Event(*window, event))
 		{
-			std::cout << "deleted\n";
+			//std::cout << "deleted\n";
 			textlist.erase(itr);
 			break;
 		}
-		else if (itr->edit.ispressed(event, *window))
+
+		
+		else if (itr->edit_icon.Run_Outside_Event(*window, event) && !itr->completed)
 		{
 			itredit = itr;
 			itr->edit.setbtncolor(sf::Color(150, 140, 220));
@@ -222,9 +224,10 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 					a.erase();
 					textarea.unsetEditing();
 					textarea.releasePressed();
+					edititr->edit_icon.Set_Unheld();
 				}
 			}
-			else if (a.length() <= 45)
+			else if (a.length() <= 65)
 			{
 				a.pop_back();
 				a.push_back(b);
@@ -274,9 +277,10 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					textlist.push_back(sampletext);
 					sampletext.setdata("");
 					a = "";
+					textarea.unSetAdding();
 				}
 			}
-			else if (a.length() <= 45 && !a.empty())
+			else if (a.length() <= 65 && !a.empty())
 			{
 				a.pop_back();
 				a.push_back(b);

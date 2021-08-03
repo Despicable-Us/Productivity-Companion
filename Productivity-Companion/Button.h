@@ -21,6 +21,7 @@ namespace udh
 		sf::FloatRect btnRect;
 		bool state = false;
 		bool editing = false;
+		bool adding = false;
 	public:
 		Button();
 		Button(sf::Font& font);
@@ -48,7 +49,9 @@ namespace udh
 		bool isclicked(sf::Event event, sf::RenderWindow& window);
 		bool ispressed(sf::Event event, sf::RenderWindow& window);
 		void setoutline(sf::Color col, int width);
-
+		bool getAdding();
+		void setAddding();
+		void unSetAdding();
 	};
 }
 

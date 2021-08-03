@@ -9,6 +9,7 @@
 #include"button.h"
 #include <Windows.h>
 #include <time.h>
+#include "Icon.h"
 
 namespace udh
 {
@@ -24,8 +25,12 @@ namespace udh
 		udh::Button done;
 		udh::Button del;
 		udh::Button edit;
+		sf::Texture del_tex, edit_tex;
+		Icon del_icon, edit_icon;
 		sf::Text textdata;
 		inputField();
+
+		void loadIconTexture();
 
 		/// <summary>
 		/// Member function for setting string to text data member

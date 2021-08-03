@@ -2,13 +2,8 @@
 
 
 TodoList::TodoList() :c1(15.f), c2(15.f),
-	textarea("Add Task", { 580.f,30.f }, { 90.f, TEXTAREA_HEIGHT }, fonts)
+	textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 {
-	//textarea.setbtntext("add task");
-	//textarea.setBtnPosition({ 80.f, 180.f });
-	//textarea.setbtnRect({ 80.f,180.f,580.f,30.f});
-	//textarea.setTextPos();
-
 	scrollBar.setFillColor(sf::Color(100, 100, 100));
 	scrollBar.setPosition(741, 169);
 
@@ -17,8 +12,7 @@ TodoList::TodoList() :c1(15.f), c2(15.f),
 	c1.setPosition(75.f, TEXTAREA_HEIGHT);
 	c2.setPosition(655.f, TEXTAREA_HEIGHT);
 	fonts.loadFromFile("Fonts\\KaushanScript-Regular.ttf");
-	/////////////////////////////////////////////////////////
-	// Backgound for Todo
+	
 	if (!cover.loadFromFile("./TextureImages/todo_list_back2.png"))
 	{
 		std::cerr << "error loading texture\n";
@@ -27,9 +21,7 @@ TodoList::TodoList() :c1(15.f), c2(15.f),
 
 	sampletext.setdata("");
 	sampletext.setstatus(false);
-
-	sampletext.setposition(sf::Vector2f(textarea.getbounds().left + 10,
-		textarea.getPosition().y + 5.f));
+	sampletext.setposition(sf::Vector2f(textarea.getbounds().left + 10,textarea.getPosition().y + 5.f));
 }
 void TodoList::LoadTodoList()
 {
@@ -46,7 +38,6 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 	int size = textList.size() * 40;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		
 		while (!event.KeyReleased)
 		{
 			continue;
@@ -89,7 +80,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		}
 	}
 
-	//checking of close button is cliked
+	//checking of close button if clicked
 	if (event.type == sf::Event::Closed)
 	{
 		udh::deleteData("Productivity_companion.db");
@@ -113,6 +104,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 	{
 		if (!textarea.IsEditing())
 		{
+			textarea.setAddding();
 			udh::addTask(sampletext, a, event, textList, textarea);
 		}
 		else

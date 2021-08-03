@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="Icon.h" />
     <ClInclude Include="InputField.h" />
     <ClInclude Include="TodoList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="Icon.cpp" />
     <ClCompile Include="InputField.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sqlite3.c" />

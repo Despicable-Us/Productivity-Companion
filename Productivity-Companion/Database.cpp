@@ -59,14 +59,7 @@ int udh::insertTaskDB(const char* s, std::string sql_data)
 {
 	sqlite3* DB;
 	char* messageError;
-
-	//std::string task = data.getdata();
-	//task.replace(task.find("'"), 2, "''");
-	//std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task + "', '" +
-						//std::to_string(data.getstatus()) +"','"+std::to_string(data.getDay())+ "');";
-
 	int exit = sqlite3_open(s, &DB);
-	std::cout << sql_data << std::endl;
 	exit = sqlite3_exec(DB, sql_data.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in insertData function." << std::endl;

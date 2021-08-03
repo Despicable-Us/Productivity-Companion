@@ -174,6 +174,18 @@ void udh::Button::setoutline(sf::Color color, int width)
 	this->shape.setOutlineColor(color);
 	this->shape.setOutlineThickness(width);
 }
+bool udh::Button::getAdding()
+{
+	return this->adding;
+}
+void udh::Button::setAddding()
+{
+	this->adding = true;
+}
+void udh::Button::unSetAdding()
+{
+	this->adding = false;
+}
 bool udh::Button::getstate()
 {
 	return state;
@@ -197,12 +209,14 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 	}
 	else if (!this->btnRect.contains((sf::Vector2f)mouseCursorPos) && event.mouseButton.button == sf::Mouse::Left)
 	{
-		if (!this->editing)
+		if (!this->editing && !this->getAdding())
 		{
-			this->setbtntext("Add Task");
+			this->setbtntext("Add Task tero bau");
 			this->state = false;
 		}
 	}
+	else
+		state = false;
 	return this->state;
 }
 bool udh::Button::ispressed(sf::Event event, sf::RenderWindow& window)

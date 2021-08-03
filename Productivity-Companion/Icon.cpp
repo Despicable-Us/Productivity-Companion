@@ -1,30 +1,38 @@
 #include "Icon.h"
-
+extern int viewPos;
 Icon::Icon()
 {
 }
 
-Icon::Icon(sf::Texture& btn_texture, sf::Vector2f pos, bool shadow)
+Icon::Icon(sf::Texture& btn_texture, sf::Vector2f pos)
 {
 	this->icon_texture = btn_texture;
 	this->icon_pos = pos;
 	this->rect_pos = { pos.x + 4.f, pos.y + 4.f };
 	this->Set_Dimensions();
 	this->Set_Icon_Sprite();
-	if (!shadow)
-	{
-		this->show_shadow = false;
-	}
-	else
-	{
-		this->show_shadow = true; 
-		this->Set_Icon_Shadow_Dimension();
-	}
+	this->show_shadow = true; 
+	this->mouse_held = false;
+	this->Set_Icon_Shadow_Dimension();
+}
+
+Icon::Icon(sf::Texture& btn_texture)
+{
+	this->icon_texture = btn_texture;
+	this->mouse_held = false;
+	this->show_shadow = false;
+}
+
+
+void Icon::Set_Icon_Pos(sf::Vector2f pos)
+{
+	this->icon_pos = pos;
+	this->Set_Icon_Sprite();
 }
 
 void Icon::Set_Dimensions()
 {
-	this->mouse_held = false;
+	
 	this->circle_radius = 13.f;
 	this->rect_w = this->rect_h = 74.f;
 	this->rect_size = { this->rect_w, this->rect_h };
@@ -95,6 +103,8 @@ void Icon::Set_Shadow_Color()
 	main_rect.setFillColor(background_color);
 }
 
+
+
 void Icon::Draw_To(sf::RenderWindow& window)
 {
 	if (show_shadow)
@@ -138,4 +148,38 @@ void Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::fu
 		this->background_color = sf::Color(SHADOW_C);
 	}
 	this->Set_Shadow_Color();
+}
+
+bool Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event)
+{
+	mouse_pos = sf::Mouse::getPosition(window);
+	mouse_pos.y = mouse_pos.y - 220 + viewPos;
+	mouse_pos_view = static_cast<sf::Vector2f>(mouse_pos);
+
+	if (icon_background.getGlobalBounds().contains(mouse_pos_view))
+	{
+		this->background_color = sf::Color(0, 0, 0);
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (!mouse_held)
+			{
+				mouse_held = true;
+			}
+		}
+		else
+		{
+			mouse_held = false;
+		}
+	}
+	else
+	{
+		this->background_color = sf::Color(SHADOW_C);
+	}
+	this->Set_Shadow_Color();
+	return mouse_held;
+}
+
+void Icon::Set_Unheld()
+{
+	this->mouse_held = false;
 }
