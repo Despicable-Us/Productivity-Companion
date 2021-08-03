@@ -1,8 +1,8 @@
 #pragma once
 #ifndef INPUT_FIELD
 #define INPUT_FIELD
-
 #define _CRT_SECURE_NO_WARNINGS
+
 #include<iostream>
 #include"SFML/Graphics.hpp"
 #include<string.h>

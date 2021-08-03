@@ -211,7 +211,7 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 	{
 		if (!this->editing && !this->getAdding())
 		{
-			this->setbtntext("Add Task tero bau");
+			this->setbtntext("Add Task");
 			this->state = false;
 		}
 	}
