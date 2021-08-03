@@ -59,6 +59,7 @@ int udh::insertTaskDB(const char* s, std::string sql_data)
 {
 	sqlite3* DB;
 	char* messageError;
+	std::cout << sql_data << std::endl;
 	int exit = sqlite3_open(s, &DB);
 	exit = sqlite3_exec(DB, sql_data.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {

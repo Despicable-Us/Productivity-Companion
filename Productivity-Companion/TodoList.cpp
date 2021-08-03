@@ -1,6 +1,5 @@
 #include "TodoList.h"
 
-
 TodoList::TodoList() :c1(15.f), c2(15.f),
 	textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 {

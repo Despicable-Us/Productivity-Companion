@@ -15,6 +15,7 @@ std::vector<udh::inputField> textList;
 udh::inputField sampletext;
 int viewPos;
 
+
 int main()
 {
 	sf::ContextSettings settings;
@@ -169,7 +170,7 @@ int main()
 			window.clear(sf::Color(35, 40, 52));
 		}
 		
-
+		window.clear(sf::Color::White);
 
 		// VIEW
 		window.setView(scroll_view);
