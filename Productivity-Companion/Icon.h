@@ -41,14 +41,19 @@ class Icon
 		
 		Icon();
 		Icon(sf::Texture& btn_texture, sf::Vector2f pos);
+		Icon(sf::Texture& btn_texture);
 		
+		void Set_Icon_Pos(sf::Vector2f pos);
 		void Set_Dimensions();
 		void Set_Icon_Shadow_Dimension();
 		void Set_Icon_Sprite();
 		void Set_Shadow_Color();
+		void Set_Unheld();
+
 		void Draw_To(sf::RenderWindow& window);
 
 		//ALL EVENTS
 		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::function<void()> func);
+		bool Run_Outside_Event(sf::RenderWindow& window, sf::Event& event);
 };
 

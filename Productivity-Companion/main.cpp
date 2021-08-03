@@ -27,7 +27,7 @@ int main()
 			}
 			session_app.Run_Inside_Event(window, event, session_list_view);
 		}
-		session_app.Run_Outside_Event(window, event);
+		session_app.Run_Outside_Event(window, event, baal chaina);
 
 		window.clear(sf::Color::White);
 		window.setView(session_list_view);

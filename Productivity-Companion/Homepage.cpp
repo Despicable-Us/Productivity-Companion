@@ -1,6 +1,7 @@
 #include "Session_Tracker.h"
 #include "Icon.h"
 #include "timeSetter.h"
+#include "TodoList.h"
 
 #define WIN_WIDTH 760
 #define WIN_HEIGHT 675
@@ -10,6 +11,10 @@
 #define ICON_HEIGHT 380.f
 #define APP_NAME_HEIGHT 448.f
 
+std::vector<udh::inputField> textList;
+udh::inputField sampletext;
+int viewPos;
+
 int main()
 {
 	sf::ContextSettings settings;
@@ -18,7 +23,8 @@ int main()
 	video_mode.width = WIN_WIDTH;
 	video_mode.height = WIN_HEIGHT;
 	
-	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close, settings);
+	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close,settings);
+	window.setFramerateLimit(120);
 	sf::Event event;
 	sf::View scroll_view;
 	sf::Image homepage_icon_image;
@@ -82,7 +88,8 @@ int main()
 	};
 	auto todo_list_func = [&]()
 	{
-		std::cout << "To-do List App Launch" << std::endl;
+		run_main_window = false;
+		run_todo_list = true;
 	};
 	auto study_planner_func = [&]()
 	{
@@ -92,6 +99,8 @@ int main()
 	// APP OBJECTS INSTANCIATIONS
 	dial::timeSetter timeDial(window);   // POMO TIMER
 	Session_Tracker session_app(window); // SESSION TRACKER
+	TodoList todolist;
+	todolist.LoadTodoList();
 
 	// APP NAMES
 	sf::Text pomo_timer_text("Pomo Timer", roboto_font, 14),
@@ -120,10 +129,6 @@ int main()
 	{
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed)
-			{
-				window.close();
-			}
 			if (run_session_tracker)
 			{
 				session_app.Run_Inside_Event(window, event, scroll_view);
@@ -132,7 +137,16 @@ int main()
 			{
 				timeDial.dialPollEvents(window, event);
 			}
+			if (run_todo_list)
+			{
+				todolist.RunTodo(window, event, scroll_view);
+			}
+			if (event.type == sf::Event::Closed)
+			{
+				window.close();
+			}
 		}
+
 		if (run_main_window)
 		{
 			pomo_timer_icon.Run_Outside_Event(window, event, pomo_timer_func);
@@ -154,6 +168,7 @@ int main()
 			window.setTitle("Pomo Timer");
 			window.clear(sf::Color(35, 40, 52));
 		}
+		
 
 
 		// VIEW
@@ -161,6 +176,10 @@ int main()
 		if (run_session_tracker)
 		{
 			session_app.Render_In_View(window);
+		}
+		if (run_todo_list)
+		{
+			todolist.DrawTodoView(window);
 		}
 
 		// WINDOW
@@ -173,6 +192,11 @@ int main()
 		if (run_pomo_timer)
 		{
 			timeDial.dialDrawComponents(window);
+		}
+
+		if (run_todo_list)
+		{
+			todolist.DrawTodoMainWindow(window);
 		}
 
 		if (run_main_window)
