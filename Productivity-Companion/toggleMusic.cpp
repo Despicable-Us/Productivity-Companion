@@ -27,6 +27,13 @@ TOGGLE::ToggleMusic::ToggleMusic(sf::RenderWindow& window)
 	this->slideCirc.setRadius(height / 2.7f);
 	this->slideCirc.setFillColor(sf::Color::White);
 	this->slideCirc.setOrigin(sf::Vector2f(this->slideCirc.getRadius(), this->slideCirc.getRadius()));
+
+	if (!this->squiggle_texture.loadFromFile("Texture/squig3.png")) {
+		std::cout << "could'nt load the squiggle texture" << std::endl;
+	}
+	this->squiggle.setPosition(sf::Vector2f(0, pos.y - 75.0f));
+	this->squiggle.setTexture(&squiggle_texture);
+	this->squiggle.setSize(sf::Vector2f(300.0f, 213.0f));
 	
 	if (!lofiMusic.openFromFile("Sounds/timeUP.ogg")) {
 		std::cout << "Music file couldn't be loaded" << std::endl;
@@ -69,11 +76,12 @@ void TOGGLE::ToggleMusic::toggledrawComponents(sf::RenderWindow&window)
 		this->slideCirc.setPosition(this->btnCirc1.getPosition());
 	}
 	else {
-		this->btnRect.setFillColor(sf::Color(154, 205, 50));			//on
-		this->btnCirc1.setFillColor(sf::Color(154, 205, 50));
-		this->btnCirc2.setFillColor(sf::Color(154, 205, 50));
+		this->btnRect.setFillColor(sf::Color(251, 208, 60));			//on
+		this->btnCirc1.setFillColor(sf::Color(251, 208, 60));
+		this->btnCirc2.setFillColor(sf::Color(251, 208, 60));
 		this->slideCirc.setPosition(this->btnCirc2.getPosition());
 	}
+	window.draw(this->squiggle);
 	window.draw(this->btnRect);
 	window.draw(this->btnCirc1);
 	window.draw(this->btnCirc2);
@@ -126,13 +134,11 @@ void TOGGLE::ToggleMusic::toggleUpadteFromEvent()
 	if (this->toggleStatus) {
 		this->musicOptUpdateFromEvents();
 		if (toggleInterrupt && timerTicking) {
-			std::cout << "Yo toggle interrupt leyy garda chaleko" << std::endl;
 			this->playActiveMusic();
 			this->toggleInterrupt = 0;
 		}
 	}
 	if ((!this->toggleStatus) && isPlaying) {
-		std::cout << "paused here";
 		this->pauseActiveMusic();
 		this->toggleInterrupt = 1;
 		this->interruptedOnce = 0;

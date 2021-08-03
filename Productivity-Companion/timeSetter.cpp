@@ -599,16 +599,27 @@ void dial::timeSetter::dialUpdateFromEvents(sf::RenderWindow& window, sf::Event&
     if (knobPressing) {
         this->updateFillers(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
     }
+
+    //functionality of home button here
     this->home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
     if (home_back_btn_clicked)
     {
         home_back_btn_clicked = false;
         run_main_window = true;
         run_app = false;
-        this->initialSetup(window, 0);
+        if (this->timerTicking) {
+            this->timerTicking = 0;
+            this->initialSetup(window, 2);
+        }
+        else {
+            this->initialSetup(window, 0);
+        }
         if (this->isPlaying)
         {
             this->pauseActiveMusic();
+        }
+        if (this->toggleStatus) {
+            this->changeToggleStatus();
         }
     }
 }

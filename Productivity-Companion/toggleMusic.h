@@ -17,17 +17,21 @@
 namespace TOGGLE {
 	class ToggleMusic:public musicOptions
 	{
+	protected:
 		sf::RectangleShape btnRect;
 		sf::CircleShape btnCirc1;
 		sf::CircleShape btnCirc2;
 		sf::CircleShape slideCirc;
 		sf::Music lofiMusic;
+		sf::RectangleShape squiggle;
+		sf::Texture squiggle_texture;
 		int btnClickedStatus; //for functions running on main
-	public:
 		int interruptedOnce;
 		int toggleInterrupt;
 		int timerTicking;
 		int toggleStatus; 
+
+	public:
 		ToggleMusic(sf::RenderWindow&);
 
 		//for click detection
