@@ -3,11 +3,12 @@
 //default constructor
 udh::inputField::inputField()
 {
-	this->font.loadFromFile("Fonts\\static\\RobotoMono-Medium.ttf");
+	this->font.loadFromFile("Fonts/Roboto-Medium.ttf");
 	this->textdata.setFont(font);
-	this->textdata.setCharacterSize(20);
 	this->textdata.setFillColor(sf::Color(0,0,0));
 	this->textdata.setString("");
+	this->textdata.setCharacterSize(16);
+
 	this->del.setBtnTextFont(font);
 	this->del.setTextColor(sf::Color::Magenta);
 	this->del.setTextSize(12);
@@ -100,10 +101,15 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			Rect.setPosition({ 20.f,i });
 			cL.setPosition(5.f, i);
 			cR.setPosition(705.f, i);
-			itr->setposition(sf::Vector2f(50.f, i+2));
+			Rect.setFillColor(sf::Color(200, 200, 200));
+			cL.setFillColor(sf::Color(200, 200, 200));
+			cR.setFillColor(sf::Color(200, 200, 200));
+
+			itr->setposition(sf::Vector2f(50.f, i+5));
+
 			//setting up mark done button
-			itr->done.setBtnPosition(sf::Vector2f(20.f, i + 5));
-			itr->done.setBtnSize(sf::Vector2f(18.f, 18.f));
+			itr->done.setBtnPosition(sf::Vector2f(20.f, i + 9));
+			itr->done.setBtnSize(sf::Vector2f(12.f, 12.f));
 			itr->done.setbtnRect(sf::FloatRect(20.f, i + 5, 18.f, 18.f));
 			itr->done.setoutline(sf::Color(150, 150, 150), 2);
 
@@ -128,15 +134,17 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 			itr->drawtext(window);
 			if (itr->completed == true)
 			{
-				itr->done.setbtncolor(sf::Color(50,200,50));
+				itr->done.setbtncolor(sf::Color(40, 40, 40));
 				itr->crossline.setPosition(sf::Vector2f(50, i + 14));
-				itr->crossline.setFillColor(sf::Color(50,200,50));
-				itr->crossline.setSize({ itr->gettext().getGlobalBounds().width+1, 3 });
+				itr->crossline.setFillColor(sf::Color(40, 40, 40));
+				itr->crossline.setSize({ itr->gettext().getGlobalBounds().width+1, 3});
+				itr->textdata.setFillColor(sf::Color(100, 100, 100));
 				window->draw(itr->crossline);
 			}
 			else
 			{
 				itr->done.setbtncolor(sf::Color(235, 235, 235));
+				itr->textdata.setFillColor(sf::Color::Black);
 			}
 			i += 40;
 		}

@@ -25,12 +25,11 @@
     <ClInclude Include="TodoList.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="InputField.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TodoList-I.cpp" />
+    <ClCompile Include="sqlite3.c" />
     <ClCompile Include="TodoList.cpp" />
   </ItemGroup>
   <ItemGroup>

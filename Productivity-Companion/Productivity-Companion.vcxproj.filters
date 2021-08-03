@@ -38,16 +38,13 @@
     <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TodoList-I.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c">
+    <ClCompile Include="TodoList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TodoList.cpp">
+    <ClCompile Include="sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,10 +30,10 @@ udh::Button::Button(std::string btnText, sf::Vector2f btnDmn, sf::Vector2f btnPo
 	this->setBtnPosition(btnPos);
 	this->setBtnTextFont(font);
 	this->text.setString(this->btnText);
-	this->setTextSize(20);
+	this->setTextSize(16);
 	this->setTextPos();
 	this->shape.setFillColor(sf::Color(235,235,235));
-	this->text.setFillColor(sf::Color::Black);
+	this->text.setFillColor(sf::Color(100,100,100));
 	btnRect = sf::FloatRect(btnPos.x, btnPos.y, btnDmn.x, btnDmn.y);
 }
 
@@ -100,7 +100,7 @@ void udh::Button::setTextPos()
 	sf::FloatRect tB = this->text.getGlobalBounds();
 	sf::FloatRect sB = this->shape.getGlobalBounds();
 	sf::Vector2f textPos;
-	textPos = sf::Vector2f(sB.left+(sB.width / 2 - tB.width / 2), sB.top+(sB.height - tB.height)/5);
+	textPos = sf::Vector2f(sB.left+(sB.width / 2 - tB.width / 2) - 20.f, sB.top+(sB.height - tB.height)/5);
 	this->text.setPosition(textPos);
 
 }
@@ -199,7 +199,7 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 	{
 		if (!this->editing)
 		{
-			this->setbtntext("add task");
+			this->setbtntext("Add Task");
 			this->state = false;
 		}
 	}
@@ -228,6 +228,5 @@ void udh::Button::setpressed()
 void udh::Button::releasePressed()
 {
 	this->state = false;
-	this->setbtntext("add task");
+	this->setbtntext("Add Task");
 }
-

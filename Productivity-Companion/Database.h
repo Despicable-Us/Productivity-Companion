@@ -20,7 +20,8 @@ namespace udh
 	/// <returns>Exit status of sqlite3_exec for table creation</returns>
 	int createTaskTable(const char* s);
 	int deleteData(const char* s);
-	int insertTaskData(const char* s, udh::inputField data);
+	//int insertTaskData(const char* s, udh::inputField data);
+	int insertTaskDB(const char* s, std::string);
 	//int insertData(const char* s,std::string taskname);
 	int updateData(const char* s);
 	int LoadTaskList(const char* s);

@@ -10,14 +10,30 @@ int main()
 	sf::Event event;
 	TodoList todolist;
 	todolist.LoadTodoList();
+
+	sf::View scroll_view;
+	scroll_view.reset(sf::FloatRect(0.f, 0.f, 760.f, 675.f));
+	scroll_view.setViewport({ 0.f, 0.3259, 1.f, 1.f });
+
 	while (window.isOpen())
 	{
 		//if window gets an event
 		while (window.pollEvent(event))
 		{
-			todolist.RunTodo(window, event);
+			todolist.RunTodo(window, event, scroll_view);
 		}
 
-		todolist.DrawTodo(window);
+
+		window.clear(sf::Color::White);
+
+		//VIEW SECTION
+		window.setView(scroll_view);
+		todolist.DrawTodoView(window);
+
+
+		// WINDOW
+		window.setView(window.getDefaultView());
+		todolist.DrawTodoMainWindow(window);
+		window.display();
 	}
 };

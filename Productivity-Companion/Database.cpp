@@ -48,26 +48,35 @@ int udh::createTaskTable(const char* s)
 	return exit;
 }
 //insert OK!!
-int udh::insertTaskData(const char* s, udh::inputField data)
+//int udh::insertTaskData(const char* s, std::string sql_data)
+//{
+//	
+//
+//	return 0;
+//}
+
+int udh::insertTaskDB(const char* s, std::string sql_data)
 {
 	sqlite3* DB;
 	char* messageError;
-	std::string task = data.getdata();
+
+	//std::string task = data.getdata();
 	//task.replace(task.find("'"), 2, "''");
-	std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task + "', '" +
-						std::to_string(data.getstatus()) +"','"+std::to_string(data.getDay())+ "');";
+	//std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task + "', '" +
+						//std::to_string(data.getstatus()) +"','"+std::to_string(data.getDay())+ "');";
+
 	int exit = sqlite3_open(s, &DB);
-	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
-	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+	std::cout << sql_data << std::endl;
+	exit = sqlite3_exec(DB, sql_data.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in insertData function." << std::endl;
 		sqlite3_free(messageError);
 	}
 	else
 		std::cout << "Records inserted Successfully!" << std::endl;
-
 	return 0;
 }
+
 
 //Working inloading
 int udh::updateData(const char* s)
@@ -109,6 +118,8 @@ int udh::deleteData(const char* s)
 
 	return 0;
 }
+
+
 
 int udh::LoadTaskList(const char* s)
 {

@@ -15,7 +15,7 @@ namespace udh
 	class inputField
 	{
 		std::string text; 
-		sf::Text textdata;
+		
 		sf::Font font;
 		int creationDay;
 	public:
@@ -24,6 +24,7 @@ namespace udh
 		udh::Button done;
 		udh::Button del;
 		udh::Button edit;
+		sf::Text textdata;
 		inputField();
 
 		/// <summary>
@@ -81,6 +82,7 @@ namespace udh
 		int getDay();
 
 		void setday(int a);
+
 		
 	};
 
