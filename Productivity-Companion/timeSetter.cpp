@@ -601,7 +601,9 @@ void dial::timeSetter::dialUpdateFromEvents(sf::RenderWindow& window, sf::Event&
     }
 
     //functionality of home button here
-    this->home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
+    if (window.hasFocus()) {
+        this->home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
+    }
     if (home_back_btn_clicked)
     {
         home_back_btn_clicked = false;
