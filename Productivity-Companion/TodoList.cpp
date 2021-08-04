@@ -39,9 +39,12 @@ TodoList::TodoList() :c1(15.f), c2(15.f),
 TodoList::TodoList(std::string plan_sheet_name) :c1(15.f), c2(15.f),
 textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 {
-	fonts.loadFromFile("Fonts\\KaushanScript-Regular.ttf");
-	if (!cover.loadFromFile("./Texture/todo_list_back2.png"))
+	if(!fonts.loadFromFile("Font\\KaushanScript-Regular.ttf"))
+		throw "Error in loadin the font 'KaushanScript-Regular.ttf'";
+
+	if (!cover.loadFromFile("./Texture/plan_sheet_background2.png"))
 		throw "Error in loading the cover image";
+
 	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the font 'Roboto-Medium.ttf'";
 	scrollBar.setFillColor(sf::Color(100, 100, 100));
@@ -63,16 +66,17 @@ void TodoList::Reset_Functions(std::string planner_name)
 	sampletext.setdata("");
 	sampletext.setstatus(false);
 	sampletext.setposition(sf::Vector2f(textarea.getbounds().left + 10, textarea.getPosition().y + 5.f));
-	home_back_btn = new Btn("Home", { 55.f, 30.f }, 14, this->roboto_font);
+	home_back_btn = new Btn("Back", { 705.f, 30.f }, 14, this->roboto_font);
 	this->home_back_btn_clicked = false;
 	this->home_back_btn_func = [&]()
 	{
 		home_back_btn_clicked = true;
 	};
-
+	std::cout << plan_sheet_name << std::endl;
+	background_text.setFont(fonts);
 	background_text.setString(plan_sheet_name);
 	background_text.setFillColor(sf::Color::White);
-	background_text.setCharacterSize(28);
+	background_text.setCharacterSize(36);
 	background_text.setPosition({380.f - background_text.getGlobalBounds().width/2, 30.f});
 	this->LoadDB();
 }
@@ -83,7 +87,6 @@ void TodoList::LoadDB()
 	sampletext.setdata("");
 	sampletext.setstatus(false);
 }
-
 
 void TodoList::LoadTodoList()
 {
@@ -145,7 +148,10 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 	//checking of close button if clicked
 	if (event.type == sf::Event::Closed)
 	{
-		this->Update_DB();
+		if (!textList.empty())
+		{
+			this->Update_DB();
+		}
 		window.close();
 	}
 
@@ -179,11 +185,13 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 void TodoList::DrawTodoMainWindow(sf::RenderWindow& window)
 {
 	window.draw(TodoImage);
+	window.draw(background_text);
 	textarea.drawTo(window);
 	window.draw(c1);
 	window.draw(c2);
 	sampletext.drawtext(&window);
 	home_back_btn->DrawTo(window);
+	
 }
 
 void TodoList::DrawTodoView(sf::RenderWindow& window)
@@ -196,6 +204,7 @@ void TodoList::DrawTodoView(sf::RenderWindow& window)
 		scrollBar.setPosition(sf::Vector2f(741.f, viewPos + viewPos * 455 / size));
 		window.draw(scrollBar);
 	}
+	
 }
 
 void TodoList::Update_DB()
@@ -210,6 +219,12 @@ void TodoList::Update_DB()
 			sql_data += "('" + itr->getdata() + "', '" +
 				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "','" + plan_sheet_name + "'),";
 		}
+		sql_data.pop_back();
+		sql_data.push_back(';');
+		if (sql_data.size() > 68)
+		{
+			udh::insertTaskDB("Productivity_companion.db", sql_data);
+		}
 
 	}
 	else
@@ -223,9 +238,8 @@ void TodoList::Update_DB()
 			sql_data += "('" + itr->getdata() + "', '" +
 				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "'),";
 		}
+		sql_data.pop_back();
+		sql_data.push_back(';');
+		udh::insertTaskDB("Productivity_companion.db", sql_data);
 	}
-
-	sql_data.pop_back();
-	sql_data.push_back(';');
-	udh::insertTaskDB("Productivity_companion.db", sql_data);
 }

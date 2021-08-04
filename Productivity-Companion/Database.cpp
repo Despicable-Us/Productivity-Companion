@@ -47,13 +47,7 @@ int udh::createTaskTable(const char* s)
 	}
 	return exit;
 }
-//insert OK!!
-//int udh::insertTaskData(const char* s, std::string sql_data)
-//{
-//	
-//
-//	return 0;
-//}
+
 
 int udh::insertTaskDB(const char* s, std::string sql_data)
 {

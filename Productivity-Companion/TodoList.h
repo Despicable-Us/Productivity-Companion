@@ -13,7 +13,7 @@ extern std::vector<udh::inputField> textList;
 extern udh::inputField sampletext;
 extern int viewPos;
 
-#define TEXTAREA_HEIGHT 130.f
+#define TEXTAREA_HEIGHT 125.f
 
 class TodoList
 {

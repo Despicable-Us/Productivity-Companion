@@ -24,6 +24,8 @@ int main()
 
 	Session_Tracker session_app(window);
 	Study_Planner study_planner(window);
+	bool run_main_window = false;
+	bool run_app = true;
 
 	while (window.isOpen())
 	{
@@ -37,7 +39,7 @@ int main()
 			study_planner.Run_Inside_Event(window, event, session_list_view);
 		}
 		//session_app.Run_Outside_Event(window, event);
-		study_planner.Run_Outside_Event(window, event);
+		study_planner.Run_Outside_Event(window, event, run_main_window, run_app);
 
 		window.clear(sf::Color::White);
 		window.setView(session_list_view);

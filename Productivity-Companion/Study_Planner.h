@@ -13,8 +13,9 @@
 #include "TodoList.h"
 
 #define BORDER_RADIUS_S 15.f;
-#define ADD_COLOR 231, 60, 60
-#define APP_THEME_COLOR 236,155,0
+#define ADD_COLOR 208, 37, 45
+#define APP_THEME_COLOR 217,140,88
+
 //242, 90, 78
 class Planner_Tab
 {
@@ -127,7 +128,7 @@ class Study_Planner
 
 		// EVENTS
 		void Run_Inside_Event(sf::RenderWindow& window, sf::Event& event, sf::View& view);
-		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event);
+		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool&, bool&);
 		void Render_In_Main_Window(sf::RenderWindow& window);
 		void Render_In_View(sf::RenderWindow& window);
 
@@ -148,6 +149,10 @@ class Study_Planner
 		const char* dir;
 		std::string selected_planner_sheet_name;
 
+
+		Btn* home_back_button;
+		bool home_back_button_clicked;
+		std::function<void()> home_back_button_func;
 };
 
 namespace study_planner

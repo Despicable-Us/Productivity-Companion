@@ -83,7 +83,7 @@ void Planner_Tab::Set_Dimension()
 void Planner_Tab::Set_Button()
 {
 	planner_btn = new Btn(plan_sheet_name, { main_rect_pos.x, main_rect_pos.y - 20.f }, 15, roboto_font);
-	delete_btn = new Btn("Delete", { main_rect_pos.x + 70.f, main_rect_pos.y + 28.f }, 10, roboto_font);
+	delete_btn = new Btn("Delete", { main_rect_pos.x , main_rect_pos.y + 28.f }, 10, roboto_font);
 	delete_btn->SetFillColor(sf::Color(209, 265, 42));
 	delete_btn->text.setFillColor(sf::Color::White);
 }
@@ -143,7 +143,6 @@ void Study_Planner::Init_Variables()
 	{
 		this->show_planner_list = true;
 		this->show_planner_tab = false;
-		//this->session->Run_Functions(selected_session_name);
 		this->plan_sheet->Reset_Functions(selected_planner_sheet_name);
 	};
 
@@ -162,11 +161,12 @@ void Study_Planner::Init_Variables()
 
 	this->pop_up = new Pop_Up_Message("Something", this->roboto_font);
 	show_pop_up = false;
+
 }
 
 void Study_Planner::Init_Background()
 {
-	if (!this->texture.loadFromFile("Texture/study_planner_back1.PNG"))
+	if (!this->texture.loadFromFile("Texture/study_planner_background.PNG"))
 		throw "Error in loading the 'study_planner_back1.png'";
 	this->background.setTexture(texture);
 	this->background.setPosition({ 0.f, 0.f });
@@ -192,6 +192,13 @@ void Study_Planner::Init_UI_Components()
 		input_hide = false;
 	};
 	this->input_planner_field = new InputField({ win_sizeF.x / 2, 110.f }, roboto_font);
+
+	this->home_back_button = new Btn("Home", { 55.f, 30.f }, 14, this->roboto_font);
+	this->home_back_button_clicked = false;
+	this->home_back_button_func = [&]()
+	{
+		this->home_back_button_clicked = true;
+	};
 }
 
 void Study_Planner::Update_Rects()
@@ -340,7 +347,7 @@ void Study_Planner::Run_Inside_Event(sf::RenderWindow& window, sf::Event& event,
 	}
 }
 
-void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event)
+void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app)
 {
 	if (show_planner_tab)
 	{
@@ -351,6 +358,12 @@ void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event
 			{
 				planner_tab_vec[i].planner_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_planner_sheet_name);
 				planner_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_planner_sheet_name);
+			}
+			if (home_back_button_clicked)
+			{
+				this->home_back_button_clicked = true;
+				run_main_window = true;
+				run_app = false;
 			}
 		}
 	}
@@ -367,6 +380,8 @@ void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event
 		planner_tab_vec.clear();
 		Get_DB_Data();
 	}
+
+
 }
 
 void Study_Planner::Render_In_Main_Window(sf::RenderWindow& window)
@@ -374,7 +389,7 @@ void Study_Planner::Render_In_Main_Window(sf::RenderWindow& window)
 	if (show_planner_tab)
 	{
 		window.draw(this->background);
-
+		this->home_back_button->DrawTo(window);
 		if (!btn_hide)
 		{
 			add_planner_btn->DrawTo(window);
@@ -398,11 +413,13 @@ void Study_Planner::Render_In_Main_Window(sf::RenderWindow& window)
 		{
 			pop_up->Draw_To(window);
 		}
+		
 	}
 	if (show_planner_list)
 	{
 		this->plan_sheet->DrawTodoMainWindow(window);
 	}
+	
 }
 
 void Study_Planner::Render_In_View(sf::RenderWindow& window)
