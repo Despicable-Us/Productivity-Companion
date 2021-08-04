@@ -10,9 +10,9 @@ TodoList::TodoList() :c1(15.f), c2(15.f),
 	c2.setFillColor(sf::Color(235, 235, 235));
 	c1.setPosition(75.f, TEXTAREA_HEIGHT);
 	c2.setPosition(655.f, TEXTAREA_HEIGHT);
-	fonts.loadFromFile("Fonts\\KaushanScript-Regular.ttf");
+	fonts.loadFromFile("Fonts/KaushanScript-Regular.ttf");
 	
-	if (!cover.loadFromFile("./Texture/todo_list_back2.png"))
+	if (!cover.loadFromFile("./Texture/todo_cover.png"))
 	{
 		std::cerr << "error loading texture\n";
 	}
@@ -39,7 +39,7 @@ TodoList::TodoList() :c1(15.f), c2(15.f),
 TodoList::TodoList(std::string plan_sheet_name) :c1(15.f), c2(15.f),
 textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 {
-	if(!fonts.loadFromFile("Font\\KaushanScript-Regular.ttf"))
+	if(!fonts.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loadin the font 'KaushanScript-Regular.ttf'";
 
 	if (!cover.loadFromFile("./Texture/plan_sheet_background2.png"))
@@ -47,6 +47,7 @@ textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 
 	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the font 'Roboto-Medium.ttf'";
+
 	scrollBar.setFillColor(sf::Color(100, 100, 100));
 	c1.setFillColor(sf::Color(235, 235, 235));
 	c2.setFillColor(sf::Color(235, 235, 235));
@@ -90,7 +91,7 @@ void TodoList::LoadDB()
 
 void TodoList::LoadTodoList()
 {
-	//database creating and loading
+	textList.clear();
 	udh::createDB("Productivity_companion.db");
 	udh::createTaskTable("Productivity_companion.db");
 	udh::LoadTaskList("Productivity_companion.db");

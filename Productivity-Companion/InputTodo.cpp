@@ -161,12 +161,10 @@ void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, s
 				itr->completed = true;
 			else
 				itr->completed = false;
-			//std::cout << itr->completed;
 		}
 
 		else if (itr->del_icon.Run_Outside_Event(*window, event))
 		{
-			//std::cout << "deleted\n";
 			textlist.erase(itr);
 			std::cout << "Something" << std::endl;
 			break;

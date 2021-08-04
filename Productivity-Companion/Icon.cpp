@@ -103,8 +103,6 @@ void Icon::Set_Shadow_Color()
 	main_rect.setFillColor(background_color);
 }
 
-
-
 void Icon::Draw_To(sf::RenderWindow& window)
 {
 	if (show_shadow)

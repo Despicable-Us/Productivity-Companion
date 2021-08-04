@@ -23,8 +23,8 @@ Pop_Up_Message::~Pop_Up_Message()
 
 void Pop_Up_Message::Load_Font()
 {
-	if (!roboto_font.loadFromFile("Font/Roboto-Medium.ttf"))
-		throw "Error in loading the font";
+	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
+		throw "Error in loading the font 'Roboto-Medium.ttf'";
 }
 
 void Pop_Up_Message::Set_Components()
@@ -52,7 +52,6 @@ void Pop_Up_Message::Set_Components()
 
 	this->cancel_func = [&]()
 	{
-		std::cout << "Cancel Button Pressed" << std::endl;
 		field->bufferString = "";
 		field->SetText("");
 		field->inputText = "";

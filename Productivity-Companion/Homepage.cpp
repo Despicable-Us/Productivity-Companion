@@ -9,12 +9,22 @@
 #define WIN_WIDTHF 760.f
 #define WIN_HEIGHTF 675.f
 #define VIEW_START 0.326f
-#define ICON_HEIGHT 380.f
-#define APP_NAME_HEIGHT 448.f
+#define ICON_HEIGHT 400.f
+#define APP_NAME_HEIGHT 468.f
 
 std::vector<udh::inputField> textList;
 udh::inputField sampletext;
 int viewPos;
+
+
+std::vector<std::string> quote_vec =
+{
+	"If nothing works then there is KaleyDai's rule no. 3.",
+	"Something is better than nothing",
+	"If life gives you lemon, throw away",
+	"If something bothers you too much, just fuck off"
+};
+
 
 int main()
 {
@@ -32,20 +42,21 @@ int main()
 	sf::Texture home_bg_tex;
 
 	// LOADING AND SETTING THE ICON
-	if (!homepage_icon_image.loadFromFile("Images/icon2.png"))
-		throw "Error in loading 'icon.png'";
+	if (!homepage_icon_image.loadFromFile("Texture/app_icon.png"))
+		throw "Error in loading 'app_icon.png'";
 	window.setIcon(homepage_icon_image.getSize().x, homepage_icon_image.getSize().y, homepage_icon_image.getPixelsPtr());
 
 	// LOADING AND SETTING THE BACKGROUND IMAGE
-	if (!home_bg_tex.loadFromFile("Images/test_background.PNG"))
-		throw "Error in loading the 'test_background.PNG'";
+	if (!home_bg_tex.loadFromFile("Texture/homepage.PNG"))
+		throw "Error in loading the 'homepage.PNG'";
 	sf::Sprite home_bg(home_bg_tex);
 	home_bg.setPosition({ 0.f, 0.f });
 	scroll_view.reset(sf::FloatRect(0.f, 0.f, WIN_WIDTHF, WIN_HEIGHTF));
 	scroll_view.setViewport(sf::FloatRect(0.f, VIEW_START, 1.f, 1.f));
+
 	sf::Texture sec_back;
-	if (!sec_back.loadFromFile("Images/sec_back6.jpg"))
-		throw "Error in loading the font.";
+	if (!sec_back.loadFromFile("Texture/low_background_cover.jpg"))
+		throw "Error in loading 'low_background_cover.jpg'";
 
 	sf::Sprite sec_back_sprite(sec_back);
 	sec_back_sprite.setPosition({ 0.f,226.f });
@@ -58,18 +69,25 @@ int main()
 
 	// LOADING TEXTURES FOR THE APP ICONS
 	sf::Texture pomo_timer_tex, session_tracker_tex, todo_list_tex, study_planner_tex;
-	if (!pomo_timer_tex.loadFromFile("Images/PomoTimerIcon5.png"))
+	if (!pomo_timer_tex.loadFromFile("Texture/PomoTimerIcon.png"))
 		throw "Error in loading the file";
-	if(!session_tracker_tex.loadFromFile("Images/SessionTrackerIcon2.png"))
+	if(!session_tracker_tex.loadFromFile("Texture/SessionTrackerIcon.png"))
 		throw("Error in loading the file");
-	if (!todo_list_tex.loadFromFile("Images/TodoListIcon1.png"))
+	if (!todo_list_tex.loadFromFile("Texture/TodoListIcon.png"))
 		throw("Error in loading the file");
-	if (!study_planner_tex.loadFromFile("Images/StudyPlannerIcon1.png"))
+	if (!study_planner_tex.loadFromFile("Texture/StudyPlannerIcon.png"))
 		throw("Error in loading the file");
 
 	// INSTANCIATING THE ICON FOR ALL APPS
 	Icon pomo_timer_icon(pomo_timer_tex, { 140.f, ICON_HEIGHT }), session_tracker_icon(session_tracker_tex, {300.f, ICON_HEIGHT}), 
 		 todo_list_icon(todo_list_tex, { 460.f, ICON_HEIGHT }), study_planner_icon(study_planner_tex, {620.f, ICON_HEIGHT});
+
+
+	// APP OBJECTS INSTANCIATIONS
+	dial::timeSetter timeDial(window);   // POMO TIMER
+	Session_Tracker session_app(window); // SESSION TRACKER
+	TodoList todolist;					 // TO-DO LIST
+	Study_Planner study_planner(window);		 // STUDY PLANNER
 
 	// BOOLEAN AND LAMBDA EXPRESSIONS
 	bool run_main_window = true;
@@ -91,6 +109,7 @@ int main()
 	auto todo_list_func = [&]()
 	{
 		run_main_window = false;
+		todolist.LoadTodoList();
 		run_todo_list = true;
 	};
 	auto study_planner_func = [&]()
@@ -99,12 +118,6 @@ int main()
 		run_study_planner = true;
 	};
 
-	// APP OBJECTS INSTANCIATIONS
-	dial::timeSetter timeDial(window);   // POMO TIMER
-	Session_Tracker session_app(window); // SESSION TRACKER
-	TodoList todolist;					 // TO-DO LIST
-	Study_Planner study_planner(window);		 // STUDY PLANNER
-	todolist.LoadTodoList();
 
 	// APP NAMES
 	sf::Text pomo_timer_text("Pomo Timer", roboto_font, 14),
@@ -126,6 +139,16 @@ int main()
 	session_tracker_text.setFillColor(sf::Color::Black);
 	todo_list_text.setFillColor(sf::Color::Black);
 	study_planner_text.setFillColor(sf::Color::Black);
+
+	srand(static_cast<unsigned>(time(NULL)));
+	std::cout << quote_vec[rand() % quote_vec.size() - 2] << std::endl;
+	sf::Font kaushan_font;
+	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
+		throw "Error in loading the font 'KaushanScript-Regular.ttf";
+	sf::Text quote("\"" + quote_vec[rand() % quote_vec.size() - 2]  + "\"" , kaushan_font, 24);
+	quote.setFillColor(sf::Color::Black);
+	quote.setOrigin({ quote.getGlobalBounds().width / 2, quote.getGlobalBounds().height / 2 });
+	quote.setPosition({ 380.f, 280.f });
 
 
 	while (window.isOpen())
@@ -157,7 +180,6 @@ int main()
 				}
 			}
 		}
-
 
 		if (run_main_window&&window.hasFocus())
 		{
@@ -241,6 +263,7 @@ int main()
 			window.draw(session_tracker_text);
 			window.draw(todo_list_text);
 			window.draw(study_planner_text);
+			window.draw(quote);
 		}
 
 		window.display();

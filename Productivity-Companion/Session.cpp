@@ -257,7 +257,6 @@ void Session::Init_Variables()
 	this->scroll_bar.setFillColor(sf::Color(DATE_BAR_C));
 	this->scroll_bar.setPosition({ 741.f, 0.f });
 	this->scroll_bar.setSize({ 18.f, 207025 / ((records_table.size() + 1) * 35.f) });
-	//this->dir = "C:\\Users\\Progosta\\Desktop\\Tori Laure\\Session Tracker\\Session Tracker\\Session.db";
 	this->dir = "Session.db";
 }
 
@@ -266,13 +265,13 @@ void Session::Init_Variables()
 /// </summary>
 void Session::Load_Tex_Font()
 {
-	if(!this->bg_image_tex.loadFromFile("Texture/bgImageText1.png"))
-		throw "Error in loading the 'bgImageText1'";
-	if (!this->bg_stop_tex.loadFromFile("Texture/stopTimer1.png"))
-		throw "Error in loading the 'stopTimer1.png'";
-	if (!this->kaushan_font.loadFromFile("Font/KaushanScript-Regular.ttf"))
+	if(!this->bg_image_tex.loadFromFile("Texture/bgImageText.png"))
+		throw "Error in loading the 'bgImageText.png'";
+	if (!this->bg_stop_tex.loadFromFile("Texture/stopTimer.png"))
+		throw "Error in loading the 'stopTimer.png'";
+	if (!this->kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading 'Roboto-Medium.ttf";
-	if (!this->roboto_font.loadFromFile("Font/Roboto-Medium.ttf"))
+	if (!this->roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the 'Roboto-Medium.ttf'";
 	this->bg_image.setTexture(this->bg_image_tex);
 	this->bg_stop_image.setTexture(this->bg_stop_tex);
@@ -673,8 +672,6 @@ void Session::Draw_To_Main_Window(sf::RenderWindow& window)
 	toggle_btn->DrawTo(window);
 	home_btn->DrawTo(window);
 }
-
-
 
 /// <summary>
 /// The comparator class supplied to the map for sorting the w.r.t. the key

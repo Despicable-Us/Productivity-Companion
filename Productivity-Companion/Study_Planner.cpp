@@ -198,6 +198,7 @@ void Study_Planner::Init_UI_Components()
 	this->home_back_button_func = [&]()
 	{
 		this->home_back_button_clicked = true;
+		textList.clear();
 	};
 }
 
@@ -350,37 +351,45 @@ void Study_Planner::Run_Inside_Event(sf::RenderWindow& window, sf::Event& event,
 
 void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app)
 {
-	if (show_planner_tab)
+	if (window.hasFocus())
 	{
-		if (!show_pop_up)
+		if (show_planner_tab)
 		{
-			add_planner_btn->BtnEvents(window, event, add_rect, btn_hide);
-			for (size_t i = 0; i < planner_tab_vec.size(); ++i)
+			if (!show_pop_up)
 			{
-				planner_tab_vec[i].planner_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_planner_sheet_name);
-				planner_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_planner_sheet_name);
-			}
+				add_planner_btn->BtnEvents(window, event, add_rect, btn_hide);
+				for (size_t i = 0; i < planner_tab_vec.size(); ++i)
+				{
+					planner_tab_vec[i].planner_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_planner_sheet_name);
+					planner_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_planner_sheet_name);
+				}
 
+			}
+			this->home_back_button->BtnEvents(window, event, home_back_button_func);
+			if (home_back_button_clicked)
+			{
+				run_main_window = true;
+				run_app = false;
+				this->home_back_button_clicked = false;
+				input_hide = true;
+				btn_hide = false;
+				input_planner_field->bufferString = "";
+				input_planner_field->SetText("");
+				input_planner_field->inputText = "";
+			}
 		}
-		this->home_back_button->BtnEvents(window, event, home_back_button_func);
-		if (home_back_button_clicked)
+		if (show_pop_up)
 		{
-			run_main_window = true;
-			run_app = false;
-			this->home_back_button_clicked = false;
+			pop_up->Run_Outside_Event(window, event, show_blur_overlay, show_pop_up, delete_db_data);
 		}
-	}
-	if (show_pop_up)
-	{
-		pop_up->Run_Outside_Event(window, event, show_blur_overlay, show_pop_up, delete_db_data);
-	}
-	if (delete_db_data)
-	{
-		delete_db_data = false;
-		study_planner::delete_planner_tab(dir, selected_planner_sheet_name);
-		db_planner_list_data.clear();
-		planner_tab_vec.clear();
-		Get_DB_Data();
+		if (delete_db_data)
+		{
+			delete_db_data = false;
+			study_planner::delete_planner_tab(dir, selected_planner_sheet_name);
+			db_planner_list_data.clear();
+			planner_tab_vec.clear();
+			Get_DB_Data();
+		}
 	}
 }
 

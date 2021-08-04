@@ -1,9 +1,9 @@
 #include "Session_Tracker.h"
 
-/// <summary>
-/// db_session_list_data -> a 2d vector to contain the data from fetched from the database
-/// new_input_texts -> tracks new session added to the view
-/// </summary>
+/*
+	db_session_list_data -> a 2d vector to contain the data from fetched from the database
+	new_input_texts -> tracks new session added to the view
+*/
 std::vector<std::string> db_session_list_data;
 std::vector<std::string> db_total_time_string;
 std::vector<std::string> new_input_texts;
@@ -197,8 +197,8 @@ void Session_Tracker::Init_Variables()
 /// </summary>
 void Session_Tracker::Init_Background()
 {
-	if (!this->texture.loadFromFile("Images/BBG.png"))
-		throw "Error in loading the 'BG_Title.png'";
+	if (!this->texture.loadFromFile("Texture/session_tracker_mainpage.png"))
+		throw "Error in loading the 'session_tracker_mainpage.png'";
 	this->background.setTexture(texture);
 	this->background.setPosition({ 0.f, 0.f });
 }
@@ -208,9 +208,9 @@ void Session_Tracker::Init_Background()
 /// </summary>
 void Session_Tracker::Init_UI_Font()
 {
-	if (!kaushan_font.loadFromFile("Font/KaushanScript-Regular.ttf"))
+	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading the 'KaushanScript-Regular.ttf'";
-	if (!roboto_font.loadFromFile("Font/Roboto-Medium.ttf"))
+	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the 'Roboto-Medium.ttf'";
 }
 
@@ -393,51 +393,59 @@ void Session_Tracker::Render_In_View(sf::RenderWindow& window)
 /// <param name="event"></param>
 void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app)
 {
-	if (show_session_tab)
+	if (window.hasFocus())
 	{
-		if (!show_pop_up)
+
+		if (show_session_tab)
 		{
-			add_session_btn->BtnEvents(window, event, add_rect, btn_hide);
-			for (size_t i = 0; i < session_tab_vec.size(); ++i)
+			if (!show_pop_up)
 			{
-				session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
-				session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
+				add_session_btn->BtnEvents(window, event, add_rect, btn_hide);
+				for (size_t i = 0; i < session_tab_vec.size(); ++i)
+				{
+					session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
+					session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
+				}
+			}
+			
+			home_back_btn->BtnEvents(window, event, home_back_btn_func);
+			
+			if (home_back_btn_clicked)
+			{
+				run_main_window = true;
+				run_app = false;
+				home_back_btn_clicked = false;
+				btn_hide = false;
+				input_hide = true;
+				input_session_field->bufferString = "";
+				input_session_field->SetText("");
+				input_session_field->inputText = "";
 			}
 		}
-		home_back_btn->BtnEvents(window, event, home_back_btn_func);
-		if (home_back_btn_clicked)
+		if (show_session)
 		{
-			run_main_window = true;
-			run_app = false;
-			home_back_btn_clicked = false;
+			session->Run_Events(window, event, show_session, show_session_tab, update_total_time_list);
+		}
+		if (update_total_time_list)
+		{
+			update_total_time_list = false;
+			Set_DB_Data_To_View();
+		}
+		if (show_pop_up)
+		{
+			pop_up->Run_Outside_Event(window, event, show_blur_overlay, show_pop_up, delete_db_data);
+		}
+		if (delete_db_data)
+		{
+			delete_db_data = false;
+			session_tracker::delete_session_tab(dir, selected_session_name);
+			db_session_list_data.clear();
+			db_total_time_list.clear();
+			db_total_time_string.clear();
+			session_tab_vec.clear();
+			Get_DB_Data();
 		}
 	}
-	if (show_session)
-	{
-		session->Run_Events(window, event, show_session, show_session_tab, update_total_time_list);
-	}
-	if (update_total_time_list)
-	{
-		update_total_time_list = false;
-		Set_DB_Data_To_View();
-	}
-	if (show_pop_up)
-	{
-		pop_up->Run_Outside_Event(window, event, show_blur_overlay, show_pop_up, delete_db_data);
-	}
-	if (delete_db_data)
-	{
-		delete_db_data = false;
-		session_tracker::delete_session_tab(dir, selected_session_name);
-		db_session_list_data.clear();
-		db_total_time_list.clear();
-		db_total_time_string.clear();
-		session_tab_vec.clear();
-		Get_DB_Data();
-	}
-
-
-
 }
 
 /// <summary>

@@ -12,8 +12,6 @@ Btn::Btn(std::string BtnText, sf::Vector2f btnPos, uint8_t charSize, sf::Font& f
 	SetBtnRect();
 }
 
-
-
 void Btn::LoadText()
 {
 	text.setFont(this->uiFont);
@@ -344,8 +342,6 @@ std::string Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event)
 	this->C2.setScale(btnScale, btnScale);
 	return "";
 }
-
-
 
 void Btn::DrawTo(sf::RenderWindow& window)
 {

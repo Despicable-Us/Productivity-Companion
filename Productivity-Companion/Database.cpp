@@ -5,6 +5,7 @@
 #include<vector>
 extern udh::inputField sampletext;
 extern std::vector<udh::inputField> textList;
+
 int udh::createDB(const char* s)
 {
 	sqlite3* DB;
@@ -95,7 +96,7 @@ int udh::deleteData(const char* s)
 	std::string sql = "DROP TABLE TASKS;";
 
 	int exit = sqlite3_open(s, &DB);
-	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+	
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, NULL, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in deleteData function." << std::endl;
@@ -126,8 +127,6 @@ int udh::delete_plan_sheet_data(const char* s, std::string plan_sheet_name)
 
 	return 0;
 }
-
-
 
 int udh::LoadTaskList(const char* s)
 {
