@@ -218,8 +218,6 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 			}
 		}
 	}
-	else
-		state = false;
 	return this->state;
 }
 bool udh::Button::ispressed(sf::Event event, sf::RenderWindow& window)
