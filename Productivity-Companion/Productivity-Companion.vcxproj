@@ -30,6 +30,7 @@
     <ClInclude Include="Pop_Up_Message.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="Session_Tracker.h" />
+    <ClInclude Include="Study_Planner.h" />
     <ClInclude Include="timeSetter.h" />
     <ClInclude Include="TodoList.h" />
     <ClInclude Include="toggleMusic.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="Session_Tracker.cpp" />
     <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="Study_Planner.cpp" />
     <ClCompile Include="timeSetter.cpp" />
     <ClCompile Include="TodoList.cpp" />
     <ClCompile Include="toggleMusic.cpp" />
@@ -156,7 +158,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-main-d.lib;%(AdditionalDependencies)</AdditionalDependencies>

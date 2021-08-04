@@ -13,7 +13,7 @@ extern std::vector<udh::inputField> textList;
 extern udh::inputField sampletext;
 extern int viewPos;
 
-#define TEXTAREA_HEIGHT 130.f
+#define TEXTAREA_HEIGHT 125.f
 
 class TodoList
 {
@@ -30,12 +30,17 @@ public:
 	Btn* home_back_btn;
 	std::function<void()> home_back_btn_func;
 	bool home_back_btn_clicked;
+	sf::Text background_text;
+	std::string plan_sheet_name;
+	bool is_planner_sheet;
 
 	TodoList();
+	TodoList(std::string);
+	void Reset_Functions(std::string);
+	void LoadDB();
 	void LoadTodoList();
 	void RunTodo(sf::RenderWindow& window, sf::Event event, sf::View&, bool&, bool&);
 	void DrawTodoMainWindow(sf::RenderWindow& window);
 	void DrawTodoView(sf::RenderWindow& window);
-	
-
+	void Update_DB();
 };

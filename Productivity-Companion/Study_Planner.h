@@ -10,20 +10,23 @@
 #include "sqlite3.h"
 #include <string.h>
 #include "Pop_Up_Message.h"
+#include "TodoList.h"
 
-#define BORDER_RADIUS 15.f;
-#define BLUE_THEMED_C 23, 137, 252
+#define BORDER_RADIUS_S 15.f;
+#define ADD_COLOR 208, 37, 45
+#define APP_THEME_COLOR 217,140,88
 
-class Session_Tab
+//242, 90, 78
+class Planner_Tab
 {
 	public:
 		// CONSTRUCTORS AND DESTRUCTORS;
-		Session_Tab();
-		Session_Tab(std::string name, sf::Vector2f pos, sf::Vector2f size, sf::Font& font);
-		~Session_Tab();
+		Planner_Tab();
+		Planner_Tab(std::string name, sf::Vector2f pos, sf::Vector2f size, sf::Font& font);
+		~Planner_Tab();
 
 		// UI COMPONENTS
-		Btn* session_btn;
+		Btn* planner_btn;
 		sf::Font roboto_font;
 
 		// DIMENSION COMPONENTS
@@ -44,12 +47,11 @@ class Session_Tab
 		sf::CircleShape c_top_right;
 		sf::CircleShape c_bottom_left;
 		sf::CircleShape c_bottom_right;
-		sf::Text total_time_info;
 
 		// ACCESSORS
 		sf::Vector2f main_rect_pos;
 		sf::Vector2f main_rect_size;
-		std::string session_name;
+		std::string plan_sheet_name;
 
 		// HELPER FUNCTION
 		void Set_Components();
@@ -58,17 +60,18 @@ class Session_Tab
 
 		// UPDATE AND RENDER
 		void Draw_To(sf::RenderWindow& window);
-		void Set_Total_Time_Text(std::string);
 
 		Btn* delete_btn;
 };
 
-class Session_Tracker
+
+class Study_Planner
 {
 	public:
-		// CONSTRUCTORS and DESTRUCTORS
-		Session_Tracker(sf::RenderWindow& window);
-		~Session_Tracker();
+		// CONSTRUCTORS AND DESTRUCTORS
+		Study_Planner();
+		Study_Planner(sf::RenderWindow& window);
+		~Study_Planner();
 
 		// UI Components
 		sf::Texture texture;
@@ -76,8 +79,8 @@ class Session_Tracker
 		sf::RectangleShape rect;
 
 		// BUTTONS and INPUTFIELD and RELATED EVENTS
-		Btn* add_session_btn;
-		InputField* input_session_field;
+		Btn* add_planner_btn;
+		InputField* input_planner_field;
 		std::function<void()> btn_event_func;
 		std::function<void()> delete_event_func;
 
@@ -86,13 +89,13 @@ class Session_Tracker
 		std::vector<sf::Text> text_vec;
 		std::vector<std::string> input_texts;
 
-		// SESSION VIEW COMPONENTS
-		Session_Tab session_tab;
-		std::vector<Session_Tab> session_tab_vec;
+		// PLAN SHEET VIEW COMPONENTS
+		Planner_Tab planner_tab;
+		std::vector<Planner_Tab> planner_tab_vec;
 
-		// SESSION TAB COMPONENT DIMENSION AND POSITION
+		// PLANNER TAB COMPONENT DIMENSION AND POSITION
 		sf::Vector2f initial_pos;
-		sf::Vector2f session_tab_size;
+		sf::Vector2f planner_tab_size;
 
 		// UI TYPOGRAPHY
 		sf::Font kaushan_font;
@@ -108,11 +111,11 @@ class Session_Tracker
 		bool input_hide;
 		bool enter_pressed;
 		bool btn_show;
-		bool update_total_time_list;
+		//bool update_total_time_list;
 
 		// CUSTOM FUNCTIONS 
 		std::function<void()> add_rect;
-		std::function<void()> add_session_tab;
+		std::function<void()> add_planner_tab;
 
 		// INITIALIZERS and UPDATERS
 		void Init_Variables();
@@ -121,47 +124,42 @@ class Session_Tracker
 		void Init_UI_Components();
 		void Update_Rects();
 		void Update_Rects_After_DB();
-		void Alter_Session_Tab_View();
+		void Alter_Planner_Tab_View();
 
 		// EVENTS
 		void Run_Inside_Event(sf::RenderWindow& window, sf::Event& event, sf::View& view);
-		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app);
+		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool&, bool&);
 		void Render_In_Main_Window(sf::RenderWindow& window);
 		void Render_In_View(sf::RenderWindow& window);
-
-		// SESSION
-		Session* session;
-		bool show_session;
-		bool show_session_tab;
-		std::vector<std::string> new_added_session;
-		void Get_DB_Data();
-		void Update_DB_Data();
-		const char* dir;
-		std::string selected_session_name;
-
-		void Set_DB_Data_To_View();
-		void Set_DB_Total_Time_List();
-		sf::RectangleShape blur_overlay;
-		bool show_blur_overlay;
 
 		// POP UP MESSAGE
 		Pop_Up_Message* pop_up;
 		bool show_pop_up;
 		bool delete_db_data;
+		sf::RectangleShape blur_overlay;
+		bool show_blur_overlay;
 
-		Btn* home_back_btn;
-		std::function<void()> home_back_btn_func;
-		bool home_back_btn_clicked;
+		// TODO LIST PART
+		TodoList *plan_sheet;
+		bool show_planner_list;
+		bool show_planner_tab;
+		std::vector<std::string> new_added_plan_sheet;
+		void Get_DB_Data();
+		void Update_DB_Data();
+		const char* dir;
+		std::string selected_planner_sheet_name;
+
+
+		Btn* home_back_button;
+		bool home_back_button_clicked;
+		std::function<void()> home_back_button_func;
 };
 
-// DATABASE RELATED
-namespace session_tracker
+namespace study_planner
 {
 	static int callback(void*, int, char**, char**);
 	static int select_data(const char*);
 	static int insert_data(const char*);
-	static int fetch_total_time_list(const char*, std::string);
-	static int call_back_total_time_list(void*, int, char**, char**);
-	static int delete_session_tab(const char*, std::string);
-	static int insert_new_session(const char*, std::string);
+	static int delete_planner_tab(const char*, std::string);
+	static int insert_new_plan_sheet(const char*, std::string);
 };

@@ -311,7 +311,6 @@ void Session_Tracker::Update_Rects()
 /// <param name="window">Main window to render to</param>
 void Session_Tracker::Render_In_Main_Window(sf::RenderWindow& window)
 {
-
 	if (show_session_tab)
 	{
 		window.draw(this->background);
@@ -345,7 +344,6 @@ void Session_Tracker::Render_In_Main_Window(sf::RenderWindow& window)
 		session->Draw_To_Main_Window(window);
 	}
 }
-
 
 /// <summary>
 /// Events to be handeled inside the poll event loop

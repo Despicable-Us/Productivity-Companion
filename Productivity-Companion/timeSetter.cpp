@@ -647,5 +647,3 @@ void dial::timeSetter::dialDrawComponents(sf::RenderWindow& window)
     }
     this->home_back_btn->DrawTo(window);
 }
-
-

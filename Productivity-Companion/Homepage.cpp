@@ -2,6 +2,7 @@
 #include "Icon.h"
 #include "timeSetter.h"
 #include "TodoList.h"
+#include "Study_Planner.h"
 
 #define WIN_WIDTH 760
 #define WIN_HEIGHT 675
@@ -14,7 +15,6 @@
 std::vector<udh::inputField> textList;
 udh::inputField sampletext;
 int viewPos;
-
 
 int main()
 {
@@ -77,6 +77,7 @@ int main()
 	bool run_session_tracker = false;
 	bool run_todo_list = false;
 	bool run_study_planner = false;
+
 	auto pomo_timer_func = [&]()
 	{
 		run_main_window = false;
@@ -94,13 +95,15 @@ int main()
 	};
 	auto study_planner_func = [&]()
 	{
-		std::cout << "Study Planner App Launch" << std::endl;
+		run_main_window = false;
+		run_study_planner = true;
 	};
 
 	// APP OBJECTS INSTANCIATIONS
 	dial::timeSetter timeDial(window);   // POMO TIMER
 	Session_Tracker session_app(window); // SESSION TRACKER
 	TodoList todolist;					 // TO-DO LIST
+	Study_Planner study_planner(window);		 // STUDY PLANNER
 	todolist.LoadTodoList();
 
 	// APP NAMES
@@ -125,7 +128,6 @@ int main()
 	study_planner_text.setFillColor(sf::Color::Black);
 
 
-
 	while (window.isOpen())
 	{
 		while (window.pollEvent(event))
@@ -144,6 +146,11 @@ int main()
 				{
 					todolist.RunTodo(window, event, scroll_view, run_main_window, run_todo_list);
 				}
+				if (run_study_planner)
+				{
+					study_planner.Run_Inside_Event(window, event, scroll_view);
+				}
+
 				if (event.type == sf::Event::Closed)
 				{
 					window.close();
@@ -179,6 +186,12 @@ int main()
 			window.setTitle("To-do List");
 			window.clear(sf::Color::White);
 		}
+		if (run_study_planner)
+		{
+			window.setTitle("Study Planner");
+			study_planner.Run_Outside_Event(window, event, run_main_window, run_study_planner);
+			window.clear(sf::Color::White);
+		}
 
 		// VIEW
 		window.setView(scroll_view);
@@ -189,6 +202,10 @@ int main()
 		if (run_todo_list)
 		{
 			todolist.DrawTodoView(window);
+		}
+		if (run_study_planner)
+		{
+			study_planner.Render_In_View(window);
 		}
 
 		// WINDOW
@@ -206,6 +223,10 @@ int main()
 		if (run_todo_list)
 		{
 			todolist.DrawTodoMainWindow(window);
+		}
+		if (run_study_planner)
+		{
+			study_planner.Render_In_Main_Window(window);
 		}
 
 		if (run_main_window)

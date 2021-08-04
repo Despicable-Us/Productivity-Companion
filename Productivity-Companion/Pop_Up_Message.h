@@ -62,4 +62,3 @@ class Pop_Up_Message
 
 		bool* overlay, * popup, *run_delete;
 };
-

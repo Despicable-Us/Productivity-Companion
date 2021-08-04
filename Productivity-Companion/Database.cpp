@@ -47,13 +47,7 @@ int udh::createTaskTable(const char* s)
 	}
 	return exit;
 }
-//insert OK!!
-//int udh::insertTaskData(const char* s, std::string sql_data)
-//{
-//	
-//
-//	return 0;
-//}
+
 
 int udh::insertTaskDB(const char* s, std::string sql_data)
 {
@@ -113,6 +107,26 @@ int udh::deleteData(const char* s)
 	return 0;
 }
 
+int udh::delete_plan_sheet_data(const char* s, std::string plan_sheet_name)
+{
+	sqlite3* DB;
+	char* messageError;
+
+	std::string sql = "DELETE FROM PLANNER_LIST WHERE plan_sheet_name = '" + plan_sheet_name + "';";
+
+	int exit = sqlite3_open(s, &DB);
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+	exit = sqlite3_exec(DB, sql.c_str(), NULL, NULL, &messageError);
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error in deleteData function." << std::endl;
+		sqlite3_free(messageError);
+	}
+	else
+		std::cout << "Records deleted Successfully!" << std::endl;
+
+	return 0;
+}
+
 
 
 int udh::LoadTaskList(const char* s)
@@ -153,4 +167,24 @@ int udh::callback(void* NotUsed, int argc, char** argv, char** azColName)
 	return 0;
 }
 
+int udh::select_plan_sheet_data(const char* s, std::string name)
+{
+	sqlite3* DB;
+	char* messageError;
 
+	std::string sql = "SELECT * FROM PLANNER_LIST WHERE plan_sheet_name = '" +  name + "';";
+	std::cout << sql << std::endl;
+
+	int exit = sqlite3_open(s, &DB);
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here*/
+	exit = sqlite3_exec(DB, sql.c_str(), udh::callback, NULL, &messageError);
+
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error in selectData function." << std::endl;
+		sqlite3_free(messageError);
+	}
+	else
+		std::cout << "Records selected Successfully!" << std::endl;
+
+	return 0;
+}
