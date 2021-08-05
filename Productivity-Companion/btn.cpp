@@ -12,8 +12,6 @@ Btn::Btn(std::string BtnText, sf::Vector2f btnPos, uint8_t charSize, sf::Font& f
 	SetBtnRect();
 }
 
-
-
 void Btn::LoadText()
 {
 	text.setFont(this->uiFont);
@@ -161,6 +159,20 @@ void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<vo
 		this->btnScale = 1.f;
 		mouseInside = false;
 	}
+
+
+	//if (this->wholeBtnRect.contains(this->mousePosView))
+	//{
+	//	if (event.type == sf::Event::MouseButtonReleased)
+	//	{
+	//		if (event.key.code == sf::Mouse::Left)
+	//		{
+	//			func();
+	//		}
+	//	}
+	//}
+
+
 
 	this->shape.setScale(btnScale, btnScale);
 	this->C1.setScale(btnScale, btnScale);

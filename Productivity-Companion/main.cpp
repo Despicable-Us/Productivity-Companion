@@ -1,12 +1,7 @@
-#include "Session_Tracker.h"
-#include "Study_Planner.h"
-#include "InputTodo.h"
-
-std::vector<udh::inputField> textList;
-udh::inputField sampletext;
-int viewPos;
-
-
+#include "SFML/Graphics.hpp"
+#include <stdc++.h>
+#include "Btn.h"
+#include <Windows.h>
 
 int main()
 {
@@ -18,14 +13,38 @@ int main()
 	sf::RenderWindow window(video_mode, "STUDY PLAN APP", sf::Style::Titlebar | sf::Style::Close, settings);
 	sf::Event event;
 
-	sf::View session_list_view;
-	session_list_view.reset(sf::FloatRect(0.f, 0.f, 760.f, 675.f));
-	session_list_view.setViewport(sf::FloatRect(0.f, 0.326f, 1.f, 1.f));
 
-	Session_Tracker session_app(window);
-	Study_Planner study_planner(window);
 	bool run_main_window = false;
 	bool run_app = true;
+
+	sf::Font roboto_font;
+	roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf");
+	Btn* btn1 = new Btn("Btn 1", { 200.f, 300.f }, 16, roboto_font);
+	Btn* btn2 = new Btn("Btn 2", { 210.f, 280.f }, 16, roboto_font);
+
+	bool btn1show = true;
+	bool btn2show = false;
+	auto btn1_func = [&]()
+	{
+		btn1show = false;
+		btn2show = true;
+		std::cout << "Button 1 pressed.\n";
+		sf::sleep(sf::milliseconds(100));
+	};
+
+	auto btn2_func = [&]()
+	{
+		btn1show = true;
+		btn2show = false;
+		std::cout << "Button 2 pressed.\n";
+	};
+
+	btn1->SetFillColor(sf::Color::Black);
+	btn2->SetFillColor(sf::Color::Black);
+	btn1->text.setFillColor(sf::Color::White);
+	btn2->text.setFillColor(sf::Color::White);
+
+
 
 	while (window.isOpen())
 	{
@@ -35,20 +54,21 @@ int main()
 			{
 				window.close();
 			}
-			//session_app.Run_Inside_Event(window, event, session_list_view);
-			study_planner.Run_Inside_Event(window, event, session_list_view);
+
 		}
-		//session_app.Run_Outside_Event(window, event);
-		study_planner.Run_Outside_Event(window, event, run_main_window, run_app);
+		if(btn1show)
+			btn1->BtnEvents(window, event, btn1_func);
+		
+		if(btn2show)
+			btn2->BtnEvents(window, event, btn2_func);
 
 		window.clear(sf::Color::White);
-		window.setView(session_list_view);
-		//session_app.Render_In_View(window);
-		study_planner.Render_In_View(window);
 
-		window.setView(window.getDefaultView());
-		//session_app.Render_In_Main_Window(window);
-		study_planner.Render_In_Main_Window(window);
+		if(btn1show)
+			btn1->DrawTo(window);
+		if(btn2show)
+			btn2->DrawTo(window);
+
 		window.display();
 	}
 	//session_app.Update_DB_Data();

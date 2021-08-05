@@ -20,31 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Btn.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="Database.h" />
-    <ClInclude Include="Icon.h" />
-    <ClInclude Include="InputField.h" />
-    <ClInclude Include="InputTodo.h" />
-    <ClInclude Include="Pop_Up_Message.h" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="Session_Tracker.h" />
-    <ClInclude Include="Study_Planner.h" />
-    <ClInclude Include="TodoList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="btn.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Database.cpp" />
-    <ClCompile Include="Icon.cpp" />
-    <ClCompile Include="InputField.cpp" />
-    <ClCompile Include="InputTodo.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Pop_Up_Message.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="Session_Tracker.cpp" />
     <ClCompile Include="sqlite3.c" />
-    <ClCompile Include="Study_Planner.cpp" />
-    <ClCompile Include="TodoList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
