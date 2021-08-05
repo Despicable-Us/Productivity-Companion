@@ -153,6 +153,8 @@ class Study_Planner
 		Btn* home_back_button;
 		bool home_back_button_clicked;
 		std::function<void()> home_back_button_func;
+
+		bool first_time;
 };
 
 namespace study_planner

@@ -105,6 +105,7 @@ int main()
 	{
 		run_main_window = false;
 		run_session_tracker = true;
+		session_app.first_time = true;
 	};
 	auto todo_list_func = [&]()
 	{
@@ -116,6 +117,7 @@ int main()
 	{
 		run_main_window = false;
 		run_study_planner = true;
+		study_planner.first_time = true;
 	};
 
 
@@ -141,11 +143,11 @@ int main()
 	study_planner_text.setFillColor(sf::Color::Black);
 
 	srand(static_cast<unsigned>(time(NULL)));
-	std::cout << quote_vec[rand() % quote_vec.size() - 2] << std::endl;
+	std::cout << quote_vec[rand() % quote_vec.size()] << std::endl;
 	sf::Font kaushan_font;
 	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading the font 'KaushanScript-Regular.ttf";
-	sf::Text quote("\"" + quote_vec[rand() % quote_vec.size() - 2]  + "\"" , kaushan_font, 24);
+	sf::Text quote("\"" + quote_vec[rand() % quote_vec.size()]  + "\"" , kaushan_font, 24);
 	quote.setFillColor(sf::Color::Black);
 	quote.setOrigin({ quote.getGlobalBounds().width / 2, quote.getGlobalBounds().height / 2 });
 	quote.setPosition({ 380.f, 280.f });

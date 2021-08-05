@@ -124,7 +124,6 @@ void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<vo
 
 void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func)
 {
-	
 	mousePos = sf::Mouse::getPosition(window);
 	mousePosView = static_cast<sf::Vector2f>(mousePos);
 

@@ -152,6 +152,8 @@ class Session_Tracker
 		Btn* home_back_btn;
 		std::function<void()> home_back_btn_func;
 		bool home_back_btn_clicked;
+
+		bool first_time;
 };
 
 // DATABASE RELATED

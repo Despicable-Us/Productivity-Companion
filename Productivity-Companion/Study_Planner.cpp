@@ -162,6 +162,8 @@ void Study_Planner::Init_Variables()
 	this->pop_up = new Pop_Up_Message("Something", this->roboto_font);
 	show_pop_up = false;
 
+	this->first_time = false;
+
 }
 
 void Study_Planner::Init_Background()
@@ -174,9 +176,9 @@ void Study_Planner::Init_Background()
 
 void Study_Planner::Init_UI_Font()
 {
-	if (!kaushan_font.loadFromFile("Font/KaushanScript-Regular.ttf"))
+	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading the 'KaushanScript-Regular.ttf'";
-	if (!roboto_font.loadFromFile("Font/Roboto-Medium.ttf"))
+	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the 'Roboto-Medium.ttf'";
 }
 
@@ -358,13 +360,24 @@ void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event
 			if (!show_pop_up)
 			{
 				add_planner_btn->BtnEvents(window, event, add_rect, btn_hide);
+
+				if (this->first_time)
+				{
+					for (size_t i = 0; i < planner_tab_vec.size(); ++i)
+					{
+						planner_tab_vec[i].planner_btn->mouseHeld = true;
+						planner_tab_vec[i].delete_btn->mouseHeld = true;
+					}
+					this->first_time = false;
+				}
 				for (size_t i = 0; i < planner_tab_vec.size(); ++i)
 				{
 					planner_tab_vec[i].planner_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_planner_sheet_name);
 					planner_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_planner_sheet_name);
+					
 				}
-
 			}
+
 			this->home_back_button->BtnEvents(window, event, home_back_button_func);
 			if (home_back_button_clicked)
 			{

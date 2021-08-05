@@ -190,6 +190,7 @@ void Session_Tracker::Init_Variables()
 
 	this->pop_up = new Pop_Up_Message("Something", this->roboto_font);
 	show_pop_up = false;
+	this->first_time = false;
 }
 
 /// <summary>
@@ -401,13 +402,21 @@ void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& eve
 			if (!show_pop_up)
 			{
 				add_session_btn->BtnEvents(window, event, add_rect, btn_hide);
+				if (first_time)
+				{
+					for (size_t i = 0; i < session_tab_vec.size(); ++i)
+					{
+						session_tab_vec[i].session_btn->mouseHeld = true;
+						session_tab_vec[i].delete_btn->mouseHeld = true;
+					}
+					this->first_time = false;
+				}
 				for (size_t i = 0; i < session_tab_vec.size(); ++i)
 				{
 					session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
 					session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
 				}
 			}
-			
 			home_back_btn->BtnEvents(window, event, home_back_btn_func);
 			
 			if (home_back_btn_clicked)
