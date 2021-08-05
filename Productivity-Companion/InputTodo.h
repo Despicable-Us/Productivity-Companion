@@ -88,6 +88,7 @@ namespace udh
 
 		void setday(int a);
 
+		std::string SanitizedData();
 		
 	};
 

@@ -236,7 +236,7 @@ void TodoList::Update_DB()
 
 		for (std::vector<udh::inputField>::iterator itr = textList.begin(); itr < textList.end(); itr++)
 		{
-			sql_data += "('" + itr->getdata() + "', '" +
+			sql_data += "('" + itr->SanitizedData() + "', '" +
 				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "'),";
 		}
 		sql_data.pop_back();

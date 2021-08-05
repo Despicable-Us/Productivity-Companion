@@ -89,6 +89,18 @@ void udh::inputField::setCreationTime()
 	strftime(timebuffer, 40, "%a %b %d %Y\n",timecreated);
 }
 
+std::string udh::inputField::SanitizedData()
+{
+	size_t pos = 0;
+	std::string data=this->getdata();
+	while ((pos = data.find('\'', pos)) != std::string::npos) {
+		data.replace(pos, 1, "''");
+		pos += 2;
+	}
+	return data;
+}
+
+
 void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* window)
 {
 	if (!textlist.empty())
