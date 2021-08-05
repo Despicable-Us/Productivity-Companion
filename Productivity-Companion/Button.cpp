@@ -172,7 +172,7 @@ void udh::Button::btnEvents(sf::Event& event, sf::RenderWindow& window, std::fun
 void udh::Button::setoutline(sf::Color color, int width)
 {
 	this->shape.setOutlineColor(color);
-	this->shape.setOutlineThickness(width);
+	this->shape.setOutlineThickness(float(width));
 }
 bool udh::Button::getAdding()
 {

@@ -84,7 +84,7 @@ void Planner_Tab::Set_Button()
 {
 	planner_btn = new Btn(plan_sheet_name, { main_rect_pos.x, main_rect_pos.y - 20.f }, 15, roboto_font);
 	delete_btn = new Btn("Delete", { main_rect_pos.x , main_rect_pos.y + 28.f }, 10, roboto_font);
-	delete_btn->SetFillColor(sf::Color(209, 265, 42));
+	delete_btn->SetFillColor(sf::Color(209, 9, 42));
 	delete_btn->text.setFillColor(sf::Color::White);
 }
 

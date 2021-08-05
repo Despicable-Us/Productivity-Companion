@@ -456,7 +456,7 @@ std::string Session::Timer_Duration(std::vector<int> start, std::vector<int> end
 {
 	std::vector<std::string> dura_vec(4);
 	int temp;
-	for (int i = end.size() - 1; i >= 0; --i)
+	for(int i = int(end.size()) - 1; i >= 0; --i)
 	{
 		temp = i;
 		if (end[i] < start[i])
@@ -600,7 +600,7 @@ void Session::View_Scroll_Event(sf::Event& event, sf::View& scroll_view)
 
 		show_scroll_bar = true;
 		scroll_bar.setSize({ 18.f, 207025 / ((records_table.size() + 1) * 35.f) });
-		float estimated_height = (records_table.size() - 12) * 35.f + 337.5;
+		float estimated_height = (records_table.size() - 12) * 35.f + 337.5f;
 		float scroll_bar_move = (((records_table.size() - 12) * 35.f + 455.f) - scroll_bar.getSize().y) / (records_table.size() - 12);
 		if (event.type == sf::Event::MouseWheelMoved)
 		{

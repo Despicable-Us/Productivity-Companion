@@ -101,7 +101,7 @@ void TodoList::LoadTodoList()
 
 void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& TaskView, bool& run_main_window, bool& run_app)
 {
-	int size = textList.size() * 40;
+	int size = int(textList.size()) * 40;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		while (!event.KeyReleased)
@@ -200,9 +200,9 @@ void TodoList::DrawTodoView(sf::RenderWindow& window)
 	udh::drawlist(textList, &window);
 	if (textList.size() > 11)
 	{
-		int size = textList.size() * 40;
-		scrollBar.setSize(sf::Vector2f(18.f, 207025 / size));
-		scrollBar.setPosition(sf::Vector2f(741.f, viewPos + viewPos * 455 / size));
+		int size = int(textList.size()) * 40;
+		scrollBar.setSize(sf::Vector2f(18.f, 207025.f / size));
+		scrollBar.setPosition(sf::Vector2f(741.f, viewPos + viewPos * 455.f / size));
 		window.draw(scrollBar);
 	}
 	
