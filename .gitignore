@@ -256,6 +256,7 @@ ServiceFabricBackup/
 *.ldf
 *.ndf
 **/*.db
+**/*.db
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -348,3 +349,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+Productivity-Companion/Session.db
