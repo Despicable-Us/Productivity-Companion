@@ -153,6 +153,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		{
 			this->Update_DB();
 		}
+		// else block maybe necessary to delete erase all data if textlist is empty while exit.
 		window.close();
 	}
 
@@ -227,20 +228,5 @@ void TodoList::Update_DB()
 			udh::insertTaskDB("Productivity_companion.db", sql_data);
 		}
 
-	}
-	else
-	{
-		udh::deleteData("Productivity_companion.db");
-		udh::createTaskTable("Productivity_companion.db");
-		sql_data = "INSERT INTO TASKS (Task,Status,Day) VALUES";
-
-		for (std::vector<udh::inputField>::iterator itr = textList.begin(); itr < textList.end(); itr++)
-		{
-			sql_data += "('" + itr->SanitizedData() + "', '" +
-				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "'),";
-		}
-		sql_data.pop_back();
-		sql_data.push_back(';');
-		udh::insertTaskDB("Productivity_companion.db", sql_data);
 	}
 }

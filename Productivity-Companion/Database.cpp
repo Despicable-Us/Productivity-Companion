@@ -67,23 +67,61 @@ int udh::insertTaskDB(const char* s, std::string sql_data)
 }
 
 
-//Working inloading
-int udh::updateData(const char* s)
+int udh::AddTask(const char* s, udh::inputField task)
+{
+	sqlite3* DB;
+	char* messageError;
+	std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task.SanitizedData() + "', '" +
+		std::to_string(task.getstatus()) + "','" + std::to_string(task.getDay()) + "');";
+	int exit = sqlite3_open(s, &DB);
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error in AddTask function." << std::endl;
+		sqlite3_free(messageError);
+	}
+	else
+		std::cout << "Records Added Successfully!" << std::endl;
+
+	return 0;
+}
+
+
+int udh::updateTask(const char* s,std::vector<udh::inputField>::iterator itr)
 {
 	sqlite3* DB;
 	char* messageError;
 
-	std::string sql("UPDATE GRADES SET GRADE = 'A' WHERE LNAME = 'Cooper'");
+	std::string sql = "UPDATE TASKS SET Task ='" + sampletext.SanitizedData()+ "' WHERE Task = '"+itr->SanitizedData()+"';";
 
 	int exit = sqlite3_open(s, &DB);
 	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
-		std::cerr << "Error in updateData function." << std::endl;
+		std::cerr << "Error in updateTask function." << std::endl;
 		sqlite3_free(messageError);
 	}
 	else
 		std::cout << "Records updated Successfully!" << std::endl;
+
+	return 0;
+}
+
+int udh::DeleteTask(const char* s,std::vector<udh::inputField>::iterator itr)
+{
+	sqlite3* DB;
+	char* messageError;
+	std::string sql = "DELETE FROM TASKS WHERE Task = '" + itr->SanitizedData()+"';";
+
+	int exit = sqlite3_open(s, &DB);
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error in DeleteTask function." << std::endl;
+		sqlite3_free(messageError);
+	}
+	else
+		std::cout << "Records Deleted Successfully!" << std::endl;
 
 	return 0;
 }

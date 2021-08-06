@@ -3,6 +3,7 @@
 #include "InputTodo.h"
 #include <iostream>
 #include <sqlite3.h>
+#include <vector>
 namespace udh
 {
 
@@ -23,7 +24,9 @@ namespace udh
 	//int insertTaskData(const char* s, udh::inputField data);
 	int insertTaskDB(const char* s, std::string);
 	//int insertData(const char* s,std::string taskname);
-	int updateData(const char* s);
+	int AddTask(const char* s, udh::inputField task);
+	int updateTask(const char* s, std::vector<udh::inputField>::iterator itr);
+	int DeleteTask(const char* s, std::vector<udh::inputField>::iterator itr);
 	int LoadTaskList(const char* s);
 	int callback(void* NotUsed, int argc, char** argv, char** azColName);
 	//void setGlobalListPtr(std::vector<udh::inputField>* Ptr);

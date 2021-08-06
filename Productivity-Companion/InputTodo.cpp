@@ -1,5 +1,5 @@
 #include "InputTodo.h"
-
+#include "Database.h"
 //default constructor
 udh::inputField::inputField()
 {
@@ -177,8 +177,8 @@ void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, s
 
 		else if (itr->del_icon.Run_Outside_Event(*window, event))
 		{
+			udh::DeleteTask("Productivity_companion.db", itr);
 			textlist.erase(itr);
-			std::cout << "Something" << std::endl;
 			break;
 		}
 
@@ -229,6 +229,7 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 					a.pop_back();
 					a.push_back('\n');
 					sampletext.setdata(a);
+					udh::updateTask("Productivity_companion.db", edititr);
 					edititr->setdata(a);
 					edititr->edit.setbtncolor(sf::Color(235, 235, 235));
 					sampletext.setdata("");
@@ -286,6 +287,7 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					sampletext.setdata(a);
 					sampletext.setCreationTime();
 					textlist.push_back(sampletext);
+					udh::AddTask("Productivity_companion.db", sampletext);
 					sampletext.setdata("");
 					a = "";
 				}
