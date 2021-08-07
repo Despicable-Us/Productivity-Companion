@@ -62,7 +62,6 @@ int TOGGLE::ToggleMusic::checkInBtn(sf::Vector2f pos)
 void TOGGLE::ToggleMusic::changeToggleStatus()
 {
 	this->toggleStatus = !this->toggleStatus;
-
 }
 
 //functions running on main
@@ -81,7 +80,7 @@ void TOGGLE::ToggleMusic::toggledrawComponents(sf::RenderWindow&window)
 		this->btnCirc2.setFillColor(sf::Color(251, 208, 60));
 		this->slideCirc.setPosition(this->btnCirc2.getPosition());
 	}
-	window.draw(this->squiggle);
+	//window.draw(this->squiggle);
 	window.draw(this->btnRect);
 	window.draw(this->btnCirc1);
 	window.draw(this->btnCirc2);

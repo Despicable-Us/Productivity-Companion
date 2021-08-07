@@ -163,7 +163,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 	{
 		if (!textarea.IsEditing())
 		{
-			udh::addTask(sampletext, a, event, textList, textarea);
+			udh::addTask(sampletext, a, event, textList, textarea, is_planner_sheet);
 		}
 		else
 		{
@@ -182,6 +182,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		home_back_btn_clicked = false;
 		run_main_window = true;
 		run_app = false;
+		textList.clear();
 	}
 }
 
@@ -224,10 +225,11 @@ void TodoList::Update_DB()
 		}
 		sql_data.pop_back();
 		sql_data.push_back(';');
+
+		//why is this checking length?
 		if (sql_data.size() > 68)
 		{
 			udh::insertTaskDB(sql_data);
 		}
-
 	}
 }

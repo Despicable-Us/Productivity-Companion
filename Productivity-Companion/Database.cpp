@@ -147,7 +147,6 @@ int udh::delete_plan_sheet_data(const char* s, std::string plan_sheet_name)
 	std::string sql = "DELETE FROM PLANNER_LIST WHERE plan_sheet_name = '" + plan_sheet_name + "';";
 
 	int exit = sqlite3_open(s, &DB);
-	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, NULL, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in deleteData function." << std::endl;
@@ -180,8 +179,6 @@ int udh::LoadTaskList()
 	return 0;
 }
 
-// retrieve contents of database used by selectData()
-/* argc: holds the number of results, argv: holds each value in array, azColName: holds each column returned in array, */
 int udh::callback(void* NotUsed, int argc, char** argv, char** azColName)
 {
 	sampletext.setdata(argv[1]);
@@ -206,7 +203,6 @@ int udh::select_plan_sheet_data(const char* s, std::string name)
 	std::cout << sql << std::endl;
 
 	int exit = sqlite3_open(s, &DB);
-	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here*/
 	exit = sqlite3_exec(DB, sql.c_str(), udh::callback, NULL, &messageError);
 
 	if (exit != SQLITE_OK) {

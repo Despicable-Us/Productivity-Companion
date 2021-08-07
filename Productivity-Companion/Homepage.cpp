@@ -13,6 +13,7 @@
 #define APP_NAME_HEIGHT 468.f
 
 std::vector<udh::inputField> textList;
+std::vector<udh::inputField> studyTextList;
 udh::inputField sampletext;
 int viewPos;
 

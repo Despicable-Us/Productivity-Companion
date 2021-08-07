@@ -1,7 +1,5 @@
 #include "InputTodo.h"
 #include "Database.h"
-
-extern bool run_todo_list;
 //default constructor
 udh::inputField::inputField()
 {
@@ -252,7 +250,7 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 	}
 }
 
-void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea)
+void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea, bool is_planner_list)
 {
 	unsigned char b;
 	if (sampletext.getdata().empty() && textarea.getstate())
@@ -289,10 +287,10 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					sampletext.setdata(a);
 					sampletext.setCreationTime();
 					textlist.push_back(sampletext);
-					//if (run_todo_list)
-					//{
-					//}
-					udh::AddTask(sampletext);
+					if (!is_planner_list)
+					{
+						udh::AddTask(sampletext);
+					}
 					sampletext.setdata("");
 					a = "";
 				}
