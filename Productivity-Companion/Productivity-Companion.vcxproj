@@ -36,9 +36,9 @@
     <ClInclude Include="toggleMusic.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c" />
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="Icon.cpp" />
@@ -175,7 +175,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>

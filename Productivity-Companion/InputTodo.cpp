@@ -250,7 +250,7 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 	}
 }
 
-void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea)
+void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea, bool is_planner_list)
 {
 	unsigned char b;
 	if (sampletext.getdata().empty() && textarea.getstate())
@@ -287,7 +287,10 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					sampletext.setdata(a);
 					sampletext.setCreationTime();
 					textlist.push_back(sampletext);
-					udh::AddTask("Productivity_companion.db", sampletext);
+					if (!is_planner_list)
+					{
+						udh::AddTask("Productivity_companion.db", sampletext);
+					}
 					sampletext.setdata("");
 					a = "";
 				}

@@ -6,7 +6,6 @@
 #include <vector>
 namespace udh
 {
-
 	/// <summary>
 	/// Creates a database file if it doesn't already exist.
 	/// </summary>

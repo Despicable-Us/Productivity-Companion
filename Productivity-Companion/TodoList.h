@@ -43,5 +43,4 @@ public:
 	void DrawTodoMainWindow(sf::RenderWindow& window);
 	void DrawTodoView(sf::RenderWindow& window);
 	void Update_DB();
-	
 };

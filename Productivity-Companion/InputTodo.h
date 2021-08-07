@@ -130,6 +130,6 @@ namespace udh
 	/// <param name="event">Event to check the user action</param>
 	/// <param name="textlist">A vector to store all the task as a list of task</param>
 	/// <param name="textarea">Refrence to the input area to type the task to add</param>
-	void addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea);
-}
+	void addTask(udh::inputField& sampletext, std::string& a, sf::Event event, std::vector<udh::inputField>& textlist, udh::Button textarea, bool is_planner_list);
+};
 #endif // !INPUT_FIELD
