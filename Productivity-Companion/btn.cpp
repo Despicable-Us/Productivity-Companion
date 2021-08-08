@@ -77,268 +77,156 @@ void Btn::SetTextColor(sf::Color color)
 	text.setFillColor(color);
 }
 
-void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, bool &btnHide)
+void Btn::hoverEffect(bool uFlag) //uflag is true when yellow hover effect is needed(in pomodoro timer music options)
 {
-	if (!btnHide)
+	if (this->wholeBtnRect.contains(this->mousePosView))
 	{
-		mousePos = sf::Mouse::getPosition(window);
-		mousePosView = static_cast<sf::Vector2f>(mousePos);
-
-		if (this->wholeBtnRect.contains(this->mousePosView))
+		if (uFlag) {
+			this->SetFillColor(sf::Color(252, 218, 97));
+			text.setFillColor(sf::Color::Black);
+		}
+		if (!mouseInside)
 		{
-			if (!mouseInside)
-			{
-				this->btnScale = 1.02f;
-				mouseInside = true;
-			}
+			this->btnScale = 1.02f;
+			mouseInside = true;
+		}
 
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			if (!mouseHeld)
 			{
-				if (!mouseHeld)
-				{
-					mouseHeld = true;
-					func();
-				}
-				else if (mouseHeld)
-				{
-					this->btnScale = 0.99f;
-				}
+				mouseHeld = true;
 			}
-			else
+			else if (mouseHeld)
 			{
-				mouseHeld = false;
-				this->btnScale = 1.02f;
+				this->btnScale = 0.99f;
 			}
 		}
 		else
 		{
-			this->btnScale = 1.f;
-			mouseInside = false;
+			mouseHeld = false;
+			this->btnScale = 1.02f;
 		}
+	}
+	else
+	{
+		if (uFlag) {
+			text.setFillColor(sf::Color::White);
+			this->SetFillColor(sf::Color(121, 131, 140));
+		}
+		this->btnScale = 1.f;
+		mouseInside = false;
+	}
 
-		this->shape.setScale(btnScale, btnScale);
-		this->C1.setScale(btnScale, btnScale);
-		this->C2.setScale(btnScale, btnScale);
+	this->shape.setScale(btnScale, btnScale);
+	this->C1.setScale(btnScale, btnScale);
+	this->C2.setScale(btnScale, btnScale);
+}
+
+void Btn::checkClicked(sf::RenderWindow& window, sf::Event& event)
+{
+	mousePos = sf::Mouse::getPosition(window);
+	mousePosView = static_cast<sf::Vector2f>(mousePos);
+
+	if (event.type == sf::Event::MouseButtonPressed) {
+		if (event.key.code == sf::Mouse::Left) {
+			if (this->wholeBtnRect.contains(this->mousePosView)) {
+				this->btnClickedStatus = 1;
+			}
+		}
+	}
+	if (event.type == sf::Event::MouseButtonReleased) {
+		if (event.key.code == sf::Mouse::Left) {
+			if (this->btnClickedStatus && this->wholeBtnRect.contains(this->mousePosView)) {
+				this->btnClickedStatus = 2;
+			}
+			else {
+				this->btnClickedStatus = 0;
+			}
+		}
+	}
+}
+
+void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, bool &btnHide)
+{
+	if (!btnHide)
+	{
+		this->checkClicked(window, event);
+		this->hoverEffect(false);
+
+		if (this->btnClickedStatus == 2) {
+			//function here
+			func();
+			this->btnClickedStatus = 0;
+		}
 	}
 }
 
 void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func)
 {
-	mousePos = sf::Mouse::getPosition(window);
-	mousePosView = static_cast<sf::Vector2f>(mousePos);
+	this->checkClicked(window, event);
+	this->hoverEffect(false);
 
-	if (this->wholeBtnRect.contains(this->mousePosView))
-	{
-		if (!mouseInside)
-		{
-			this->btnScale = 1.02f;
-			mouseInside = true;
-		}
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (!mouseHeld)
-			{
-				mouseHeld = true;
-				func();
-			}
-			else if (mouseHeld)
-			{
-				this->btnScale = 0.99f;
-			}
-		}
-		else
-		{
-			mouseHeld = false;
-			this->btnScale = 1.02f;
-		}
+	if (this->btnClickedStatus == 2) {
+		//function here
+		func();
+		this->btnClickedStatus = 0;
 	}
-	else
-	{
-		this->btnScale = 1.f;
-		mouseInside = false;
-	}
-
-	this->shape.setScale(btnScale, btnScale);
-	this->C1.setScale(btnScale, btnScale);
-	this->C2.setScale(btnScale, btnScale);
 	
 }
 
 void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, std::string name, std::string& selected_session_name)
 {
-	mousePos = sf::Mouse::getPosition(window);
-	mousePosView = static_cast<sf::Vector2f>(mousePos);
+	this->checkClicked(window, event);
+	this->hoverEffect(false);
 
-	if (this->wholeBtnRect.contains(this->mousePosView))
-	{
-		if (!mouseInside)
-		{
-			this->btnScale = 1.02f;
-			mouseInside = true;
-		}
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (!mouseHeld)
-			{
-				mouseHeld = true;
-				selected_session_name = name;
-				func();
-			}
-			else if (mouseHeld)
-			{
-				this->btnScale = 0.99f;
-			}
-		}
-		else
-		{
-			mouseHeld = false;
-			this->btnScale = 1.02f;
-		}
-	}
-	else
-	{
-		this->btnScale = 1.f;
-		mouseInside = false;
+	if (this->btnClickedStatus == 2) {
+		//function here
+		selected_session_name = name;
+		func();
+		this->btnClickedStatus = 0;
 	}
 
-	this->shape.setScale(btnScale, btnScale);
-	this->C1.setScale(btnScale, btnScale);
-	this->C2.setScale(btnScale, btnScale);
 }
 
 void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, bool& btn_show)
 {
-	mousePos = sf::Mouse::getPosition(window);
-	mousePosView = static_cast<sf::Vector2f>(mousePos);
+	this->checkClicked(window, event);
+	this->hoverEffect(false);
 
-	if (this->wholeBtnRect.contains(this->mousePosView))
-	{
-		if (!mouseInside)
-		{
-			this->btnScale = 1.02f;
-			mouseInside = true;
-		}
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (!mouseHeld)
-			{
-				mouseHeld = true;
-				btn_show = true;
-			}
-			else if (mouseHeld)
-			{
-				this->btnScale = 0.99f;
-			}
-		}
-		else
-		{
-			mouseHeld = false;
-			this->btnScale = 1.02f;
-		}
+	if (this->btnClickedStatus == 2) {
+		//function here
+		btn_show = true;
+		this->btnClickedStatus = 0;
 	}
-	else
-	{
-		this->btnScale = 1.f;
-		mouseInside = false;
-	}
-
-	this->shape.setScale(btnScale, btnScale);
-	this->C1.setScale(btnScale, btnScale);
-	this->C2.setScale(btnScale, btnScale);
 }
 
 void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, bool& first, bool& second)
 {
-	mousePos = sf::Mouse::getPosition(window);
-	mousePosView = static_cast<sf::Vector2f>(mousePos);
+	this->checkClicked(window, event);
+	this->hoverEffect(false);
 
-	if (this->wholeBtnRect.contains(this->mousePosView))
-	{
-		if (!mouseInside)
-		{
-			this->btnScale = 1.02f;
-			mouseInside = true;
-		}
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (!mouseHeld)
-			{
-				mouseHeld = true;
-				func();
-				first = false;
-				second = false;
-			}
-			else if (mouseHeld)
-			{
-				this->btnScale = 0.99f;
-			}
-		}
-		else
-		{
-			mouseHeld = false;
-			this->btnScale = 1.02f;
-		}
+	if (this->btnClickedStatus == 2) {
+		//function here
+		func();
+		first = false;
+		second = false;
+		this->btnClickedStatus = 0;
 	}
-	else
-	{
-		this->btnScale = 1.f;
-		mouseInside = false;
-	}
-
-	this->shape.setScale(btnScale, btnScale);
-	this->C1.setScale(btnScale, btnScale);
-	this->C2.setScale(btnScale, btnScale);
 }
 
 std::string Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event)
 {
 	text.setFillColor(sf::Color::White);
-	mousePos = sf::Mouse::getPosition(window);
-	mousePosView = static_cast<sf::Vector2f>(mousePos);
+	this->checkClicked(window, event);
+	this->hoverEffect(true);
 
-	if (this->wholeBtnRect.contains(this->mousePosView))
-	{
-		this->SetFillColor(sf::Color(252, 218, 97));
-		text.setFillColor(sf::Color::Black);
-		if (!mouseInside)
-		{
-			this->btnScale = 1.02f;
-			mouseInside = true;
-		}
-
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (!mouseHeld)
-			{
-				mouseHeld = true;
-				return btnId;
-			}
-			else if (mouseHeld)
-			{
-				this->btnScale = 0.99f;
-			}
-		}
-		else
-		{
-			mouseHeld = false;
-			this->btnScale = 1.02f;
-		}
-	}
-	else
-	{
-		text.setFillColor(sf::Color::White);
-		this->SetFillColor(sf::Color(121, 131, 140));
-		this->btnScale = 1.f;
-		mouseInside = false;
+	if (this->btnClickedStatus == 2) {
+		//function here
+		return this->btnId;
+		this->btnClickedStatus = 0;
 	}
 
-	this->shape.setScale(btnScale, btnScale);
-	this->C1.setScale(btnScale, btnScale);
-	this->C2.setScale(btnScale, btnScale);
 	return "";
 }
 
