@@ -38,6 +38,7 @@ class Icon
 		// BOOLEAN
 		bool show_shadow;
 		bool mouse_held;
+		int iconClickedStatus;
 		
 		Icon();
 		Icon(sf::Texture& btn_texture, sf::Vector2f pos);

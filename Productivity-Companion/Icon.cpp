@@ -125,21 +125,40 @@ void Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::fu
 	mouse_pos = sf::Mouse::getPosition(window);
 	mouse_pos_view = static_cast<sf::Vector2f>(mouse_pos);
 
+	if (event.type == sf::Event::MouseButtonPressed) 
+	{
+		if (event.key.code == sf::Mouse::Left) 
+		{
+			if (icon_background.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))) 
+			{
+				this->iconClickedStatus = 1;
+			}
+		}
+	}
+	if (event.type == sf::Event::MouseButtonReleased) 
+	{
+		if (event.key.code == sf::Mouse::Left) 
+		{
+			if (this->iconClickedStatus && icon_background.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)))) 
+			{
+				this->iconClickedStatus = 2;
+			}
+			else
+			{
+				this->iconClickedStatus = 0;
+			}
+		}
+	}
+	if (iconClickedStatus == 2) 
+	{
+		func();
+		this->iconClickedStatus = 0;
+	}
+
+	//applying shadow effect i guess
 	if (icon_background.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window))))
 	{
 		this->background_color = sf::Color(0,0,0);
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (!mouse_held)
-			{
-				mouse_held = true;
-				func();
-			}
-		}
-		else
-		{
-			mouse_held = false;
-		}
 	}
 	else
 	{
@@ -153,6 +172,8 @@ bool Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event)
 	mouse_pos = sf::Mouse::getPosition(window);
 	mouse_pos.y = mouse_pos.y - 220 + viewPos;
 	mouse_pos_view = static_cast<sf::Vector2f>(mouse_pos);
+
+
 
 	if (icon_background.getGlobalBounds().contains(mouse_pos_view))
 	{
