@@ -1,7 +1,6 @@
 #include "SFML/Graphics.hpp"
 #include <stdc++.h>
-#include "Btn.h"
-#include <Windows.h>
+#include "FlowTime.h"
 
 int main()
 {
@@ -19,8 +18,7 @@ int main()
 
 	sf::Font roboto_font;
 	roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf");
-	Btn* btn1 = new Btn("Btn 1", { 200.f, 300.f }, 16, roboto_font);
-	Btn* btn2 = new Btn("Btn 2", { 210.f, 280.f }, 16, roboto_font);
+
 
 	bool btn1show = true;
 	bool btn2show = false;
@@ -38,11 +36,12 @@ int main()
 		btn2show = false;
 		std::cout << "Button 2 pressed.\n";
 	};
+	sf::View scroll_view;
+	scroll_view.reset({ 0.f, 0.f, 760.f, 675.f });
+	scroll_view.setViewport({ 0.f, 0.3259, 1.f, 1.f });
 
-	btn1->SetFillColor(sf::Color::Black);
-	btn2->SetFillColor(sf::Color::Black);
-	btn1->text.setFillColor(sf::Color::White);
-	btn2->text.setFillColor(sf::Color::White);
+	FlowTime flow_time(window);
+
 
 
 
@@ -54,20 +53,14 @@ int main()
 			{
 				window.close();
 			}
-
+			flow_time.Run_Inside_Event(window, event, scroll_view);
 		}
-		if(btn1show)
-			btn1->BtnEvents(window, event, btn1_func);
-		
-		if(btn2show)
-			btn2->BtnEvents(window, event, btn2_func);
 
+		flow_time.Run_Outside_Event(window, event, run_main_window, run_app);
+			
 		window.clear(sf::Color::White);
 
-		if(btn1show)
-			btn1->DrawTo(window);
-		if(btn2show)
-			btn2->DrawTo(window);
+		flow_time.Render_In_Main_Window(window);
 
 		window.display();
 	}

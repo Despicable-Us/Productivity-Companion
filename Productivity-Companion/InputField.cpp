@@ -11,7 +11,7 @@ InputField::InputField(sf::Vector2f fieldPos, sf::Font& font)
 void InputField::LoadText()
 {
 	text.setFont(inputFont);
-	text.setCharacterSize(charSize);
+	text.setCharacterSize(static_cast<unsigned>(charSize));
 	text.setFillColor(sf::Color::Black);
 }
 

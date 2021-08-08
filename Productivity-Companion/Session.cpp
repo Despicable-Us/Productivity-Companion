@@ -190,8 +190,6 @@ void Session::Init_Variables()
 				start_time += std::to_string(tm->tm_hour) + ":";
 			}
 
-			//tm->tm_hour > 12 ? start_time += std::to_string(tm->tm_hour - 12) + ":" : start_time += std::to_string(tm->tm_hour) + ":";
-			//start_time = std::to_string(tm->tm_hour) + ":";
 			tm->tm_min < 10 ? start_time += "0" + std::to_string(tm->tm_min) : start_time += std::to_string(tm->tm_min);
 			tm->tm_hour > 12 ? start_time += " pm" : start_time += " am";
 			start_timer = time_to_str;
@@ -223,8 +221,6 @@ void Session::Init_Variables()
 				end_time += std::to_string(tm->tm_hour) + ":";
 			}
 
-			//tm->tm_hour > 12 ? end_time += std::to_string(tm->tm_hour - 12) + ":" : end_time += std::to_string(tm->tm_hour) + ":";
-			//end_time = std::to_string(tm->tm_hour) + ":";
 			tm->tm_min < 10 ? end_time += "0" + std::to_string(tm->tm_min) : end_time += std::to_string(tm->tm_min);
 			tm->tm_hour > 12 ? end_time += " pm" : end_time += " am";
 			time_data[0] = "Time Stamp: " + start_time + " - " + end_time;
@@ -261,7 +257,6 @@ void Session::Init_Variables()
 	this->scroll_bar.setFillColor(sf::Color(DATE_BAR_C));
 	this->scroll_bar.setPosition({ 741.f, 0.f });
 	this->scroll_bar.setSize({ 18.f, 207025 / ((records_table.size() + 1) * 35.f) });
-	//this->dir = "C:\\Users\\Progosta\\Desktop\\Tori Laure\\Session Tracker\\Session Tracker\\Session.db";
 	this->dir = "Session.db";
 }
 
@@ -270,13 +265,13 @@ void Session::Init_Variables()
 /// </summary>
 void Session::Load_Tex_Font()
 {
-	if(!this->bg_image_tex.loadFromFile("Texture/bgImageText1.png"))
-		throw "Error in loading the 'bgImageText1'";
-	if (!this->bg_stop_tex.loadFromFile("Texture/stopTimer1.png"))
-		throw "Error in loading the 'stopTimer1.png'";
-	if (!this->kaushan_font.loadFromFile("Font/KaushanScript-Regular.ttf"))
+	if(!this->bg_image_tex.loadFromFile("Texture/bgImageText.png"))
+		throw "Error in loading the 'bgImageText.png'";
+	if (!this->bg_stop_tex.loadFromFile("Texture/stopTimer.png"))
+		throw "Error in loading the 'stopTimer.png'";
+	if (!this->kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading 'Roboto-Medium.ttf";
-	if (!this->roboto_font.loadFromFile("Font/Roboto-Medium.ttf"))
+	if (!this->roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the 'Roboto-Medium.ttf'";
 	this->bg_image.setTexture(this->bg_image_tex);
 	this->bg_stop_image.setTexture(this->bg_stop_tex);
@@ -386,8 +381,8 @@ void Session::Today_Date()
 /// </summary>
 void Session::Create_Home_Btn()
 {
-	home_btn = new Btn("Home", { 55.f, 30.f }, 14, roboto_font);
-	home_btn->SetFillColor(sf::Color(DATE_BAR_C));
+	home_btn = new Btn("Back", { 710.f, 30.f }, 14, roboto_font);
+	home_btn->SetFillColor(sf::Color(244, 16,56));
 	home_btn->text.setFillColor(sf::Color::White);
 	home_btn_clicked = false;
 }
@@ -461,7 +456,7 @@ std::string Session::Timer_Duration(std::vector<int> start, std::vector<int> end
 {
 	std::vector<std::string> dura_vec(4);
 	int temp;
-	for (int i = end.size() - 1; i >= 0; --i)
+	for(int i = int(end.size()) - 1; i >= 0; --i)
 	{
 		temp = i;
 		if (end[i] < start[i])
@@ -605,7 +600,7 @@ void Session::View_Scroll_Event(sf::Event& event, sf::View& scroll_view)
 
 		show_scroll_bar = true;
 		scroll_bar.setSize({ 18.f, 207025 / ((records_table.size() + 1) * 35.f) });
-		float estimated_height = (records_table.size() - 12) * 35.f + 337.5;
+		float estimated_height = (records_table.size() - 12) * 35.f + 337.5f;
 		float scroll_bar_move = (((records_table.size() - 12) * 35.f + 455.f) - scroll_bar.getSize().y) / (records_table.size() - 12);
 		if (event.type == sf::Event::MouseWheelMoved)
 		{
@@ -677,8 +672,6 @@ void Session::Draw_To_Main_Window(sf::RenderWindow& window)
 	toggle_btn->DrawTo(window);
 	home_btn->DrawTo(window);
 }
-
-
 
 /// <summary>
 /// The comparator class supplied to the map for sorting the w.r.t. the key

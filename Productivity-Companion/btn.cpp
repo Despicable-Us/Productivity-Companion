@@ -124,7 +124,6 @@ void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<vo
 
 void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func)
 {
-	
 	mousePos = sf::Mouse::getPosition(window);
 	mousePosView = static_cast<sf::Vector2f>(mousePos);
 
@@ -159,20 +158,6 @@ void Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<vo
 		this->btnScale = 1.f;
 		mouseInside = false;
 	}
-
-
-	//if (this->wholeBtnRect.contains(this->mousePosView))
-	//{
-	//	if (event.type == sf::Event::MouseButtonReleased)
-	//	{
-	//		if (event.key.code == sf::Mouse::Left)
-	//		{
-	//			func();
-	//		}
-	//	}
-	//}
-
-
 
 	this->shape.setScale(btnScale, btnScale);
 	this->C1.setScale(btnScale, btnScale);
@@ -356,8 +341,6 @@ std::string Btn::BtnEvents(sf::RenderWindow& window, sf::Event& event)
 	this->C2.setScale(btnScale, btnScale);
 	return "";
 }
-
-
 
 void Btn::DrawTo(sf::RenderWindow& window)
 {

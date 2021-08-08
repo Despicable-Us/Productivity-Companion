@@ -56,4 +56,3 @@ class Icon
 		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::function<void()> func);
 		bool Run_Outside_Event(sf::RenderWindow& window, sf::Event& event);
 };
-

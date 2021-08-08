@@ -20,9 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Btn.h" />
+    <ClInclude Include="FlowTime.h" />
+    <ClInclude Include="InputField.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="btn.cpp" />
+    <ClCompile Include="FlowTime.cpp" />
+    <ClCompile Include="InputField.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="sqlite3.c" />
   </ItemGroup>
