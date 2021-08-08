@@ -46,6 +46,60 @@ int udh::createTaskTable()
 	return exit;
 }
 
+int udh::createPlannerTable()
+{
+	char* messageError;
+	std::string sql = "CREATE TABLE IF NOT EXISTS PLANNER("
+		"ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+		"plan_sheet_name VARCHAR(100));";
+
+	int exit = 0;
+	try
+	{
+		/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+		exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+		if (exit != SQLITE_OK) {
+			std::cerr << "Error in createPlannerTable function." << std::endl;
+			sqlite3_free(messageError);
+		}
+		else
+			std::cout << "Planner Table created Successfully" << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what();
+	}
+	return exit;
+}
+
+int udh::createPlannerListTable()
+{
+	char* messageError;
+	std::string sql = "CREATE TABLE IF NOT EXISTS PLANNER_LIST("
+		"ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
+		"Task      TEXT NOT NULL, "
+		"Status INTEGER,"
+		"Day INTEGER,"
+		"plan_sheet_name VARCHAR(40));";
+
+	int exit = 0;
+	try
+	{
+		/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+		exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+		if (exit != SQLITE_OK) {
+			std::cerr << "Error in createPlannerList function." << std::endl;
+			sqlite3_free(messageError);
+		}
+		else
+			std::cout << "Planner ListTable created Successfully" << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what();
+	}
+	return exit;
+}
 
 int udh::insertTaskDB(std::string sql_data)
 {
