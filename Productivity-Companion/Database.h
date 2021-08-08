@@ -19,6 +19,8 @@ namespace udh
 	/// <param name="s">The database to create table in.</param>
 	/// <returns>Exit status of sqlite3_exec for table creation</returns>
 	int createTaskTable();
+	int createPlannerTable();
+	int createPlannerListTable();
 	int deleteData();
 	//int insertTaskData(const char* s, udh::inputField data);
 	int insertTaskDB(std::string);

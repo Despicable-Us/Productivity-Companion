@@ -99,6 +99,11 @@ int main()
 	TodoList todolist;					 // TO-DO LIST
 	Study_Planner study_planner(window);		 // STUDY PLANNER
 
+	//creating tables
+	udh::createPlannerTable();
+	udh::createPlannerListTable();
+
+
 	auto pomo_timer_func = [&]()
 	{
 		run_main_window = false;
@@ -182,6 +187,7 @@ int main()
 				if (event.type == sf::Event::Closed)
 				{
 					window.close();
+					sqlite3_close(DB);
 				}
 			}
 		}
