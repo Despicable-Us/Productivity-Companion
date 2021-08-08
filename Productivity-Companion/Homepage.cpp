@@ -17,6 +17,13 @@ std::vector<udh::inputField> studyTextList;
 udh::inputField sampletext;
 int viewPos;
 
+sqlite3* DB;
+// BOOLEAN AND LAMBDA EXPRESSIONS
+bool run_main_window = true;
+bool run_pomo_timer = false;
+bool run_session_tracker = false;
+bool run_todo_list = false;
+bool run_study_planner = false;
 
 std::vector<std::string> quote_vec =
 {
@@ -35,6 +42,8 @@ int main()
 	video_mode.width = WIN_WIDTH;
 	video_mode.height = WIN_HEIGHT;
 	
+	int exit = sqlite3_open("Productivity_companion.db", &DB);
+
 	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close,settings);
 	window.setFramerateLimit(120);
 	sf::Event event;
@@ -89,13 +98,6 @@ int main()
 	Session_Tracker session_app(window); // SESSION TRACKER
 	TodoList todolist;					 // TO-DO LIST
 	Study_Planner study_planner(window);		 // STUDY PLANNER
-
-	// BOOLEAN AND LAMBDA EXPRESSIONS
-	bool run_main_window = true;
-	bool run_pomo_timer = false;
-	bool run_session_tracker = false;
-	bool run_todo_list = false;
-	bool run_study_planner = false;
 
 	auto pomo_timer_func = [&]()
 	{

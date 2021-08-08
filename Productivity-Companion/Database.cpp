@@ -5,7 +5,7 @@
 #include<vector>
 extern udh::inputField sampletext;
 extern std::vector<udh::inputField> textList;
-
+extern sqlite3* DB;
 int udh::createDB(const char* s)
 {
 	sqlite3* DB;
@@ -17,9 +17,8 @@ int udh::createDB(const char* s)
 	return exit;
 }
 
-int udh::createTaskTable(const char* s)
+int udh::createTaskTable()
 {
-	sqlite3* DB;
 	char* messageError;
 
 	std::string sql = "CREATE TABLE IF NOT EXISTS TASKS("
@@ -31,7 +30,6 @@ int udh::createTaskTable(const char* s)
 		int exit = 0;
 	try
 	{
-		exit = sqlite3_open(s, &DB);
 		/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 		exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 		if (exit != SQLITE_OK) {
@@ -40,7 +38,6 @@ int udh::createTaskTable(const char* s)
 		}
 		else
 			std::cout << "Table created Successfully" << std::endl;
-		sqlite3_close(DB);
 	}
 	catch (const std::exception& e)
 	{
@@ -50,12 +47,11 @@ int udh::createTaskTable(const char* s)
 }
 
 
-int udh::insertTaskDB(const char* s, std::string sql_data)
+int udh::insertTaskDB(std::string sql_data)
 {
-	sqlite3* DB;
 	char* messageError;
 	std::cout << sql_data << std::endl;
-	int exit = sqlite3_open(s, &DB);
+	int exit;
 	exit = sqlite3_exec(DB, sql_data.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in insertData function." << std::endl;
@@ -67,13 +63,13 @@ int udh::insertTaskDB(const char* s, std::string sql_data)
 }
 
 
-int udh::AddTask(const char* s, udh::inputField task)
+int udh::AddTask (udh::inputField task)
 {
-	sqlite3* DB;
+	
 	char* messageError;
 	std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task.SanitizedData() + "', '" +
 		std::to_string(task.getstatus()) + "','" + std::to_string(task.getDay()) + "');";
-	int exit = sqlite3_open(s, &DB);
+	int exit;
 	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
@@ -87,14 +83,14 @@ int udh::AddTask(const char* s, udh::inputField task)
 }
 
 
-int udh::updateTask(const char* s,std::vector<udh::inputField>::iterator itr)
+int udh::updateTask(std::vector<udh::inputField>::iterator itr)
 {
-	sqlite3* DB;
 	char* messageError;
 
 	std::string sql = "UPDATE TASKS SET Task ='" + sampletext.SanitizedData()+ "' WHERE Task = '"+itr->SanitizedData()+"';";
 
-	int exit = sqlite3_open(s, &DB);
+	int exit;
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in updateTask function." << std::endl;
@@ -106,13 +102,13 @@ int udh::updateTask(const char* s,std::vector<udh::inputField>::iterator itr)
 	return 0;
 }
 
-int udh::DeleteTask(const char* s,std::vector<udh::inputField>::iterator itr)
+int udh::DeleteTask(std::vector<udh::inputField>::iterator itr)
 {
-	sqlite3* DB;
 	char* messageError;
 	std::string sql = "DELETE FROM TASKS WHERE Task = '" + itr->SanitizedData()+"';";
 
-	int exit = sqlite3_open(s, &DB);
+	int exit;
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in DeleteTask function." << std::endl;
@@ -124,14 +120,13 @@ int udh::DeleteTask(const char* s,std::vector<udh::inputField>::iterator itr)
 	return 0;
 }
 
-int udh::deleteData(const char* s)
+int udh::deleteData()
 {
-	sqlite3* DB;
 	char* messageError;
 
 	std::string sql = "DROP TABLE TASKS;";
 
-	int exit = sqlite3_open(s, &DB);
+	int exit;
 	
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, NULL, &messageError);
 	if (exit != SQLITE_OK) {
@@ -163,14 +158,15 @@ int udh::delete_plan_sheet_data(const char* s, std::string plan_sheet_name)
 	return 0;
 }
 
-int udh::LoadTaskList(const char* s)
+int udh::LoadTaskList()
+
 {
-	sqlite3* DB;
 	char* messageError;
 
 	std::string sql = "SELECT * FROM TASKS;";
 
-	int exit = sqlite3_open(s, &DB);
+	int exit;
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here*/
 	exit = sqlite3_exec(DB, sql.c_str(), udh::callback, NULL, &messageError);
 
 	if (exit != SQLITE_OK) {
@@ -215,6 +211,6 @@ int udh::select_plan_sheet_data(const char* s, std::string name)
 	}
 	else
 		std::cout << "Records selected Successfully!" << std::endl;
-
+	sqlite3_close(DB);
 	return 0;
 }

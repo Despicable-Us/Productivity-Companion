@@ -177,7 +177,7 @@ void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, s
 
 		else if (itr->del_icon.Run_Outside_Event(*window, event))
 		{
-			udh::DeleteTask("Productivity_companion.db", itr);
+			udh::DeleteTask(itr);
 			textlist.erase(itr);
 			break;
 		}
@@ -229,7 +229,7 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 					a.pop_back();
 					a.push_back('\n');
 					sampletext.setdata(a);
-					udh::updateTask("Productivity_companion.db", edititr);
+					udh::updateTask(edititr);
 					edititr->setdata(a);
 					edititr->edit.setbtncolor(sf::Color(235, 235, 235));
 					sampletext.setdata("");
@@ -289,7 +289,7 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					textlist.push_back(sampletext);
 					if (!is_planner_list)
 					{
-						udh::AddTask("Productivity_companion.db", sampletext);
+						udh::AddTask(sampletext);
 					}
 					sampletext.setdata("");
 					a = "";

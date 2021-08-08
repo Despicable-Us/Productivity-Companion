@@ -1,5 +1,5 @@
 #include "TodoList.h"
-
+extern sqlite3* DB;
 TodoList::TodoList() :c1(15.f), c2(15.f),
 	textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 {
@@ -93,8 +93,8 @@ void TodoList::LoadTodoList()
 {
 	textList.clear();
 	udh::createDB("Productivity_companion.db");
-	udh::createTaskTable("Productivity_companion.db");
-	udh::LoadTaskList("Productivity_companion.db");
+	udh::createTaskTable();
+	udh::LoadTaskList();
 	sampletext.setdata("");
 	sampletext.setstatus(false);
 }
@@ -153,6 +153,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		{
 			this->Update_DB();
 		}
+		sqlite3_close(DB);
 		// else block maybe necessary to delete erase all data if textlist is empty while exit.
 		window.close();
 	}
@@ -224,9 +225,11 @@ void TodoList::Update_DB()
 		}
 		sql_data.pop_back();
 		sql_data.push_back(';');
+
+		//why is this checking length?
 		if (sql_data.size() > 68)
 		{
-			udh::insertTaskDB("Productivity_companion.db", sql_data);
+			udh::insertTaskDB(sql_data);
 		}
 	}
 }
