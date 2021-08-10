@@ -44,4 +44,6 @@ public:
 	void DrawTodoMainWindow(sf::RenderWindow& window);
 	void DrawTodoView(sf::RenderWindow& window);
 	void Update_DB();
+	bool run_todoList;
+	bool run_completedList;
 };

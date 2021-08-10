@@ -122,6 +122,9 @@ int udh::AddTask (udh::inputField task)
 	char* messageError;
 	std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task.SanitizedData() + "', '" +
 		std::to_string(task.getstatus()) + "','" + std::to_string(task.getDay()) + "');";
+
+	std::cout << sql << std::endl;
+
 	int exit;
 	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);

@@ -201,6 +201,7 @@ void Study_Planner::Init_UI_Components()
 	{
 		this->home_back_button_clicked = true;
 		textList.clear();
+		completed.clear();
 	};
 }
 

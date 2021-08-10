@@ -11,6 +11,7 @@
 #include "Icon.h"
 
 
+#define COMPLETED_C 41, 41, 41
 
 
 namespace udh
@@ -109,7 +110,7 @@ namespace udh
 	/// <param name="sample">inputField type to store the string data already available in the task that was selected to edit</param>
 	/// <param name="textarea">Refrence to the input area where text is entered</param>
 	void checkAction(sf::Event event, std::vector<udh::inputField>& textlist, sf::RenderWindow* window,
-		std::vector<udh::inputField>::iterator& itredit, udh::inputField& sample, udh::Button& textarea);
+		std::vector<udh::inputField>::iterator& itredit, udh::inputField& sample, udh::Button& textarea, bool&);
 
 	/// <summary>
 	/// Edits the task if edit button for that task is pressed

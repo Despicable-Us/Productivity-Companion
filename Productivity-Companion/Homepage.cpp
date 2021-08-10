@@ -29,10 +29,12 @@ bool run_study_planner = false;
 
 std::vector<std::string> quote_vec =
 {
-	"If nothing works then there is KaleyDai's rule no. 3.",
-	"Something is better than nothing",
-	"If life gives you lemon, throw away",
-	"If something bothers you too much, just fuck off"
+	"Work hard in silence, let success make the noise.",
+	"Programming is a skill best practice and example rather than from books.",
+	"You can never understand everything but you should push yourself to understand the system.",
+	"While there's CODE there's BUG.", 
+	"Experience is the name everyone gives to their mistakes.",
+	"Code is like humour. When you have to explain it, it's bad."
 };
 
 

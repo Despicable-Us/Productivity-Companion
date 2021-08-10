@@ -19,7 +19,7 @@ class InputField
 		std::string bufferString;
 		std::string savedString;
 		size_t charSize = 16;
-		float fieldWidth = 300.f;
+		float fieldWidth = 190.f;
 		float padX = 14.f;
 		float padY = 5.f;
 		

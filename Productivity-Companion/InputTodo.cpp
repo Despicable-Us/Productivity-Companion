@@ -158,15 +158,15 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, std::vector<udh::inpu
 		Rect.setPosition({ 20.f, i });
 		cL.setPosition(5.f, i);
 		cR.setPosition(110.f, i);
-		Rect.setFillColor(sf::Color(200, 200, 200));
-		cL.setFillColor(sf::Color(200, 200, 200));
-		cR.setFillColor(sf::Color(200, 200, 200));
+		Rect.setFillColor(sf::Color(COMPLETED_C));
+		cL.setFillColor(sf::Color(COMPLETED_C));
+		cR.setFillColor(sf::Color(COMPLETED_C));
 
 		sf::Font roboto_font;
 		roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf");
 		sf::Text completed_text("Completed", roboto_font, 16);
 		completed_text.setPosition({ 30.f, i + 5.f });
-		completed_text.setFillColor(sf::Color::Black);
+		completed_text.setFillColor(sf::Color::White);
 
 		window->draw(Rect);
 		window->draw(cL);
@@ -219,7 +219,7 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, std::vector<udh::inpu
 }
 
 void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::RenderWindow* window,
-	std::vector<udh::inputField>::iterator& itredit, udh::inputField& sample, udh::Button& textarea)
+	std::vector<udh::inputField>::iterator& itredit, udh::inputField& sample, udh::Button& textarea, bool &selected)
 {
 	for (std::vector<udh::inputField>::iterator itr = list.begin(); itr < list.end(); itr++)
 	{
@@ -228,29 +228,31 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 			if (!itr->completed)
 			{
 				itr->completed = true;
-				std::string sql = "UPDATE TASKS SET Status ='" + std::to_string(itr->getstatus()) + "' WHERE Task = '" + itr->SanitizedData() + "';";
+				std::string sql = "UPDATE TASKS SET Status = " + std::to_string(itr->getstatus()) + " WHERE Task = '" + itr->SanitizedData() + "';";
 				std::cout << sql << std::endl;
 				completed.push_back(*itr);
 				list.erase(itr);
 				udh::UpdateStatus(sql);
-				std::cout << "Yeta pani" << std::endl;
+				selected = false;
 			}
 
 			else if(itr->completed)
 			{
 				itr->completed = false;
-				std::string sql = "UPDATE TASKS SET Status ='" + std::to_string(itr->getstatus()) + "' WHERE Task = '" + itr->SanitizedData() + "';";
+				std::string sql = "UPDATE TASKS SET Status = " + std::to_string(itr->getstatus()) + " WHERE Task = '" + itr->SanitizedData() + "';";
 				std::cout << sql << std::endl;
 				textList.push_back(*itr);
 				list.erase(itr);
+				udh::UpdateStatus(sql);
 				std::cout << "Wuta pani" << std::endl;
+				selected = false;
 			}
 		}
 
 		else if (itr->del_icon.Run_Outside_Event(*window, event))
 		{
 			udh::DeleteTask(itr);
-			textList.erase(itr);
+			list.erase(itr);
 			break;
 		}
 		

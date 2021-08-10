@@ -5,7 +5,7 @@ extern sqlite3* DB;
 TodoList::TodoList() :c1(15.f), c2(15.f),
 	textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 {
-	scrollBar.setFillColor(sf::Color(100, 100, 100));
+	scrollBar.setFillColor(sf::Color(COMPLETED_C));
 	scrollBar.setPosition(741, 169);
 
 	c1.setFillColor(sf::Color(235, 235, 235));
@@ -35,6 +35,9 @@ TodoList::TodoList() :c1(15.f), c2(15.f),
 		home_back_btn_clicked = true;
 	};
 	this->is_planner_sheet = false;
+
+	this->run_completedList = true;
+	this->run_todoList = true;
 }
 
 
@@ -60,6 +63,8 @@ textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 
 void TodoList::Reset_Functions(std::string planner_name)
 {
+	this->run_completedList = true;
+	this->run_todoList = true;
 	this->plan_sheet_name = planner_name;
 	textList.clear();
 	scrollBar.setPosition(741, 169);
@@ -103,7 +108,9 @@ void TodoList::LoadTodoList()
 
 void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& TaskView, bool& run_main_window, bool& run_app)
 {
-	int size = int(textList.size()) * 40;
+	int size = ( int(textList.size()) + int(completed.size()) ) * 40 ;
+	if (!completed.empty())
+		size += 40;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		while (!event.KeyReleased)
@@ -175,7 +182,17 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 	else if (event.type == sf::Event::MouseButtonPressed)
 	{
 		sampletext.setdata("");
-		udh::checkAction(event, textList, &window, editTaskItr, sampletext, textarea);
+		if (run_todoList)
+		{
+			udh::checkAction(event, textList, &window, editTaskItr, sampletext, textarea, run_completedList);
+		}
+		if (run_completedList)
+		{
+			udh::checkAction(event, completed, &window, editTaskItr, sampletext, textarea, run_todoList);
+		}
+		run_completedList = true;
+		run_todoList = true;
+	
 	}
 	home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
 	if (home_back_btn_clicked)
@@ -185,6 +202,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		run_main_window = true;
 		run_app = false;
 		textList.clear();
+		completed.clear();
 	}
 }
 
@@ -203,14 +221,15 @@ void TodoList::DrawTodoMainWindow(sf::RenderWindow& window)
 void TodoList::DrawTodoView(sf::RenderWindow& window)
 {
 	udh::drawlist(textList, completed, &window);
-	if (textList.size() > 11)
+	if (textList.size()+completed.size() > 11 )
 	{
-		int size = int(textList.size()) * 40;
+		int size = int(textList.size()) * 40 + int(completed.size()) * 40;
+		if (!completed.empty())
+			size += 40;
 		scrollBar.setSize(sf::Vector2f(18.f, 207025.f / size));
 		scrollBar.setPosition(sf::Vector2f(741.f, viewPos + viewPos * 455.f / size));
 		window.draw(scrollBar);
 	}
-	
 }
 
 void TodoList::Update_DB()
