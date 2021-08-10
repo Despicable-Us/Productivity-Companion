@@ -1,5 +1,7 @@
 #include "TodoList.h"
 extern sqlite3* DB;
+
+
 TodoList::TodoList() :c1(15.f), c2(15.f),
 	textarea("Add Task", { 580.f,30.f }, { 88.f, TEXTAREA_HEIGHT }, fonts)
 {
@@ -92,7 +94,7 @@ void TodoList::LoadDB()
 void TodoList::LoadTodoList()
 {
 	textList.clear();
-	udh::createDB("Productivity_companion.db");
+	//udh::createDB("Productivity_companion.db");
 	udh::createTaskTable();
 	udh::LoadTaskList();
 	sampletext.setdata("");
@@ -200,7 +202,7 @@ void TodoList::DrawTodoMainWindow(sf::RenderWindow& window)
 
 void TodoList::DrawTodoView(sf::RenderWindow& window)
 {
-	udh::drawlist(textList, &window);
+	udh::drawlist(textList, completed, &window);
 	if (textList.size() > 11)
 	{
 		int size = int(textList.size()) * 40;

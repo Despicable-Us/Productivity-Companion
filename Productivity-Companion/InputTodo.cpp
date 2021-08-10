@@ -1,6 +1,10 @@
 #include "InputTodo.h"
 #include "Database.h"
 //default constructor
+
+extern std::vector<udh::inputField> textList;
+extern std::vector<udh::inputField> completed;
+extern udh::inputField sampletext;
 udh::inputField::inputField()
 {
 	this->font.loadFromFile("Fonts/Roboto-Medium.ttf");
@@ -28,7 +32,6 @@ void udh::inputField::loadIconTexture()
 		throw "Error in loading the 'pencil.png'";
 	del_icon = Icon(del_tex);
 	edit_icon = Icon(edit_tex);
-
 }
 
 void udh::inputField::setdata(std::string str)
@@ -100,12 +103,11 @@ std::string udh::inputField::SanitizedData()
 	return data;
 }
 
-
-void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* window)
+void udh::drawlist(std::vector<udh::inputField>& textlist, std::vector<udh::inputField>& completed, sf::RenderWindow* window)
 {
+	float i = 0;
 	if (!textlist.empty())
 	{
-		float i = 0;
 		for (std::vector<udh::inputField>::iterator itr = textlist.begin(); itr < textlist.end(); itr++)
 		{
 			sf::CircleShape cL(15.f), cR(15.f);
@@ -135,53 +137,122 @@ void udh::drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* win
 
 			itr->done.drawTo(*window);
 			itr->del_icon.Draw_To(*window);
-			if (!itr->completed)
-			{
-				itr->edit_icon.Set_Icon_Pos({ 680.f, i + 15 });
-				itr->edit_icon.Draw_To(*window);
 
-			}
+			itr->edit_icon.Set_Icon_Pos({ 680.f, i + 15 });
+			itr->edit_icon.Draw_To(*window);
+			
 			itr->drawtext(window);
 
-			if (itr->completed == true)
-			{
+			itr->done.setbtncolor(sf::Color(235, 235, 235));
+			itr->textdata.setFillColor(sf::Color::Black);
+			
+			i += 40;
+		}
+	}
+
+	if (!completed.empty())
+	{
+		sf::CircleShape cL(15.f), cR(15.f);
+		sf::RectangleShape Rect;
+		Rect.setSize({ 105.f, 30.f });
+		Rect.setPosition({ 20.f, i });
+		cL.setPosition(5.f, i);
+		cR.setPosition(110.f, i);
+		Rect.setFillColor(sf::Color(200, 200, 200));
+		cL.setFillColor(sf::Color(200, 200, 200));
+		cR.setFillColor(sf::Color(200, 200, 200));
+
+		sf::Font roboto_font;
+		roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf");
+		sf::Text completed_text("Completed", roboto_font, 16);
+		completed_text.setPosition({ 30.f, i + 5.f });
+		completed_text.setFillColor(sf::Color::Black);
+
+		window->draw(Rect);
+		window->draw(cL);
+		window->draw(cR);
+		window->draw(completed_text);
+		i += 40;
+		for (std::vector<udh::inputField>::iterator itr = completed.begin(); itr < completed.end(); itr++)
+		{
+			sf::CircleShape cL(15.f), cR(15.f);
+			sf::RectangleShape Rect;
+			Rect.setSize({ 700.f, 30.f });
+			Rect.setPosition({ 20.f,i });
+			cL.setPosition(5.f, i);
+			cR.setPosition(705.f, i);
+			Rect.setFillColor(sf::Color(200, 200, 200));
+			cL.setFillColor(sf::Color(200, 200, 200));
+			cR.setFillColor(sf::Color(200, 200, 200));
+
+			itr->setposition(sf::Vector2f(50.f, i + 5));
+
+			//setting up mark done button
+			itr->done.setBtnPosition(sf::Vector2f(20.f, i + 9));
+			itr->done.setBtnSize(sf::Vector2f(12.f, 12.f));
+			itr->done.setbtnRect(sf::FloatRect(20.f, i + 5, 18.f, 18.f));
+			itr->done.setoutline(sf::Color(150, 150, 150), 2);
+
+			itr->del_icon.Set_Icon_Pos({ 630.f, i + 15 });
+
+
+			window->draw(Rect);
+			window->draw(cL);
+			window->draw(cR);
+
+			itr->done.drawTo(*window);
+			itr->del_icon.Draw_To(*window);
+
+			itr->drawtext(window);
+
+			
 				itr->done.setbtncolor(sf::Color(40, 40, 40));
 				itr->crossline.setPosition(sf::Vector2f(50, i + 14));
 				itr->crossline.setFillColor(sf::Color(40, 40, 40));
-				itr->crossline.setSize({ itr->gettext().getGlobalBounds().width+1, 3});
+				itr->crossline.setSize({ itr->gettext().getGlobalBounds().width + 1, 3 });
 				itr->textdata.setFillColor(sf::Color(100, 100, 100));
 				window->draw(itr->crossline);
-			}
-			else
-			{
-				itr->done.setbtncolor(sf::Color(235, 235, 235));
-				itr->textdata.setFillColor(sf::Color::Black);
-			}
+
 			i += 40;
 		}
 	}
 }
 
-void udh::checkAction(sf::Event event, std::vector<udh::inputField>& textlist, sf::RenderWindow* window,
+void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::RenderWindow* window,
 	std::vector<udh::inputField>::iterator& itredit, udh::inputField& sample, udh::Button& textarea)
 {
-	for (std::vector<udh::inputField>::iterator itr = textlist.begin(); itr < textlist.end(); itr++)
+	for (std::vector<udh::inputField>::iterator itr = list.begin(); itr < list.end(); itr++)
 	{
 		if (itr->done.ispressed(event, *window))
 		{
-			if (itr->completed == false)
+			if (!itr->completed)
+			{
 				itr->completed = true;
-			else
+				std::string sql = "UPDATE TASKS SET Status ='" + std::to_string(itr->getstatus()) + "' WHERE Task = '" + itr->SanitizedData() + "';";
+				std::cout << sql << std::endl;
+				completed.push_back(*itr);
+				list.erase(itr);
+				udh::UpdateStatus(sql);
+				std::cout << "Yeta pani" << std::endl;
+			}
+
+			else if(itr->completed)
+			{
 				itr->completed = false;
+				std::string sql = "UPDATE TASKS SET Status ='" + std::to_string(itr->getstatus()) + "' WHERE Task = '" + itr->SanitizedData() + "';";
+				std::cout << sql << std::endl;
+				textList.push_back(*itr);
+				list.erase(itr);
+				std::cout << "Wuta pani" << std::endl;
+			}
 		}
 
 		else if (itr->del_icon.Run_Outside_Event(*window, event))
 		{
 			udh::DeleteTask(itr);
-			textlist.erase(itr);
+			textList.erase(itr);
 			break;
 		}
-
 		
 		else if (itr->edit_icon.Run_Outside_Event(*window, event) && !itr->completed)
 		{

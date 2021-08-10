@@ -1,4 +1,5 @@
 #include "Session.h"
+extern sqlite3* DB;
 
 /// <summary>
 ///  Default constructor for the RECORD
@@ -257,7 +258,7 @@ void Session::Init_Variables()
 	this->scroll_bar.setFillColor(sf::Color(DATE_BAR_C));
 	this->scroll_bar.setPosition({ 741.f, 0.f });
 	this->scroll_bar.setSize({ 18.f, 207025 / ((records_table.size() + 1) * 35.f) });
-	this->dir = "Session.db";
+	this->dir = "Productivity_companion.db";
 }
 
 /// <summary>
@@ -773,13 +774,9 @@ static int session_detail::callback(void* NotUsed, int argc, char** argv, char**
 /// <returns>Confirms the execution</returns>
 static int session_detail::select_data(const char* s, std::string selected_data = "")
 {
-	sqlite3* DB;
 	char* messageError;
 	std::string sql = "SELECT * FROM SESSION_LIST WHERE session_id_name = '" + selected_data + "';";
-
-	int exit = sqlite3_open(s, &DB);
-	
-	exit = sqlite3_exec(DB, sql.c_str(), session_detail::callback, NULL, &messageError);
+	int exit = sqlite3_exec(DB, sql.c_str(), session_detail::callback, NULL, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in selectData function." << std::endl;
 		sqlite3_free(messageError);
@@ -796,9 +793,7 @@ static int session_detail::select_data(const char* s, std::string selected_data 
 /// <returns>Confirms the execution.</returns>
 static int session_detail::insert_data(const char* s, std::string total_time)
 {
-	sqlite3* DB;
 	char* messageError;
-	int exit = sqlite3_open(s, &DB);
 	std::string sql;
 
 	if (!new_data_added_vec.empty())
@@ -810,7 +805,7 @@ static int session_detail::insert_data(const char* s, std::string total_time)
 		}
 		tester.erase(tester.size() - 1, 1);
 		sql = "INSERT INTO SESSION_LIST (session_detail, session_id_name, total_time) VALUES" + tester + ";";
-		exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+		int exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
 		if (exit != SQLITE_OK) {
 			std::cerr << "Error in insertData function." << std::endl;
 			sqlite3_free(messageError);

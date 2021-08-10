@@ -2,7 +2,6 @@
 #ifndef INPUT_FIELD
 #define INPUT_FIELD
 
-
 #include<iostream>
 #include"SFML/Graphics.hpp"
 #include<string.h>
@@ -10,6 +9,9 @@
 #include <Windows.h>
 #include <time.h>
 #include "Icon.h"
+
+
+
 
 namespace udh
 {
@@ -85,11 +87,9 @@ namespace udh
 		bool getstatus();
 
 		int getDay();
-
 		void setday(int a);
-
 		std::string SanitizedData();
-		
+		friend void drawlist(std::vector<udh::inputField>& textlist, std::vector<udh::inputField>&, sf::RenderWindow* window);
 	};
 
 	/// <summary>
@@ -97,7 +97,7 @@ namespace udh
 	/// </summary>
 	/// <param name="textlist">A vector containing inputfield objects to draw</param>
 	/// <param name="window">A refrence of type Renderwindow to draw the list into</param>
-	void drawlist(std::vector<udh::inputField>& textlist, sf::RenderWindow* window);
+	void drawlist(std::vector<udh::inputField>& textlist, std::vector<udh::inputField>&, sf::RenderWindow* window);
 
 	/// <summary>
 	/// checks the action user performs on the task

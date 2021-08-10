@@ -8,6 +8,7 @@ std::vector<std::string> db_session_list_data;
 std::vector<std::string> db_total_time_string;
 std::vector<std::string> new_input_texts;
 std::vector<std::vector<std::string>> db_total_time_list;
+extern sqlite3* DB;
 
 /// <summary>
 /// Parameterized constructor for SESSION_TRACKER 
@@ -166,7 +167,7 @@ void Session_Tracker::Init_Variables()
 	this->btn_show = true;
 	this->show_session = false;
 	this->show_session_tab = true;
-	this->dir = "Session.db";
+	this->dir = "Productivity_companion.db";
 	this->update_total_time_list = false;
 	this->btn_event_func = [&]()
 	{
@@ -618,10 +619,11 @@ static int session_tracker::callback(void* NotUsed, int argc, char** argv, char*
 /// <returns>Returns success/failure</returns>
 static int session_tracker::select_data(const char* s)
 {
-	sqlite3* DB;
+	//sqlite3* DB;
 	char* messageError;
 	std::string sql = "SELECT * FROM SESSION;";
-	int exit = sqlite3_open(s, &DB);
+	//int exit = sqlite3_open(s, &DB);
+	int exit = 0;
 	exit = sqlite3_exec(DB, sql.c_str(), session_tracker::callback, NULL, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in selectData function." << std::endl;
@@ -639,9 +641,10 @@ static int session_tracker::select_data(const char* s)
 /// <returns>Returns success/failure</returns>
 static int session_tracker::insert_data(const char* s)
 {
-	sqlite3* DB;
+	//sqlite3* DB;
 	char* messageError;
-	int exit = sqlite3_open(s, &DB);
+	//int exit = sqlite3_open(s, &DB);
+	int exit = 0;
 	std::string sql;
 	if (!new_input_texts.empty())
 	{
@@ -665,10 +668,11 @@ static int session_tracker::insert_data(const char* s)
 
 int session_tracker::fetch_total_time_list(const char* s, std::string session_name)
 {
-	sqlite3* DB;
+	//sqlite3* DB;
 	char* messageError;
 	std::string sql = "SELECT total_time FROM SESSION_LIST where session_id_name = '" + session_name + "' ORDER BY id DESC LIMIT 1;";
-	int exit = sqlite3_open(s, &DB);
+	//int exit = sqlite3_open(s, &DB);
+	int exit = 0;
 	exit = sqlite3_exec(DB, sql.c_str(), session_tracker::call_back_total_time_list, &session_name, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in selectData function." << std::endl;
@@ -690,13 +694,13 @@ int session_tracker::call_back_total_time_list(void* something, int argc, char**
 
 int session_tracker::delete_session_tab(const char* s, std::string name)
 {
-	sqlite3* DB;
+	//sqlite3* DB;
 	char* messageError;
 	std::string sql = "DELETE FROM SESSION WHERE session_name = '" + name + "';"
 					  "DELETE FROM SESSION_LIST WHERE session_id_name = '" + name + "';";
 
-	int exit = sqlite3_open(s, &DB);
-	
+	//int exit = sqlite3_open(s, &DB);
+	int exit = 0;
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, NULL, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in deleteData function." << std::endl;
@@ -710,9 +714,10 @@ int session_tracker::delete_session_tab(const char* s, std::string name)
 
 int session_tracker::insert_new_session(const char* s, std::string session_name)
 {
-	sqlite3* DB;
+	//sqlite3* DB;
 	char* messageError;
-	int exit = sqlite3_open(s, &DB);
+	//int exit = sqlite3_open(s, &DB);
+	int exit = 0;
 	std::string sql;
 	sql = "INSERT INTO SESSION (session_name) VALUES('" + session_name + "');";
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);

@@ -10,6 +10,7 @@
 #include <functional>
 
 extern std::vector<udh::inputField> textList;
+extern std::vector<udh::inputField> completed;
 extern udh::inputField sampletext;
 extern int viewPos;
 

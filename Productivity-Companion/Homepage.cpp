@@ -13,12 +13,14 @@
 #define APP_NAME_HEIGHT 468.f
 
 std::vector<udh::inputField> textList;
+std::vector<udh::inputField> completed;
 std::vector<udh::inputField> studyTextList;
 udh::inputField sampletext;
 int viewPos;
 
 sqlite3* DB;
-// BOOLEAN AND LAMBDA EXPRESSIONS
+
+// BOOLEAN 
 bool run_main_window = true;
 bool run_pomo_timer = false;
 bool run_session_tracker = false;
@@ -69,8 +71,7 @@ int main()
 		throw "Error in loading 'low_background_cover.jpg'";
 
 	sf::Sprite sec_back_sprite(sec_back);
-	sec_back_sprite.setPosition({ 0.f,226.f });
-
+	sec_back_sprite.setPosition({ 0.f, 226.f });
 	
 	// LOADING THE FONT
 	sf::Font roboto_font;
@@ -92,6 +93,7 @@ int main()
 	Icon pomo_timer_icon(pomo_timer_tex, { 140.f, ICON_HEIGHT }), session_tracker_icon(session_tracker_tex, {300.f, ICON_HEIGHT}), 
 		 todo_list_icon(todo_list_tex, { 460.f, ICON_HEIGHT }), study_planner_icon(study_planner_tex, {620.f, ICON_HEIGHT});
 
+	udh::open_db();
 
 	// APP OBJECTS INSTANCIATIONS
 	dial::timeSetter timeDial(window);   // POMO TIMER
@@ -102,8 +104,10 @@ int main()
 	//creating tables
 	udh::createPlannerTable();
 	udh::createPlannerListTable();
+	udh::create_main_session_table();
+	udh::create_session_list_table();
 
-
+	// LAMBDA EXPRESSIONS AND FUNCTIONS
 	auto pomo_timer_func = [&]()
 	{
 		run_main_window = false;

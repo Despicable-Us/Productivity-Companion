@@ -1,19 +1,18 @@
-
 //Final Version
 
 #include "database.h"
 #include<vector>
 extern udh::inputField sampletext;
 extern std::vector<udh::inputField> textList;
+extern std::vector<udh::inputField> completed;
 extern sqlite3* DB;
+
 int udh::createDB(const char* s)
 {
 	sqlite3* DB;
-
 	int exit = 0;
 	exit = sqlite3_open(s, &DB);
 	sqlite3_close(DB);
-
 	return exit;
 }
 
@@ -156,6 +155,8 @@ int udh::updateTask(std::vector<udh::inputField>::iterator itr)
 	return 0;
 }
 
+
+
 int udh::DeleteTask(std::vector<udh::inputField>::iterator itr)
 {
 	char* messageError;
@@ -170,6 +171,23 @@ int udh::DeleteTask(std::vector<udh::inputField>::iterator itr)
 	}
 	else
 		std::cout << "Records Deleted Successfully!" << std::endl;
+
+	return 0;
+}
+
+int udh::UpdateStatus(std::string sql)
+{
+	char* messageError;
+
+	int exit;
+	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+	if (exit != SQLITE_OK) {
+		std::cerr << "Error in updateTask function." << std::endl;
+		sqlite3_free(messageError);
+	}
+	else
+		std::cout << "Records updated Successfully!" << std::endl;
 
 	return 0;
 }
@@ -212,15 +230,84 @@ int udh::delete_plan_sheet_data(const char* s, std::string plan_sheet_name)
 	return 0;
 }
 
+int udh::create_main_session_table()
+{
+	char* messageError;
+
+	std::string sql = "CREATE TABLE IF NOT EXISTS SESSION("
+		"id INTEGER NOT NULL PRIMARY KEY, "
+		"session_name VARCHAR(100) );";
+
+	int exit = 0;
+	try
+	{
+		/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+		exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+		if (exit != SQLITE_OK) {
+			std::cerr << "Error in SESSION TABLE creation function." << std::endl;
+			sqlite3_free(messageError);
+		}
+		else
+			std::cout << "SESSION TABLE created Successfully." << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what();
+	}
+	return exit;
+}
+
+int udh::create_session_list_table()
+{
+	char* messageError;
+
+	std::string sql = "CREATE TABLE IF NOT EXISTS SESSION_LIST("
+		"id INTEGER NOT NULL PRIMARY KEY, "
+		"session_detail VARCHAR(255) NOT NULL,"
+		"session_id_name VARCHAR(100) NOT NULL,"
+		"total_time VARCHAR(100) NOT NULL);";
+
+	int exit = 0;
+	try
+	{
+		/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
+		exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);
+		if (exit != SQLITE_OK) {
+			std::cerr << "Error in createTable function." << std::endl;
+			sqlite3_free(messageError);
+		}
+		else
+			std::cout << "Table created Successfully" << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what();
+	}
+	return exit;
+}
+
+int udh::open_db()
+{
+	int exit = 0;
+	const char* s = "Productivity_companion.db";
+	exit = sqlite3_open(s, &DB);
+	return exit;
+}
+
+int udh::close_db()
+{
+	const char* s = "Productivity_companion.db";
+	int exit = 0;
+	sqlite3_close(DB);
+	return exit;
+}
+
 int udh::LoadTaskList()
 
 {
 	char* messageError;
-
 	std::string sql = "SELECT * FROM TASKS;";
-
 	int exit;
-	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here*/
 	exit = sqlite3_exec(DB, sql.c_str(), udh::callback, NULL, &messageError);
 
 	if (exit != SQLITE_OK) {
@@ -242,9 +329,18 @@ int udh::callback(void* NotUsed, int argc, char** argv, char** azColName)
 		sampletext.setstatus(false);
 	}
 	else
+	{
 		sampletext.setstatus(true);
+	}
 	sampletext.setday(std::stoi(argv[3]));
-	textList.push_back(sampletext);
+	if (sampletext.getstatus())
+	{
+		completed.push_back(sampletext);
+	}
+	else
+	{
+		textList.push_back(sampletext);
+	}
 	return 0;
 }
 
