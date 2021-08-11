@@ -10,8 +10,8 @@
 #define WIN_WIDTHF 760.f
 #define WIN_HEIGHTF 675.f
 #define VIEW_START 0.326f
-#define ICON_HEIGHT 400.f
-#define APP_NAME_HEIGHT 468.f
+#define ICON_HEIGHT 370.f
+#define APP_NAME_HEIGHT 438.f
 
 std::vector<udh::inputField> textList;
 std::vector<udh::inputField> completed;
@@ -96,7 +96,7 @@ int main()
 	// INSTANCIATING THE ICON FOR ALL APPS
 	Icon pomo_timer_icon(pomo_timer_tex, { 140.f, ICON_HEIGHT }), session_tracker_icon(session_tracker_tex, {300.f, ICON_HEIGHT}), 
 		 todo_list_icon(todo_list_tex, { 460.f, ICON_HEIGHT }), study_planner_icon(study_planner_tex, {620.f, ICON_HEIGHT}),
-		 sudoku_icon(sudoku_tex, {140.f, 548.f});
+		 sudoku_icon(sudoku_tex, {140.f, 518.f});
 
 	udh::open_db();
 
@@ -162,7 +162,7 @@ int main()
 	session_tracker_text.setPosition({ 300.f, APP_NAME_HEIGHT });
 	todo_list_text.setPosition({ 460.f, APP_NAME_HEIGHT });
 	study_planner_text.setPosition({ 620.f, APP_NAME_HEIGHT });
-	sudoku_text.setPosition({ 140.f, 616.f });
+	sudoku_text.setPosition({ 140.f, 586.f });
 
 	pomo_timer_text.setFillColor(sf::Color::Black);
 	session_tracker_text.setFillColor(sf::Color::Black);
@@ -178,7 +178,7 @@ int main()
 	sf::Text quote("\"" + quote_vec[rand() % quote_vec.size()]  + "\"" , kaushan_font, 24);
 	quote.setFillColor(sf::Color::Black);
 	quote.setOrigin({ quote.getGlobalBounds().width / 2, quote.getGlobalBounds().height / 2 });
-	quote.setPosition({ 380.f, 280.f });
+	quote.setPosition({ 380.f, 260.f });
 
 
 	while (window.isOpen())

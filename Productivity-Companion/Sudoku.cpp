@@ -8,7 +8,6 @@ Box::Box()
 
 Box::Box(sf::Font* font, float width, float height)
 {
-	
 	this->text.setFont(*font);
 	this->shape.setSize(sf::Vector2f(width, height));
 	this->shape.setFillColor(sf::Color(250, 250, 250));
@@ -93,22 +92,27 @@ Sudoku::Sudoku()
 	this->x = -1;
 	this->y = -1;
 
-	this->remove_btn = new Btn("Remove", { 625.f, 220.f }, 16, this->roboto_font);
+	this->remove_btn = new Btn("Remove", { 640.f, 240.f }, 16, this->roboto_font);
+	this->remove_btn->SetTextColor(sf::Color(220,20,60));
+
 	this->remove_btn_func = [&]()
 	{
-		if (Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString() != "" && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
+		if (selected_cell_pos.x != -1)
 		{
-			Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(sf::String(""));
-			check_box[selected_cell_pos.y][selected_cell_pos.x] = "";
-			Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, false);
-			Check_Wrong_Inputs();
-			Boxes[selected_cell_pos.x][selected_cell_pos.y].shape.setFillColor(sf::Color(187, 222, 251));
+			if (Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString() != "" && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
+			{
+				Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(sf::String(""));
+				check_box[selected_cell_pos.y][selected_cell_pos.x] = "";
+				Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, false);
+				Check_Wrong_Inputs();
+				Boxes[selected_cell_pos.x][selected_cell_pos.y].shape.setFillColor(sf::Color(187, 222, 251));
+			}
 		}
 	};
 	this->assists = false;
 	this->toggler_held = false;
 
-	if (!this->background_tex.loadFromFile("Texture/Sudoku_back.png"))
+	if (!this->background_tex.loadFromFile("Texture/sudoku_background.png"))
 		throw "Something that doesn't  matter";
 
 	this->background.setTexture(this->background_tex);
@@ -126,37 +130,6 @@ Sudoku::Sudoku()
 
 Sudoku::~Sudoku()
 {
-}
-
-void Sudoku::Load_Containers()
-{
-	this->sudoku = 
-	{
-		{5,0,3,1,2,0,0,8,0},
-		{6,0,1,3,0,9,0,0,0},
-		{0,8,0,0,5,0,0,0,0},
-		{0,2,0,5,3,0,6,0,7},
-		{0,5,0,0,0,0,0,2,8},
-		{0,0,8,0,6,0,0,0,1},
-		{2,0,0,0,7,0,0,0,0},
-		{0,0,0,6,0,5,8,0,0},
-		{0,0,7,0,0,2,5,1,0},
-	};
-
-	this->solved = 
-	{
-		{"5", "4", "3", "1", "2", "6", "7", "8", "9"},
-		{"6", "7", "1", "3", "8", "9", "2", "4", "5"},
-		{"9", "8", "2", "4", "5", "7", "1", "3", "6"},
-		{"1", "2", "4", "5", "3", "8", "6", "9", "7"},
-		{"3", "5", "6", "7", "9", "1", "4", "2", "8"},
-		{"7", "9", "8", "2", "6", "4", "3", "5", "1"},
-		{"2", "1", "5", "8", "7", "3", "9", "6", "4"},
-		{"4", "3", "9", "6", "1", "5", "8", "7", "2"},
-		{"8", "6", "7", "9", "4", "2", "5", "1", "3"}
-	};
-
-	
 }
 
 void Sudoku::Load_UI_Components()
@@ -240,17 +213,19 @@ void Sudoku::Load_Boxes()
 		}
 	}
 
-	Num_Pads = std::vector<std::vector<Box>>(3, std::vector<Box>(3, Box(&roboto_font, 50.f, 70.f)));
+	Num_Pads = std::vector<std::vector<NumPad>>(3, std::vector<NumPad>(3, NumPad(&roboto_font, 30.f)));
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
 		{
-			Num_Pads[i][j].shape.setPosition({ 550.f + 53.f * i, 250.f + 73.f * j });
+			Num_Pads[i][j].shape.setPosition({ 540.f + 67.f * i, 300.f + 67.f * j });
 			Num_Pads[i][j].Set_Text_Size(24);
 			Num_Pads[i][j].text.setStyle(sf::Text::Bold);
-			Num_Pads[i][j].text.setPosition({ Num_Pads[i][j].shape.getPosition().x + 20.f, Num_Pads[i][j].shape.getPosition().y + 20.f });
+			Num_Pads[i][j].text.setPosition({ Num_Pads[i][j].shape.getPosition().x + 23.f, Num_Pads[i][j].shape.getPosition().y + 14.f });
 			Num_Pads[i][j].text.setString(std::to_string(j * 3 + i + 1));
 			Num_Pads[i][j].text.setFillColor(sf::Color(0, 114, 227));
+			Num_Pads[i][j].shape.setOutlineThickness(2.f);
+			Num_Pads[i][j].shape.setOutlineColor(sf::Color(44, 62, 82));
 		}
 	}
 }
@@ -261,8 +236,6 @@ void Sudoku::Load_Font()
 		throw "Error in loading 'Roboto-Medium.ttf'";
 	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading the 'KaushanScipt font'";
-
-
 }
 
 void Sudoku::Render_To_Main_Window(sf::RenderWindow& window)
@@ -352,7 +325,7 @@ void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
 				{
 					Num_Pads[prev_NP_x][prev_NP_y].shape.setFillColor(sf::Color(250, 250, 250));
 				}
-				Num_Pads[i][j].shape.setFillColor(sf::Color(226, 235, 243));
+				Num_Pads[i][j].shape.setFillColor(sf::Color(187, 222, 251));
 				prev_NP_x = i;
 				prev_NP_y = j;
 
@@ -787,4 +760,22 @@ void Sudoku::Find_Random_Pos(std::vector<std::vector<int>> graph, int& r, int& c
 		r = rand() % 9;
 		c = rand() % 9;
 	} while (graph[r][c] == 0);
+}
+
+NumPad::NumPad()
+{
+}
+
+NumPad::NumPad(sf::Font* font, float radius)
+{
+	this->text.setFont(*font);
+	this->shape.setRadius(radius);
+	this->shape.setFillColor(sf::Color(250, 250, 250));
+	this->text.setCharacterSize(24);
+	this->text.setFillColor(sf::Color(52, 72, 97));
+}
+
+void NumPad::Set_Text_Size(int size)
+{
+	this->text.setCharacterSize(size);
 }

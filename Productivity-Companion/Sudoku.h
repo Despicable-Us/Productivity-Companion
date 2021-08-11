@@ -12,6 +12,18 @@
 #define TOGGLER_C_R 15.f
 #define TOGGLER_WIDTH 30.f
 
+class NumPad
+{
+	public:
+		sf::CircleShape shape;
+		sf::Font roboto_font;
+		sf::Text text;
+		NumPad();
+		NumPad(sf::Font*, float);
+
+		void Set_Text_Size(int);
+};
+
 class Box
 {
 	public:
@@ -56,7 +68,6 @@ class Sudoku
 		sf::CircleShape rect_circle;
 		sf::CircleShape c_left, c_right;
 
-
 		// COMPONETNS
 		sf::Vector2f mouse_pos;
 		sf::Vector2f selected_num_pad_pos;
@@ -64,7 +75,6 @@ class Sudoku
 		std::string selected_num_pad;
 		std::string selected_box_string;
 		sf::Vector2i selected_cell_pos;
-
 
 		int prev_NP_x;
 		int prev_NP_y;
@@ -87,10 +97,10 @@ class Sudoku
 		std::vector<std::vector<int>> sudoku;
 		std::vector<std::vector<std::string>> solved;
 		std::vector<std::vector<std::string>> check_box;
-		std::vector<std::vector<Box>> Num_Pads;
+		//std::vector<std::vector<Box>> Num_Pads;
+		std::vector<std::vector<NumPad>> Num_Pads;
 
 		// LOADER FUNCTIONS
-		void Load_Containers();
 		void Load_UI_Components();
 		void Load_Boxes();
 		void Load_Font();
