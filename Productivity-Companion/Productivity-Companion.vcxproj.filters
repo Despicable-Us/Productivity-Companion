@@ -60,6 +60,9 @@
     <ClInclude Include="Study_Planner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sudoku.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="btn.cpp">
@@ -110,7 +113,10 @@
     <ClCompile Include="Study_Planner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sqlite3.c">
+    <ClCompile Include="Sudoku.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -31,6 +31,7 @@
     <ClInclude Include="Session.h" />
     <ClInclude Include="Session_Tracker.h" />
     <ClInclude Include="Study_Planner.h" />
+    <ClInclude Include="Sudoku.h" />
     <ClInclude Include="timeSetter.h" />
     <ClInclude Include="TodoList.h" />
     <ClInclude Include="toggleMusic.h" />
@@ -38,6 +39,7 @@
   <ItemGroup>
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="Icon.cpp" />
@@ -48,8 +50,8 @@
     <ClCompile Include="Pop_Up_Message.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="Session_Tracker.cpp" />
-    <ClCompile Include="sqlite3.c" />
     <ClCompile Include="Study_Planner.cpp" />
+    <ClCompile Include="Sudoku.cpp" />
     <ClCompile Include="timeSetter.cpp" />
     <ClCompile Include="TodoList.cpp" />
     <ClCompile Include="toggleMusic.cpp" />
@@ -175,7 +177,7 @@
       <AdditionalIncludeDirectories>$(SolutionDir)/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>

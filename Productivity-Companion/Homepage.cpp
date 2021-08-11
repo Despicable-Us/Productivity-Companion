@@ -3,6 +3,7 @@
 #include "timeSetter.h"
 #include "TodoList.h"
 #include "Study_Planner.h"
+#include "Sudoku.h"
 
 #define WIN_WIDTH 760
 #define WIN_HEIGHT 675
@@ -26,17 +27,16 @@ bool run_pomo_timer = false;
 bool run_session_tracker = false;
 bool run_todo_list = false;
 bool run_study_planner = false;
+bool run_sudoku = false;
 
 std::vector<std::string> quote_vec =
 {
 	"Work hard in silence, let success make the noise.",
 	"Programming is a skill best practice and example rather than from books.",
-	"You can never understand everything but you should push yourself to understand the system.",
 	"While there's CODE there's BUG.", 
 	"Experience is the name everyone gives to their mistakes.",
 	"Code is like humour. When you have to explain it, it's bad."
 };
-
 
 int main()
 {
@@ -81,7 +81,7 @@ int main()
 		throw "Error in loading font 'Roboto-Medium.ttf;";
 
 	// LOADING TEXTURES FOR THE APP ICONS
-	sf::Texture pomo_timer_tex, session_tracker_tex, todo_list_tex, study_planner_tex;
+	sf::Texture pomo_timer_tex, session_tracker_tex, todo_list_tex, study_planner_tex, sudoku_tex;
 	if (!pomo_timer_tex.loadFromFile("Texture/PomoTimerIcon.png"))
 		throw "Error in loading the file";
 	if(!session_tracker_tex.loadFromFile("Texture/SessionTrackerIcon.png"))
@@ -90,10 +90,13 @@ int main()
 		throw("Error in loading the file");
 	if (!study_planner_tex.loadFromFile("Texture/StudyPlannerIcon.png"))
 		throw("Error in loading the file");
+	if (!sudoku_tex.loadFromFile("Texture/sudoku_icon.png"))
+		throw "Error in loading the file";
 
 	// INSTANCIATING THE ICON FOR ALL APPS
 	Icon pomo_timer_icon(pomo_timer_tex, { 140.f, ICON_HEIGHT }), session_tracker_icon(session_tracker_tex, {300.f, ICON_HEIGHT}), 
-		 todo_list_icon(todo_list_tex, { 460.f, ICON_HEIGHT }), study_planner_icon(study_planner_tex, {620.f, ICON_HEIGHT});
+		 todo_list_icon(todo_list_tex, { 460.f, ICON_HEIGHT }), study_planner_icon(study_planner_tex, {620.f, ICON_HEIGHT}),
+		 sudoku_icon(sudoku_tex, {140.f, 548.f});
 
 	udh::open_db();
 
@@ -101,7 +104,9 @@ int main()
 	dial::timeSetter timeDial(window);   // POMO TIMER
 	Session_Tracker session_app(window); // SESSION TRACKER
 	TodoList todolist;					 // TO-DO LIST
-	Study_Planner study_planner(window);		 // STUDY PLANNER
+	Study_Planner study_planner(window); // STUDY PLANNER
+	Sudoku sudoku_app;
+
 
 	//creating tables
 	udh::createPlannerTable();
@@ -133,28 +138,37 @@ int main()
 		run_study_planner = true;
 		study_planner.first_time = true;
 	};
+	auto sudoku_func = [&]()
+	{
+		run_main_window = false;
+		run_sudoku = true;
+	};
 
 
 	// APP NAMES
 	sf::Text pomo_timer_text("Pomo Timer", roboto_font, 14),
 		     session_tracker_text("Session Tracker", roboto_font, 14),
 		     todo_list_text("To-do List", roboto_font, 14),
-		     study_planner_text("Study Planner", roboto_font, 14);
+		     study_planner_text("Study Planner", roboto_font, 14),
+			 sudoku_text("Sudoku", roboto_font, 14);
 
 	pomo_timer_text.setOrigin({ pomo_timer_text.getGlobalBounds().width / 2.f, pomo_timer_text.getGlobalBounds().height / 2.f });
 	session_tracker_text.setOrigin({ session_tracker_text.getGlobalBounds().width / 2.f, session_tracker_text.getGlobalBounds().height / 2.f });
 	todo_list_text.setOrigin({ todo_list_text.getGlobalBounds().width / 2.f, todo_list_text.getGlobalBounds().height / 2.f });
 	study_planner_text.setOrigin({ study_planner_text.getGlobalBounds().width / 2.f, study_planner_text.getGlobalBounds().height / 2.f });
+	sudoku_text.setOrigin({ sudoku_text.getGlobalBounds().width / 2.f, sudoku_text.getGlobalBounds().height / 2.f });
 
 	pomo_timer_text.setPosition({140.f, APP_NAME_HEIGHT});
 	session_tracker_text.setPosition({ 300.f, APP_NAME_HEIGHT });
 	todo_list_text.setPosition({ 460.f, APP_NAME_HEIGHT });
 	study_planner_text.setPosition({ 620.f, APP_NAME_HEIGHT });
+	sudoku_text.setPosition({ 140.f, 616.f });
 
 	pomo_timer_text.setFillColor(sf::Color::Black);
 	session_tracker_text.setFillColor(sf::Color::Black);
 	todo_list_text.setFillColor(sf::Color::Black);
 	study_planner_text.setFillColor(sf::Color::Black);
+	sudoku_text.setFillColor(sf::Color::Black);
 
 	srand(static_cast<unsigned>(time(NULL)));
 	std::cout << quote_vec[rand() % quote_vec.size()] << std::endl;
@@ -204,6 +218,7 @@ int main()
 			session_tracker_icon.Run_Outside_Event(window, event, session_tracker_func);
 			todo_list_icon.Run_Outside_Event(window, event, todo_list_func);
 			study_planner_icon.Run_Outside_Event(window, event, study_planner_func);
+			sudoku_icon.Run_Outside_Event(window, event, sudoku_func);
 			window.setTitle("Productivity Companion");
 			window.clear(sf::Color::White);
 		}
@@ -229,6 +244,12 @@ int main()
 		{
 			window.setTitle("Study Planner");
 			study_planner.Run_Outside_Event(window, event, run_main_window, run_study_planner);
+			window.clear(sf::Color::White);
+		}
+		if (run_sudoku)
+		{
+			window.setTitle("Sudoku");
+			sudoku_app.Run_Events(window, event, run_main_window, run_sudoku);
 			window.clear(sf::Color::White);
 		}
 
@@ -267,6 +288,10 @@ int main()
 		{
 			study_planner.Render_In_Main_Window(window);
 		}
+		if (run_sudoku)
+		{
+			sudoku_app.Render_To_Main_Window(window);
+		}
 
 		if (run_main_window)
 		{
@@ -276,10 +301,12 @@ int main()
 			session_tracker_icon.Draw_To(window);
 			todo_list_icon.Draw_To(window);
 			study_planner_icon.Draw_To(window);
+			sudoku_icon.Draw_To(window);
 			window.draw(pomo_timer_text);
 			window.draw(session_tracker_text);
 			window.draw(todo_list_text);
 			window.draw(study_planner_text);
+			window.draw(sudoku_text);
 			window.draw(quote);
 		}
 
