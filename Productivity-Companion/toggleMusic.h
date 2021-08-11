@@ -23,10 +23,8 @@ namespace TOGGLE {
 		sf::CircleShape btnCirc2;
 		sf::CircleShape slideCirc;
 		sf::Music lofiMusic;
-		sf::RectangleShape squiggle;
-		sf::Texture squiggle_texture;
+
 		int btnClickedStatus; //for functions running on main
-		int interruptedOnce;
 		int toggleInterrupt;
 		int timerTicking;
 		int toggleStatus; 

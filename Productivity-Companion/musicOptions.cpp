@@ -12,9 +12,8 @@ void musicOptions::musicOptInitialSetup()
 	btn3 = new Btn(" Chill-hop ", { 465.0f,610.0f }, 16, font,"3");
 	btn4 = new Btn("   Beatz   ", { 620.0f,610.0f }, 16, font,"4");
 
-	this->activeTrack= 1;
-	this->prevActiveTrack = 0;
-	this->nowPlaying = 0;
+	this->activeTrack= 1;						//track that is selected from options
+	this->prevActiveTrack = 0;					//track that was selected previously
 
 	btn1->SetFillColor(sf::Color(INITIAL_COLOR));
 	btn2->SetFillColor(sf::Color(INITIAL_COLOR));
@@ -41,8 +40,6 @@ void musicOptions::playActiveMusic()
 {
 	music.play();
 	this->isPlaying = 1;
-	this->nowPlaying = this->activeTrack;
-
 }
 
 
@@ -50,7 +47,6 @@ void musicOptions::pauseActiveMusic()
 {
 	music.pause();
 	this->isPlaying = 0;
-	this->nowPlaying = 0;
 }
 
 
@@ -70,7 +66,7 @@ void musicOptions::musicOptPollEvents(sf::RenderWindow& window,sf::Event& event)
 
 void musicOptions::musicOptUpdateFromEvents()
 {
-	switch (this->activeTrack) {
+	switch (this->activeTrack) {						//to make button for active track yellow (show if selected)
 	case 1:
 		btn1->SetFillColor(sf::Color(251, 208, 60));
 		btn1->SetTextColor(sf::Color::Black);
@@ -88,14 +84,14 @@ void musicOptions::musicOptUpdateFromEvents()
 		btn4->SetTextColor(sf::Color::Black);
 		break;
 	}
-	if (this->activeTrack != this->prevActiveTrack) {
-		if (this->isPlaying) {
+	if (this->activeTrack != this->prevActiveTrack) {   //for not loading music again if the button which is active is pressed again
+		if (this->isPlaying) {							//if music is playing and user opts to change first pause the music
 			this->pauseActiveMusic();
-			this->isPlaying = 1;
+			this->isPlaying = 1;						// For (94)..because pausing sets isPlaying to zero 
 		}
 		this->prevActiveTrack = this->activeTrack;
-		this->loadActiveMusic();
-		if (this->isPlaying) {
+		this->loadActiveMusic();						
+		if (this->isPlaying) {							// (94) if music was playing and user changes activeMusic then play music automatically
 			this->playActiveMusic();
 		}
 	}

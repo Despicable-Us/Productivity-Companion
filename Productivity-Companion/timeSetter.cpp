@@ -538,36 +538,34 @@ void dial::timeSetter::dialPollEvents(sf::RenderWindow &window,sf::Event& event)
             }
 
             if (this->checkInStop(currentPos) && this->stopPressed) {
-                this->stopPressed = 2;                                //two signifies mouse pressed and released within stop button
+                this->stopPressed = 2;                  //two signifies mouse pressed and released within stop button
             }
             else {
                 this->stopPressed = 0;
             }
         }
     }
-    if (this->tickingFlag == 2) this->timerTicking = 1; //timerTicking in toogle.h
-    if (this->stopPressed == 2) this->timerTicking = 0;
 
-    if (this->toggleStatus) {
-        if (this->tickingFlag == 2) {                 //if play button is pressed music plays
-            if (!this->isPlaying) {
-                this->playActiveMusic();
+    //for music
+    this->togglePollEvent(window, event); //---------------------------------------------------------------------
+
+    if (this->tickingFlag == 2) timerTicking = 1;       //timerTicking in toogleMusic.h
+    if (this->stopPressed == 2) timerTicking = 0;
+
+    if (toggleStatus) {
+        if (this->tickingFlag == 2) {                   //if play button is pressed music plays
+            if (!isPlaying) {
+                playActiveMusic();
             }
         }
-        if (this->stopPressed) {        //if stop button is pressed music stops
-            this->timerTicking = 0;         //togglemusic.h
-            if (this->isPlaying) {
-                this->pauseActiveMusic();
+        if (this->stopPressed) {                        //if stop button is pressed music stops
+            timerTicking = 0;                           //togglemusic.h
+            if (isPlaying) {
+                pauseActiveMusic();
             }
         }   
     }
-    if (timerTicking && this->toggleStatus && !this->interruptedOnce) { //if the timer has started and user opts to listen to music
-        if (!this->isPlaying) {
-            this->playActiveMusic();
-        }
-    }
-
-    this->togglePollEvent(window, event); //---------------------------------------------------------------------
+    
 }
 
 void dial::timeSetter::dialUpdateFromEvents(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app)

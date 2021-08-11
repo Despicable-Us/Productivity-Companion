@@ -11,8 +11,8 @@ void Points::initiatePoints(sf::RenderWindow &window)
 		std::cout << "Coin font couldn't be loaded" << std::endl;
 	}
 
-	float length = 40.0f;
-	float height = 40.0f;
+	float length = 33.0f;
+	float height = 33.0f;
 	float posx = window.getSize().x - length;
 
 	coinRect.setSize(sf::Vector2f(length, height));
@@ -50,8 +50,8 @@ void Points::initiatePoints(sf::RenderWindow &window)
 	pointCircle.setRadius(length / 2.0f);
 	pointCircle.setOrigin(pointCircle.getRadius(), pointCircle.getRadius());
 
-	coinRect.setPosition(posx - pointRect.getSize().x , 50.0f);	//-------------------------------------------------> position
-	points.setPosition(coinRect.getPosition().x + 25, coinRect.getPosition().y - 20);
+	coinRect.setPosition(posx - pointRect.getSize().x , 30.0f);	//-------------------------------------------------> position
+	points.setPosition(coinRect.getPosition().x + 20, coinRect.getPosition().y - 15);
 	pointRect.setPosition(coinRect.getPosition().x, coinRect.getPosition().y);
 	pointCircle.setPosition(pointRect.getPosition().x + pointRect.getSize().x, pointRect.getPosition().y);
   

@@ -267,6 +267,7 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 			textarea.setpressed();
 			break;
 		}
+		
 	}
 }
 
