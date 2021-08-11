@@ -43,8 +43,6 @@ int main()
 	FlowTime flow_time(window);
 
 
-
-
 	while (window.isOpen())
 	{
 		while (window.pollEvent(event))
