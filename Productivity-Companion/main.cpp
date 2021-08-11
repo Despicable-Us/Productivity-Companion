@@ -1,6 +1,7 @@
 #include "SFML/Graphics.hpp"
 #include <stdc++.h>
-#include "FlowTime.h"
+#include "Sudoku.h"
+
 
 int main()
 {
@@ -9,9 +10,9 @@ int main()
 	sf::VideoMode video_mode;
 	video_mode.width = 760;
 	video_mode.height = 675;
-	sf::RenderWindow window(video_mode, "STUDY PLAN APP", sf::Style::Titlebar | sf::Style::Close, settings);
+	sf::RenderWindow window(video_mode, "SUDOKU", sf::Style::Titlebar | sf::Style::Close, settings);
+	window.setFramerateLimit(90);
 	sf::Event event;
-
 
 	bool run_main_window = false;
 	bool run_app = true;
@@ -19,28 +20,9 @@ int main()
 	sf::Font roboto_font;
 	roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf");
 
+	srand(time(NULL));
 
-	bool btn1show = true;
-	bool btn2show = false;
-	auto btn1_func = [&]()
-	{
-		btn1show = false;
-		btn2show = true;
-		std::cout << "Button 1 pressed.\n";
-		sf::sleep(sf::milliseconds(100));
-	};
-
-	auto btn2_func = [&]()
-	{
-		btn1show = true;
-		btn2show = false;
-		std::cout << "Button 2 pressed.\n";
-	};
-	sf::View scroll_view;
-	scroll_view.reset({ 0.f, 0.f, 760.f, 675.f });
-	scroll_view.setViewport({ 0.f, 0.3259, 1.f, 1.f });
-
-	FlowTime flow_time(window);
+	Sudoku sudoku;
 
 
 	while (window.isOpen())
@@ -51,17 +33,15 @@ int main()
 			{
 				window.close();
 			}
-			flow_time.Run_Inside_Event(window, event, scroll_view);
 		}
-
-		flow_time.Run_Outside_Event(window, event, run_main_window, run_app);
+		sudoku.Run_Events(window, event);
+		
 			
-		window.clear(sf::Color::White);
+		window.clear(sf::Color(220,220,220));
 
-		flow_time.Render_In_Main_Window(window);
+		sudoku.Render_To_Main_Window(window);
 
 		window.display();
 	}
-	//session_app.Update_DB_Data();
 	return EXIT_SUCCESS;
 }

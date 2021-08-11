@@ -262,6 +262,8 @@ int main()
 		std::cout << "},";
 		std::cout << std::endl;
 	}
+
+
 	std::vector<std::vector<std::string>> solved(9, std::vector<std::string>(9, ""));
 	for (int i = 0; i < 9; i++)
 	{
@@ -445,7 +447,7 @@ int main()
 				sameCellUpdate(Boxes, Boxes[cellPos.x][cellPos.y].text.getString());
 				clearBoxColor(Boxes);
 				Boxes[cellPos.x][cellPos.y].text.setString(sf::String(""));
-				boxCheck[cellPos, x][cellPos.y] = "";
+				boxCheck[cellPos.x][cellPos.y] = "";
 			}
 		}
 

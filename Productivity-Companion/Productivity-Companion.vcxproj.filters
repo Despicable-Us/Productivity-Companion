@@ -18,10 +18,7 @@
     <ClInclude Include="Btn.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FlowTime.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputField.h">
+    <ClInclude Include="Sudoku.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +32,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FlowTime.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputField.cpp">
+    <ClCompile Include="Sudoku.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
