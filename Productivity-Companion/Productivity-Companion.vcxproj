@@ -38,7 +38,6 @@
   <ItemGroup>
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="Icon.cpp" />
@@ -49,6 +48,7 @@
     <ClCompile Include="Pop_Up_Message.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="Session_Tracker.cpp" />
+    <ClCompile Include="sqlite3.c" />
     <ClCompile Include="Study_Planner.cpp" />
     <ClCompile Include="timeSetter.cpp" />
     <ClCompile Include="TodoList.cpp" />

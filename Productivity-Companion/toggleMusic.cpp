@@ -3,8 +3,8 @@
 TOGGLE::ToggleMusic::ToggleMusic(sf::RenderWindow& window)
 {
 	float length = 25.0f;
-	float height = 35.0f;
-	sf::Vector2f pos = sf::Vector2f(50.0f, window.getSize().y - 125.0f);
+	float height = 33.0f;
+	sf::Vector2f pos = sf::Vector2f(40.0f, window.getSize().y - 125.0f);
 	this->btnRect.setPosition(pos);
 	this->btnRect.setSize(sf::Vector2f(length, height));
 	this->btnRect.setOrigin(sf::Vector2f(length/2 , height/2));
@@ -28,14 +28,8 @@ TOGGLE::ToggleMusic::ToggleMusic(sf::RenderWindow& window)
 	this->slideCirc.setFillColor(sf::Color::White);
 	this->slideCirc.setOrigin(sf::Vector2f(this->slideCirc.getRadius(), this->slideCirc.getRadius()));
 
-	if (!this->squiggle_texture.loadFromFile("Texture/squig3.png")) {
-		std::cout << "could'nt load the squiggle texture" << std::endl;
-	}
-	this->squiggle.setPosition(sf::Vector2f(0, pos.y - 75.0f));
-	this->squiggle.setTexture(&squiggle_texture);
-	this->squiggle.setSize(sf::Vector2f(300.0f, 213.0f));
 	
-	if (!lofiMusic.openFromFile("Sounds/timeUP.ogg")) {
+	if (!lofiMusic.openFromFile("Sounds/1.ogg")) {
 		std::cout << "Music file couldn't be loaded" << std::endl;
 	}
 	lofiMusic.setAttenuation(100);
@@ -44,10 +38,9 @@ TOGGLE::ToggleMusic::ToggleMusic(sf::RenderWindow& window)
 	this->toggleStatus = 0;
 	this->btnClickedStatus = 0;
 	this->toggleInterrupt = 0;
-	this->interruptedOnce = 0;
 	this->timerTicking = 0;
 
-	//added for musci options
+	//added for musicOptions
 	this->musicOptInitialSetup();
 }
 
@@ -63,6 +56,7 @@ void TOGGLE::ToggleMusic::changeToggleStatus()
 {
 	this->toggleStatus = !this->toggleStatus;
 }
+
 
 //functions running on main
 
@@ -80,14 +74,14 @@ void TOGGLE::ToggleMusic::toggledrawComponents(sf::RenderWindow&window)
 		this->btnCirc2.setFillColor(sf::Color(251, 208, 60));
 		this->slideCirc.setPosition(this->btnCirc2.getPosition());
 	}
-	//window.draw(this->squiggle);
+
 	window.draw(this->btnRect);
 	window.draw(this->btnCirc1);
 	window.draw(this->btnCirc2);
 	window.draw(this->slideCirc);
 
 	//added for music Options
-	if (this->toggleStatus) {
+	if (this->toggleStatus) {						//if toggle is on draw music Options( 4 buttons)
 		this->musicOptDrawComponents(window);
 	}
 
@@ -115,10 +109,9 @@ void TOGGLE::ToggleMusic::togglePollEvent(sf::RenderWindow & window,sf::Event& e
 		}
 	}
 	//added for music options
-	if (this->toggleStatus) {
+	if (this->toggleStatus) {						//if toggle is on poll events for music options (4 buttons)
 		this->musicOptPollEvents(window, event);
 	}
-	//if(toggleStatus) then check for events in provided music options (Rishav ko portion)
 
 }
 
@@ -130,17 +123,22 @@ void TOGGLE::ToggleMusic::toggleUpadteFromEvent()
 	}
 
 	//addded for music options
-	if (this->toggleStatus) {
+	if (this->toggleStatus) {						//if toggle is on 
 		this->musicOptUpdateFromEvents();
-		if (toggleInterrupt && timerTicking) {
+		if (toggleInterrupt && timerTicking) {		//if toggled off once while playing and now toggle is on while timer is ticking then play the music
 			this->playActiveMusic();
 			this->toggleInterrupt = 0;
 		}
 	}
-	if ((!this->toggleStatus) && isPlaying) {
+
+	if ((!this->toggleStatus) && isPlaying) {		//if toggled to off.. pause the music
 		this->pauseActiveMusic();
 		this->toggleInterrupt = 1;
-		this->interruptedOnce = 0;
 	}
-	
+
+	if (this->timerTicking && this->toggleStatus) {		//user opts to listen to music after timer has started
+		if (!isPlaying) {
+			playActiveMusic();
+		}
+	}
 }
