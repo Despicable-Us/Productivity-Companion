@@ -247,6 +247,7 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 				std::cout << "Wuta pani" << std::endl;
 				selected = false;
 			}
+			break;
 		}
 
 		else if (itr->del_icon.Run_Outside_Event(*window, event))
@@ -264,7 +265,9 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 			textarea.setEditing();
 			textarea.setbtntext("");
 			textarea.setpressed();
+			break;
 		}
+		
 	}
 }
 
