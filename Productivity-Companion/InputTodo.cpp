@@ -4,6 +4,7 @@
 
 extern std::vector<udh::inputField> textList;
 extern std::vector<udh::inputField> completed;
+extern bool run_study_planner;
 extern udh::inputField sampletext;
 udh::inputField::inputField()
 {
@@ -229,10 +230,12 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 			{
 				itr->completed = true;
 				std::string sql = "UPDATE TASKS SET Status = " + std::to_string(itr->getstatus()) + " WHERE Task = '" + itr->SanitizedData() + "';";
-				std::cout << sql << std::endl;
 				completed.push_back(*itr);
 				list.erase(itr);
-				udh::UpdateStatus(sql);
+				if (!run_study_planner)
+				{
+					udh::UpdateStatus(sql);
+				}
 				selected = false;
 			}
 
@@ -240,11 +243,13 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 			{
 				itr->completed = false;
 				std::string sql = "UPDATE TASKS SET Status = " + std::to_string(itr->getstatus()) + " WHERE Task = '" + itr->SanitizedData() + "';";
-				std::cout << sql << std::endl;
 				textList.push_back(*itr);
 				list.erase(itr);
-				udh::UpdateStatus(sql);
-				std::cout << "Wuta pani" << std::endl;
+				if (!run_study_planner)
+				{
+					udh::UpdateStatus(sql);
+				}
+	
 				selected = false;
 			}
 			break;

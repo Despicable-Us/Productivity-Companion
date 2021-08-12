@@ -31,7 +31,6 @@ namespace udh
 	int UpdateStatus(std::string);
 	int LoadTaskList();
 	int callback(void* NotUsed, int argc, char** argv, char** azColName);
-	//void setGlobalListPtr(std::vector<udh::inputField>* Ptr);
 
 	int select_plan_sheet_data(const char* s, std::string);
 	int delete_plan_sheet_data(const char* s, std::string);
