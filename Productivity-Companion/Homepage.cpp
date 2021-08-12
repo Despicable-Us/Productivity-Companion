@@ -45,7 +45,7 @@ int main()
 	sf::VideoMode video_mode;
 	video_mode.width = WIN_WIDTH;
 	video_mode.height = WIN_HEIGHT;
-	srand(static_cast<unsigned>(time(NULL)));
+	
 	int exit = sqlite3_open("Productivity_companion.db", &DB);
 
 	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close,settings);
@@ -170,7 +170,7 @@ int main()
 	study_planner_text.setFillColor(sf::Color::Black);
 	sudoku_text.setFillColor(sf::Color::Black);
 
-	
+	srand(static_cast<unsigned>(time(NULL)));
 	std::cout << quote_vec[rand() % quote_vec.size()] << std::endl;
 	sf::Font kaushan_font;
 	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))

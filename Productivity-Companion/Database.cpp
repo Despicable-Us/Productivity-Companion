@@ -1,3 +1,5 @@
+//Final Version
+
 #include "database.h"
 #include<vector>
 extern udh::inputField sampletext;
@@ -101,9 +103,8 @@ int udh::createPlannerListTable()
 int udh::insertTaskDB(std::string sql_data)
 {
 	char* messageError;
-	int exit;
-	std::cout << "RUNNNING IN THE DAWN" << std::endl;
 	std::cout << sql_data << std::endl;
+	int exit;
 	exit = sqlite3_exec(DB, sql_data.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
 		std::cerr << "Error in insertData function." << std::endl;
@@ -115,12 +116,15 @@ int udh::insertTaskDB(std::string sql_data)
 }
 
 
-int udh::AddTask(udh::inputField task)
+int udh::AddTask (udh::inputField task)
 {
 	
 	char* messageError;
 	std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task.SanitizedData() + "', '" +
 		std::to_string(task.getstatus()) + "','" + std::to_string(task.getDay()) + "');";
+
+	std::cout << sql << std::endl;
+
 	int exit;
 	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, 0, &messageError);

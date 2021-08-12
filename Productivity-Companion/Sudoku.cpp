@@ -92,7 +92,7 @@ Sudoku::Sudoku()
 	this->x = -1;
 	this->y = -1;
 
-	this->remove_btn = new Btn("Remove", { 640.f, 260.f }, 16, this->roboto_font);
+	this->remove_btn = new Btn("Remove", { 640.f, 240.f }, 16, this->roboto_font);
 	this->remove_btn->SetTextColor(sf::Color(220,20,60));
 
 	this->remove_btn_func = [&]()
@@ -104,10 +104,7 @@ Sudoku::Sudoku()
 				Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(sf::String(""));
 				check_box[selected_cell_pos.y][selected_cell_pos.x] = "";
 				Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, false);
-				if (assists)
-				{
-					Check_Wrong_Inputs();
-				}
+				Check_Wrong_Inputs();
 				Boxes[selected_cell_pos.x][selected_cell_pos.y].shape.setFillColor(sf::Color(187, 222, 251));
 			}
 		}
@@ -142,11 +139,23 @@ void Sudoku::Load_UI_Components()
 	Bars.push_back(Bar(0, 3, CANVAS_W, 2.f));
 	Bars.push_back(Bar(0, 6, CANVAS_W, 2.f));
 
+
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			std::cout << sudoku[i][j] << "   ";
+		}
+		std::cout << std::endl;
+	}
+
 	this->Load_Toggler();
 
-	this->assist_text = sf::Text("Auto-Check for Mistakes: ", this->roboto_font, 18);
+	this->assist_text = sf::Text("Auto-Check: ", this->roboto_font, 18);
 	this->assist_text.setPosition({ 30.f, 105.f });
 	this->assist_text.setFillColor(sf::Color::Black);
+
+
 }
 
 void Sudoku::Load_Boxes()
@@ -408,7 +417,7 @@ void Sudoku::Load_Toggler()
 {
 	this->main_rect.setSize({ TOGGLER_WIDTH, 20.f });
 	this->main_rect.setOrigin({ TOGGLER_WIDTH / 2.f, this->main_rect.getSize().y / 2.f });
-	this->main_rect.setPosition({ 260.f, 118.f });
+	this->main_rect.setPosition({ 160.f, 115.f });
 	this->main_rect.setFillColor(sf::Color(250, 250, 250));
 
 	this->rect_circle.setRadius(TOGGLER_C_R);
@@ -630,24 +639,24 @@ void Sudoku::Generate_Sudoku()
 	}
 	
 	// the result part
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	std::cout << "{";
-	//	for (int j = 0; j < 9; j++)
-	//		std::cout << copy_sudoku[i][j] << ',';
-	//	std::cout << "},";
-	//	std::cout << std::endl;
-	//}
+	for (int i = 0; i < 9; i++)
+	{
+		std::cout << "{";
+		for (int j = 0; j < 9; j++)
+			std::cout << copy_sudoku[i][j] << ',';
+		std::cout << "},";
+		std::cout << std::endl;
+	}
 
-	//std::cout << "\n\nTheFinalOne: " << std::endl;
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	std::cout << "{";
-	//	for (int j = 0; j < 9; j++)
-	//		std::cout << sudoku[i][j] << ',';
-	//	std::cout << "},";
-	//	std::cout << std::endl;
-	//}
+	std::cout << "\n\nTheFinalOne: " << std::endl;
+	for (int i = 0; i < 9; i++)
+	{
+		std::cout << "{";
+		for (int j = 0; j < 9; j++)
+			std::cout << sudoku[i][j] << ',';
+		std::cout << "},";
+		std::cout << std::endl;
+	}
 
 	solved = std::vector<std::vector<std::string>>(9, std::vector<std::string>(9, ""));
 	for (int i = 0; i < 9; i++)
@@ -658,15 +667,14 @@ void Sudoku::Generate_Sudoku()
 		}
 	}
 	
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	for (int j = 0; j < 9; ++j)
-	//	{
-	//		std::cout << solved[i][j] << "  ";
-	//	}
-	//	std::cout << std::endl;
-	//}
-
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; ++j)
+		{
+			std::cout << solved[i][j] << "  ";
+		}
+		std::cout << std::endl;
+	}
 	this->check_box = std::vector<std::vector<std::string>>(9, std::vector<std::string>(9, ""));
 }
 

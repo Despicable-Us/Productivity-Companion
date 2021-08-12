@@ -99,6 +99,7 @@ void TodoList::LoadDB()
 void TodoList::LoadTodoList()
 {
 	textList.clear();
+	//udh::createDB("Productivity_companion.db");
 	udh::createTaskTable();
 	udh::LoadTaskList();
 	sampletext.setdata("");
@@ -191,7 +192,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		}
 		run_completedList = true;
 		run_todoList = true;
-
+	
 	}
 	home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
 	if (home_back_btn_clicked)
@@ -243,15 +244,6 @@ void TodoList::Update_DB()
 			sql_data += "('" + itr->getdata() + "', '" +
 				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "','" + plan_sheet_name + "'),";
 		}
-		if (!completed.empty())
-		{
-			for (std::vector<udh::inputField>::iterator itr = completed.begin(); itr < completed.end(); itr++)
-			{
-				sql_data += "('" + itr->getdata() + "', '" +
-					std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "','" + plan_sheet_name + "'),";
-			}
-		}
-
 		sql_data.pop_back();
 		sql_data.push_back(';');
 
