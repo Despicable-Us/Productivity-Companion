@@ -32,7 +32,7 @@ void dial::timeSetter::initialSetup(sf::RenderWindow& window,int a)
     if (!this->timeUpSound.openFromFile("Sounds/timeUP.ogg")) {
         throw "Timeup sound failed to load";
     }
-    if (!this->pauseSound.openFromFile("Sounds/paused.ogg")) {
+    if (!this->pauseSound.openFromFile("Sounds/paused2.ogg")) {
         throw "Paused sound failed to load";
     }
     /*this->timeUpSound.setVolume(50);

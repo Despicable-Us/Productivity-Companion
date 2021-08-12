@@ -1,128 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="btn.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Database.cpp" />
+    <ClCompile Include="Homepage.cpp" />
+    <ClCompile Include="Icon.cpp" />
+    <ClCompile Include="InputField.cpp" />
+    <ClCompile Include="InputTodo.cpp" />
+    <ClCompile Include="musicOptions.cpp" />
+    <ClCompile Include="Points.cpp" />
+    <ClCompile Include="Pop_Up_Message.cpp" />
+    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="Session_Tracker.cpp" />
+    <ClCompile Include="Study_Planner.cpp" />
+    <ClCompile Include="Sudoku.cpp" />
+    <ClCompile Include="timeSetter.cpp" />
+    <ClCompile Include="TodoList.cpp" />
+    <ClCompile Include="toggleMusic.cpp" />
+    <ClCompile Include="..\..\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Btn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputField.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pop_Up_Message.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Session.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Session_Tracker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Icon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="musicOptions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Points.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="timeSetter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="toggleMusic.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Database.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputTodo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TodoList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Study_Planner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sudoku.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="btn.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputField.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Pop_Up_Message.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Session.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Session_Tracker.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Icon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Homepage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="musicOptions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Points.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="timeSetter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="toggleMusic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Database.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputTodo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TodoList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Study_Planner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c">
-=======
-    <ClCompile Include="Sudoku.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c">
->>>>>>> 5a58f2324161f8c322cd9060cac450eea628fd1e
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="Btn.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Database.h" />
+    <ClInclude Include="Icon.h" />
+    <ClInclude Include="InputField.h" />
+    <ClInclude Include="InputTodo.h" />
+    <ClInclude Include="musicOptions.h" />
+    <ClInclude Include="Points.h" />
+    <ClInclude Include="Pop_Up_Message.h" />
+    <ClInclude Include="Session.h" />
+    <ClInclude Include="Session_Tracker.h" />
+    <ClInclude Include="Study_Planner.h" />
+    <ClInclude Include="Sudoku.h" />
+    <ClInclude Include="timeSetter.h" />
+    <ClInclude Include="TodoList.h" />
+    <ClInclude Include="toggleMusic.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
