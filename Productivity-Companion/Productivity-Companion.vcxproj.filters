@@ -113,10 +113,14 @@
     <ClCompile Include="Study_Planner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c">
+=======
     <ClCompile Include="Sudoku.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c">
+>>>>>>> 5a58f2324161f8c322cd9060cac450eea628fd1e
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
