@@ -546,9 +546,25 @@ void dial::timeSetter::dialPollEvents(sf::RenderWindow &window,sf::Event& event)
         }
     }
 
-    //for toggle music
+    //for music
     this->togglePollEvent(window, event); //---------------------------------------------------------------------
 
+    if (this->tickingFlag == 2) timerTicking = 1;       //timerTicking in toogleMusic.h
+    if (this->stopPressed == 2) timerTicking = 0;
+
+    if (toggleStatus) {
+        if (this->tickingFlag == 2) {                   //if play button is pressed music plays
+            if (!isPlaying) {
+                playActiveMusic();
+            }
+        }
+        if (this->stopPressed) {                        //if stop button is pressed music stops
+            timerTicking = 0;                           //togglemusic.h
+            if (isPlaying) {
+                pauseActiveMusic();
+            }
+        }   
+    }
     
 }
 
@@ -580,24 +596,6 @@ void dial::timeSetter::dialUpdateFromEvents(sf::RenderWindow& window, sf::Event&
     }
     if (knobPressing) {
         this->updateFillers(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-    }
-
-    //for music
-    if (this->tickingFlag == 2) timerTicking = 1;       //timerTicking in toogleMusic.h
-    if (this->stopPressed == 2) timerTicking = 0;
-
-    if (toggleStatus) {
-        if (this->tickingFlag == 2) {                   //if play button is pressed music plays
-            if (!isPlaying) {
-                playActiveMusic();
-            }
-        }
-        if (this->stopPressed) {                        //if stop button is pressed music stops
-            timerTicking = 0;                           //togglemusic.h
-            if (isPlaying) {
-                pauseActiveMusic();
-            }
-        }
     }
 
     //functionality of home button here
