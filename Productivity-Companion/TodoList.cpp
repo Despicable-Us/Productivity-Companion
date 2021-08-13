@@ -193,17 +193,20 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		run_todoList = true;
 
 	}
-	home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
-	if (home_back_btn_clicked)
+	if (!this->textarea.IsEditing())
 	{
-		this->Update_DB();
-		home_back_btn_clicked = false;
-		run_main_window = true;
-		run_app = false;
-		textList.clear();
-		completed.clear();
-		TaskView.move(0, -viewPos);
-		viewPos = 0;
+		home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
+		if (home_back_btn_clicked)
+		{
+			this->Update_DB();
+			home_back_btn_clicked = false;
+			run_main_window = true;
+			run_app = false;
+			textList.clear();
+			completed.clear();
+			TaskView.move(0, -viewPos);
+			viewPos = 0;
+		}
 	}
 }
 
