@@ -315,7 +315,7 @@ void udh::editTask(udh::inputField& sampletext, std::string& a, sf::Event event,
 					edititr->edit_icon.Set_Unheld();
 				}
 			}
-			else if (a.length() <= 65)
+			else if (sampletext.gettext().getGlobalBounds().width <= 560)
 			{
 				a.pop_back();
 				a.push_back(b);
@@ -371,7 +371,7 @@ void udh::addTask(udh::inputField& sampletext, std::string& a, sf::Event event, 
 					a = "";
 				}
 			}
-			else if (a.length() <= 65 && !a.empty())
+			else if (sampletext.gettext().getGlobalBounds().width <= 560 && !a.empty())
 			{
 				a.pop_back();
 				a.push_back(b);
