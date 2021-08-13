@@ -45,7 +45,7 @@ Bar::Bar(int x_count, int y_count, float w, float h)
 	}
 	else
 	{
-		x_line_pos = x_count;
+		x_line_pos = float(x_count);
 	}
 
 	if (y_count != 0)
@@ -61,7 +61,7 @@ Bar::Bar(int x_count, int y_count, float w, float h)
 	}
 	else
 	{
-		y_line_pos = y_count;
+		y_line_pos = float(y_count);
 	}
 	
 	this->line_shape.setSize(sf::Vector2f(w, h));
@@ -104,7 +104,10 @@ Sudoku::Sudoku()
 				Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(sf::String(""));
 				check_box[selected_cell_pos.y][selected_cell_pos.x] = "";
 				Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, false);
-				Check_Wrong_Inputs();
+				if (this->assists)
+				{
+					Check_Wrong_Inputs();
+				}
 				Boxes[selected_cell_pos.x][selected_cell_pos.y].shape.setFillColor(sf::Color(187, 222, 251));
 			}
 		}
@@ -126,6 +129,12 @@ Sudoku::Sudoku()
 	{
 		this->home_back_btn_clicked = true;
 	};
+
+	this->is_game_over = false;
+	this->key_held = false;
+	this->text_held = false;
+	this->check_completion = true;
+	this->animation_counter = 50;
 }
 
 Sudoku::~Sudoku()
@@ -139,23 +148,11 @@ void Sudoku::Load_UI_Components()
 	Bars.push_back(Bar(0, 3, CANVAS_W, 2.f));
 	Bars.push_back(Bar(0, 6, CANVAS_W, 2.f));
 
-
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 9; j++)
-		{
-			std::cout << sudoku[i][j] << "   ";
-		}
-		std::cout << std::endl;
-	}
-
 	this->Load_Toggler();
 
 	this->assist_text = sf::Text("Auto-Check: ", this->roboto_font, 18);
 	this->assist_text.setPosition({ 30.f, 105.f });
 	this->assist_text.setFillColor(sf::Color::Black);
-
-
 }
 
 void Sudoku::Load_Boxes()
@@ -301,6 +298,7 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 	{
 		mouse_held = false;
 	}
+
 	remove_btn->BtnEvents(window, event, this->remove_btn_func);
 	home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
 	if (home_back_btn_clicked)
@@ -309,6 +307,70 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 		run_main_window = true;
 		run_app = false;
 	}
+	if (event.type == sf::Event::KeyPressed)
+	{
+		if (!key_held)
+		{
+			if (event.key.code == sf::Keyboard::Delete)
+			{
+				this->remove_btn_func();
+				key_held = true;
+			}
+		}
+	}
+	else
+	{
+		key_held = false;
+	}
+
+	if (event.type == sf::Event::TextEntered)
+	{
+		if (!text_held)
+		{
+			if (event.text.unicode < 128)
+			{
+				if (event.text.unicode > 48 && event.text.unicode < 58)
+				{
+					selected_num_pad = static_cast<char>(event.text.unicode);
+					if (selected && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
+					{
+						if (static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString()) != "")
+						{
+							Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
+						}
+						Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
+						value_inserted_in_cell = true;
+						this->Run_Other_Events(event);
+						if (this->assists)
+						{
+							this->Check_Wrong_Inputs();
+						}
+					}
+				}
+			}
+			text_held = true;
+		}
+	}
+	else
+	{
+		text_held = false;
+	}
+	if (check_completion)
+	{
+		Check_For_Completion();
+	}
+
+	if (is_game_over)
+	{
+		if (animation_counter < 50)
+			animation_counter++;
+		else if (animation_counter >= 50)
+		{
+			std::cout << "Animation started" << std::endl;
+			animation_counter = 0;
+		}
+	}
+
 }
 
 void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
@@ -331,8 +393,11 @@ void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
 
 				if (selected && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
 				{
+					if (static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString()) != "")
+					{
+						Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
+					}
 					Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
-					
 					value_inserted_in_cell = true;
 				}
 				break;
@@ -360,8 +425,6 @@ void Sudoku::Run_Box_Events(sf::RenderWindow&, sf::Event)
 				prev_box_x = i;
 				prev_box_y = j;
 				Boxes[i][j].shape.setFillColor(sf::Color(187, 222, 251));
-				std::cout << selected_box_string << "  I: " << selected_cell_pos.x << "  J: " <<
-					selected_cell_pos.y << std::endl;
 				selected = true;
 				break;
 			}
@@ -615,10 +678,8 @@ void Sudoku::Generate_Sudoku()
 
 	int r, c, back_up, another_backup;
 	int xT, yT;
-	int test;
-
 	
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		copy_sudoku = sudoku;
 		Find_Random_Pos(copy_sudoku, r, c);
@@ -648,7 +709,7 @@ void Sudoku::Generate_Sudoku()
 		std::cout << std::endl;
 	}
 
-	std::cout << "\n\nTheFinalOne: " << std::endl;
+	
 	for (int i = 0; i < 9; i++)
 	{
 		std::cout << "{";
@@ -666,15 +727,7 @@ void Sudoku::Generate_Sudoku()
 			solved[i][j] = std::to_string(copy_sudoku[i][j]);
 		}
 	}
-	
-	for (int i = 0; i < 9; i++)
-	{
-		for (int j = 0; j < 9; ++j)
-		{
-			std::cout << solved[i][j] << "  ";
-		}
-		std::cout << std::endl;
-	}
+
 	this->check_box = std::vector<std::vector<std::string>>(9, std::vector<std::string>(9, ""));
 }
 
@@ -711,7 +764,8 @@ bool Sudoku::Find_Zero(std::vector<std::vector<int>> graph, int& r, int& c)
 bool Sudoku::Safe_To_Assign(std::vector<std::vector<int>> graph, int i, int j, int num)
 {
 	int a = (i / 3) * 3, b = (j / 3) * 3;
-	int Ix, Iy;
+	int Ix = 0;
+	int Iy = 0;
 	for (int cI = 0; cI < 3; cI++)
 	{
 		for (int cJ = 0; cJ < 3; cJ++)
@@ -760,6 +814,27 @@ void Sudoku::Find_Random_Pos(std::vector<std::vector<int>> graph, int& r, int& c
 		r = rand() % 9;
 		c = rand() % 9;
 	} while (graph[r][c] == 0);
+}
+
+void Sudoku::Check_For_Completion()
+{
+	bool flag = false;
+	for (int i = 0; i < 9; ++i)
+	{
+		for (int j = 0; j < 9; ++j)
+		{
+			if (this->check_box[i][j] != this->solved[i][j])
+			{
+				flag = true;
+				break;
+			}
+		}
+	}
+	if (!flag)
+	{
+		this->is_game_over = true;
+		this->check_completion = false;
+	}
 }
 
 NumPad::NumPad()
