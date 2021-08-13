@@ -76,20 +76,29 @@ class Sudoku
 		std::string selected_box_string;
 		sf::Vector2i selected_cell_pos;
 
+		Btn* remove_btn;
+		Btn* home_back_btn;
+		std::function<void()> home_back_btn_func;
+		std::function<void()> remove_btn_func;
+
 		int prev_NP_x;
 		int prev_NP_y;
 		int prev_box_x;
 		int prev_box_y;
 		int x, y;
+		int animation_counter;
+
+		// BOOLEAN CONTAINER
 		bool mouse_held;
 		bool selected;
 		bool value_inserted_in_cell;
 		bool assists;
 		bool toggler_held;
-		Btn* remove_btn;
-		Btn* home_back_btn;
 		bool home_back_btn_clicked;
-		std::function<void()> home_back_btn_func;
+		bool is_game_over;
+		bool key_held;
+		bool text_held;
+		bool check_completion;
 
 		// CONTAINERS
 		std::vector<Bar> Bars;
@@ -97,7 +106,6 @@ class Sudoku
 		std::vector<std::vector<int>> sudoku;
 		std::vector<std::vector<std::string>> solved;
 		std::vector<std::vector<std::string>> check_box;
-		//std::vector<std::vector<Box>> Num_Pads;
 		std::vector<std::vector<NumPad>> Num_Pads;
 
 		// LOADER FUNCTIONS
@@ -118,7 +126,6 @@ class Sudoku
 		void Clear_Box_Color();
 		void Check_Wrong_Inputs();
 		void Undo_Wrong_Highlight();
-		std::function<void()> remove_btn_func;
 
 		// SUDOKU GENERATOR
 		void Generate_Sudoku();
@@ -131,6 +138,7 @@ class Sudoku
 		std::vector<std::vector<int>> copy_sudoku;
 		std::vector<std::vector<int>> copy_vec;
 		void Find_Random_Pos(std::vector<std::vector<int>> graph, int& r, int& c);
+		void Check_For_Completion();
 
 
 		// RENDERING 

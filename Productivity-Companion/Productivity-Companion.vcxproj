@@ -37,9 +37,9 @@
     <ClInclude Include="toggleMusic.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sqlite3.c" />
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="Icon.cpp" />
