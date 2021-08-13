@@ -11,6 +11,7 @@
 #define CANVAS_H 496.f
 #define TOGGLER_C_R 15.f
 #define TOGGLER_WIDTH 30.f
+#define ANIMATION_TIMER 2
 
 class NumPad
 {
@@ -87,6 +88,9 @@ class Sudoku
 		int prev_box_y;
 		int x, y;
 		int animation_counter;
+		int animation_x_pos;
+		int animation_y_pos;
+		int pattern_pos;
 
 		bool mouse_held;
 		bool selected;
@@ -107,6 +111,7 @@ class Sudoku
 		std::vector<std::vector<std::string>> solved;
 		std::vector<std::vector<std::string>> check_box;
 		std::vector<std::vector<NumPad>> Num_Pads;
+		std::vector<std::vector<int>> animation_pattern;
 
 		// LOADER FUNCTIONS
 		void Load_UI_Components();

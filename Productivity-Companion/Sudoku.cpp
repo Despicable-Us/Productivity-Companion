@@ -134,7 +134,31 @@ Sudoku::Sudoku()
 	this->key_held = false;
 	this->text_held = false;
 	this->check_completion = true;
-	this->animation_counter = 50;
+	this->animation_counter = ANIMATION_TIMER;
+	this->animation_x_pos = 0;
+	this->animation_y_pos = 0;
+	this->pattern_pos = 0;
+
+	this->animation_pattern =
+	{
+		{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}, {5, 0}, {6, 0}, {7, 0}, {8, 0},
+		{8, 1}, {8, 2}, {8, 3}, {8, 4}, {8, 5}, {8, 6}, {8, 7}, {8, 8},
+		{7, 8}, {6, 8}, {5, 8}, {4, 8}, {3, 8}, {2, 8}, {1, 8}, {0, 8},
+		{0, 7}, {0, 6}, {0, 5}, {0, 4}, {0, 3}, {0, 2}, {0, 1},
+		{1, 1}, {2, 1}, {3, 1}, {4, 1}, {5, 1}, {6, 1}, {7, 1},
+		{7, 2}, {7, 3}, {7, 4}, {7, 5}, {7, 6}, {7, 7},
+		{6, 7}, {5, 7}, {4, 7}, {3, 7}, {2, 7}, {1, 7},
+		{1, 6}, {1, 5}, {1, 4}, {1, 3}, {1, 2},
+		{2, 2}, {3, 2}, {4, 2}, {5, 2}, {6, 2},
+		{6, 3}, {6, 4}, {6, 5}, {6, 6},
+		{5, 6}, {4, 6}, {3, 6}, {2, 6},
+		{2, 5}, {2, 4}, {2, 3}, 
+		{3, 3}, {4, 3}, {5, 3},
+		{5, 4}, {5, 5}, 
+		{4, 5}, {3, 5}, 
+		{3, 4},
+		{4, 4}
+	};
 }
 
 Sudoku::~Sudoku()
@@ -355,6 +379,7 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 	{
 		text_held = false;
 	}
+
 	if (check_completion)
 	{
 		Check_For_Completion();
@@ -362,12 +387,21 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 
 	if (is_game_over)
 	{
-		if (animation_counter < 50)
+		if (animation_counter < ANIMATION_TIMER)
 			animation_counter++;
-		else if (animation_counter >= 50)
+		else if (animation_counter >= ANIMATION_TIMER)
 		{
-			std::cout << "Animation started" << std::endl;
+
+			animation_x_pos = animation_pattern[pattern_pos][0];
+			animation_y_pos = animation_pattern[pattern_pos][1];
+			pattern_pos++;
+
+			Boxes[animation_x_pos][animation_y_pos].shape.setFillColor(sf::Color(169, 192, 219));
 			animation_counter = 0;
+			if (pattern_pos >= animation_pattern.size())
+			{
+				is_game_over = false;
+			}
 		}
 	}
 
@@ -578,9 +612,6 @@ void Sudoku::Undo_Wrong_Highlight()
 		}
 	}
 }
-
-
-
 
 bool Sudoku::Detect_Click(sf::Vector2f m_click, sf::Vector2f entity_click, sf::Vector2f DMNS)
 {
@@ -834,6 +865,15 @@ void Sudoku::Check_For_Completion()
 	{
 		this->is_game_over = true;
 		this->check_completion = false;
+		for (int i = 0; i < 9; i++)
+		{
+			for (int j = 0; j < 9; j++)
+			{
+				Boxes[i][j].shape.setFillColor(sf::Color(250,250,250));
+				Boxes[i][j].text.setStyle(sf::Text::Regular);
+			}
+		}
+
 	}
 }
 
