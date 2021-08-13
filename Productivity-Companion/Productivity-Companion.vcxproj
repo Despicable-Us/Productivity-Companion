@@ -38,12 +38,15 @@
   </ItemGroup>
   <ItemGroup>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c" />
 >>>>>>> 6a3af8da23b54305b6260512be7c7bf8d6ce072c
+=======
+    <ClCompile Include="..\..\sqlite3.c" />
+>>>>>>> parent of fa23835 (Improving the UX of the sudoku)
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="Icon.cpp" />
