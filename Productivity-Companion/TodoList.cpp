@@ -202,6 +202,8 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 		run_app = false;
 		textList.clear();
 		completed.clear();
+		TaskView.move(0, -viewPos);
+		viewPos = 0;
 	}
 }
 

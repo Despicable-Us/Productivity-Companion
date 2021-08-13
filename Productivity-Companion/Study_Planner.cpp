@@ -390,6 +390,7 @@ void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event
 				input_planner_field->bufferString = "";
 				input_planner_field->SetText("");
 				input_planner_field->inputText = "";
+				
 			}
 		}
 		if (show_pop_up)

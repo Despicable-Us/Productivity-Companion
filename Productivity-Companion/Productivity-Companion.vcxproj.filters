@@ -18,7 +18,7 @@
     <ClCompile Include="timeSetter.cpp" />
     <ClCompile Include="TodoList.cpp" />
     <ClCompile Include="toggleMusic.cpp" />
-    <ClCompile Include="..\..\sqlite3.c" />
+    <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Btn.h" />
