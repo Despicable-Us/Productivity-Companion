@@ -253,7 +253,6 @@ void TodoList::Update_DB()
 		sql_data.pop_back();
 		sql_data.push_back(';');
 
-		//why is this checking length?
 		if (sql_data.size() > 68)
 		{
 			udh::insertTaskDB(sql_data);
