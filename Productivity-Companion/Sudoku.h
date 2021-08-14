@@ -60,6 +60,7 @@ class Sudoku
 		sf::RectangleShape canvas;
 		sf::Font roboto_font;
 		sf::Font kaushan_font;
+		sf::Font roboto_medium;
 		sf::Text assist_text;
 		sf::Texture background_tex;
 		sf::Sprite background;

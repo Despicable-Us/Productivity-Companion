@@ -142,6 +142,7 @@ int main()
 	{
 		run_main_window = false;
 		run_sudoku = true;
+		sudoku_app.stop_watch.restart();
 	};
 
 

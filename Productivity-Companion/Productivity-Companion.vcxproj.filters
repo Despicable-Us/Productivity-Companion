@@ -7,7 +7,6 @@
     <ClCompile Include="Homepage.cpp" />
     <ClCompile Include="Icon.cpp" />
     <ClCompile Include="InputField.cpp" />
-    <ClCompile Include="InputTodo.cpp" />
     <ClCompile Include="musicOptions.cpp" />
     <ClCompile Include="Points.cpp" />
     <ClCompile Include="Pop_Up_Message.cpp" />
@@ -19,6 +18,7 @@
     <ClCompile Include="TodoList.cpp" />
     <ClCompile Include="toggleMusic.cpp" />
     <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c" />
+    <ClCompile Include="InputTodo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Btn.h" />

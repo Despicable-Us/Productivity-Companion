@@ -250,11 +250,18 @@ void TodoList::Update_DB()
 			sql_data += "('" + itr->getdata() + "', '" +
 				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "','" + plan_sheet_name + "'),";
 		}
+
+		for (std::vector<udh::inputField>::iterator itr = completed.begin(); itr < completed.end(); itr++)
+		{
+			sql_data += "('" + itr->getdata() + "', '" +
+				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "','" + plan_sheet_name + "'),";
+		}
+
 		sql_data.pop_back();
 		sql_data.push_back(';');
 
-		//why is this checking length?
-		if (sql_data.size() > 68)
+		
+		if (!textList.empty())
 		{
 			udh::insertTaskDB(sql_data);
 		}

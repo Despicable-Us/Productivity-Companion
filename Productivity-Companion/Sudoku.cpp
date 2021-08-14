@@ -139,7 +139,7 @@ Sudoku::Sudoku()
 
 	this->overlay.setSize({CANVAS_W, CANVAS_H});
 	this->overlay.setPosition({30.f, 145.f});
-	this->overlay.setFillColor(sf::Color(20, 20, 20, 50));
+	this->overlay.setFillColor(sf::Color(20, 20, 20, 30));
 	
 	this->new_game_btn = new Btn("New Game", { 278.f, 393.f }, 16, this->roboto_font);
 	this->new_game_btn->SetTextColor(sf::Color(142, 50, 179));
@@ -185,8 +185,7 @@ void Sudoku::Load_All_Functions()
 	this->timer_text.setPosition({ 421.f, 105.f });
 	this->timer_text.setString("00:00");
 
-	this->time_taken = sf::Text("Time Taken : ", this->roboto_font, 22);
-	this->time_taken.setStyle(sf::Text::Bold);
+	this->time_taken = sf::Text("Time Taken : ", this->roboto_font, 28);
 	this->time_taken.setFillColor(sf::Color::White);
 	this->seconds = 0;
 }
@@ -288,6 +287,8 @@ void Sudoku::Load_Font()
 		throw "Error in loading 'Roboto-Medium.ttf'";
 	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading the 'KaushanScipt font'";
+	if (!roboto_medium.loadFromFile("Fonts/Roboto-Medium.ttf"))
+		throw "Error in loading the 'Roboto-Medium.ttf'";
 }
 
 void Sudoku::Render_To_Main_Window(sf::RenderWindow& window)
@@ -373,6 +374,44 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 					this->remove_btn_func();
 					key_held = true;
 				}
+
+				if (selected)
+				{
+					if (event.key.code == sf::Keyboard::Right && selected_cell_pos.x < 8)
+					{
+						selected_cell_pos.x += 1;
+					}
+					if (event.key.code == sf::Keyboard::Up && selected_cell_pos.y > 0)
+					{
+						selected_cell_pos.y -= 1;
+					}
+					if (event.key.code == sf::Keyboard::Left && selected_cell_pos.x > 0)
+					{
+						selected_cell_pos.x -= 1;
+					}
+					if (event.key.code == sf::Keyboard::Down && selected_cell_pos.y < 8)
+					{
+						selected_cell_pos.y += 1;
+					}
+					key_held = true;
+					//selected_num_pad = static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString());
+					
+					if (prev_box_x != -1)
+					{
+						Color_Boxes_On_Select(prev_box_x, prev_box_y, true);
+					}
+					selected_box_string = Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString();
+					Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, false);
+					prev_box_x = selected_cell_pos.x;
+					prev_box_y = selected_cell_pos.y;
+					Boxes[selected_cell_pos.x][selected_cell_pos.y].shape.setFillColor(sf::Color(187, 222, 251));
+					
+					
+
+					
+				}
+
+
 			}
 		}
 		else
@@ -404,6 +443,20 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 								{
 									this->Check_Wrong_Inputs();
 								}
+								int x = 0;
+								int y = 0;
+								int temp = 0;
+								temp = event.text.unicode - 49;
+								x = temp / 3;
+								y = temp % 3;
+
+								if (prev_NP_x != -1)
+								{
+									Num_Pads[prev_NP_x][prev_NP_y].shape.setFillColor(sf::Color(250, 250, 250));
+								}
+								prev_NP_x = y;
+								prev_NP_y = x;
+								Num_Pads[y][x].shape.setFillColor(sf::Color(187, 222, 251));
 							}
 						}
 					}
@@ -425,8 +478,6 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 		if (this->stop_watch.getElapsedTime().asSeconds() >= 1)
 		{
 			this->seconds++;
-			std::cout << seconds << std::endl;
-
 			this->timer_string = std::to_string(seconds / 60).size() == 2 ? std::to_string(seconds / 60) : "0" + std::to_string(seconds / 60);
 			this->timer_string += ":";
 			this->timer_string += std::to_string(seconds % 60).size() == 2 ? std::to_string(seconds % 60) : "0" + std::to_string(seconds % 60);
@@ -467,7 +518,8 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 	{
 		this->new_game_btn->BtnEvents(window, event, this->new_game_btn_func);
 		this->time_taken.setString("Time Taken: " + this->timer_string);
-		this->time_taken.setPosition({ 30.f + 248.f - this->time_taken.getGlobalBounds().width / 2.f, 340.f });
+		this->time_taken.setPosition({ 30.f + 248.f - this->time_taken.getGlobalBounds().width / 2.f, 300.f });
+		//this->time_taken.setFillColor(sf::Color::Black);
 	}
 
 }
@@ -493,18 +545,19 @@ void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
 								Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
 							}
 							Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
+							if (prev_NP_x != -1)
+							{
+								Num_Pads[prev_NP_x][prev_NP_y].shape.setFillColor(sf::Color(250, 250, 250));
+							}
+							prev_NP_x = i;
+							prev_NP_y = j;
+							Num_Pads[i][j].shape.setFillColor(sf::Color(187, 222, 251));
 							value_inserted_in_cell = true;
 						}
 						break;
 					}
 				}
-				if (prev_NP_x != -1)
-				{
-					Num_Pads[prev_NP_x][prev_NP_y].shape.setFillColor(sf::Color(250, 250, 250));
-				}
-				Num_Pads[i][j].shape.setFillColor(sf::Color(187, 222, 251));
-				prev_NP_x = i;
-				prev_NP_y = j;
+
 			}
 		}
 	}
@@ -797,26 +850,6 @@ void Sudoku::Generate_Sudoku()
 				sudoku[xT][yT] = 0;
 			}
 		}
-	}
-	
-	// the result part
-	for (int i = 0; i < 9; i++)
-	{
-		std::cout << "{";
-		for (int j = 0; j < 9; j++)
-			std::cout << copy_sudoku[i][j] << ',';
-		std::cout << "},";
-		std::cout << std::endl;
-	}
-
-	
-	for (int i = 0; i < 9; i++)
-	{
-		std::cout << "{";
-		for (int j = 0; j < 9; j++)
-			std::cout << sudoku[i][j] << ',';
-		std::cout << "},";
-		std::cout << std::endl;
 	}
 
 	solved = std::vector<std::vector<std::string>>(9, std::vector<std::string>(9, ""));
