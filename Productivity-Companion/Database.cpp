@@ -195,24 +195,6 @@ int udh::UpdateStatus(std::string sql)
 	return 0;
 }
 
-int udh::deleteData()
-{
-	char* messageError;
-
-	std::string sql = "DROP TABLE TASKS;";
-
-	int exit;
-	
-	exit = sqlite3_exec(DB, sql.c_str(), NULL, NULL, &messageError);
-	if (exit != SQLITE_OK) {
-		std::cerr << "Error in deleteData function." << std::endl;
-		sqlite3_free(messageError);
-	}
-	else
-		std::cout << "Records deleted Successfully!" << std::endl;
-
-	return 0;
-}
 
 int udh::delete_plan_sheet_data(const char* s, std::string plan_sheet_name)
 {
@@ -320,7 +302,7 @@ int udh::LoadTaskList()
 	else
 		std::cout << "Records selected Successfully!" << std::endl;
 
-	return 0;
+	return exit;
 }
 
 int udh::callback(void* NotUsed, int argc, char** argv, char** azColName)
