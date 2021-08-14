@@ -18,21 +18,29 @@ namespace udh
 {
 	class inputField
 	{
-		std::string text; 
+		std::string text; //<string> to store task name and detail
 		
-		sf::Font font;
-		int creationDay;
+		sf::Font font;//<sf::Font> font for the task to be printed
+		int creationDay;// <int> to store the creation date
 	public:
-		sf::RectangleShape crossline;
-		bool completed = false;
-		udh::Button done;
-		udh::Button del;
-		udh::Button edit;
+		sf::RectangleShape crossline;//<sf::Rectangle> to strikethrough the completed task
+		bool completed = false;//<bool> to set the task as completed or incomplete
+		udh::Button done;// done button for the task
+		udh::Button del;//delete button for the task
+		udh::Button edit;//edit button for the task
 		sf::Texture del_tex, edit_tex;
-		Icon del_icon, edit_icon;
-		sf::Text textdata;
+		Icon del_icon;//icon of delete button for the task
+		Icon edit_icon;//icon of edit button for the task
+		sf::Text textdata; //<sf::Text> text of the task to display
+
+		/// <summary>
+		/// default constructor
+		/// </summary>
 		inputField();
 
+		/// <summary>
+		/// method to load texture for edit and delete button icon
+		/// </summary>
 		void loadIconTexture();
 
 		/// <summary>
@@ -78,18 +86,44 @@ namespace udh
 		/// </summary>
 		void setdone();
 
+		/// <summary>
+		/// sets the completed status to the given parameter value
+		/// </summary>
+		/// <param name="a">bool value to set in "completed" data member</param>
 		void setstatus(bool a)
 		{
 			this->completed = a;
 		}
 
+		/// <summary>
+		/// sets timecreated to the integer for the present day
+		/// </summary>
 		void setCreationTime();
 
+		/// <summary>
+		/// method to get the value set to "completed"
+		/// </summary>
+		/// <returns>true if task is completed and false if it's not completed</returns>
 		bool getstatus();
 
+		/// <summary>
+		/// method to get creationday
+		/// </summary>
+		/// <returns>int value for date of creation of task</returns>
 		int getDay();
+
+		/// <summary>
+		/// method to set the creation date
+		/// </summary>
+		/// <param name="a">int to set as creationDay</param>
 		void setday(int a);
+
+		/// <summary>
+		/// metthod to clean the text string of task to set into sql query
+		/// </summary>
+		/// <returns>string as cleaned data to add to sql query</returns>
 		std::string SanitizedData();
+
 		friend void drawlist(std::vector<udh::inputField>& textlist, std::vector<udh::inputField>&, sf::RenderWindow* window);
 	};
 
