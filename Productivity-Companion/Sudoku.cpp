@@ -1,11 +1,20 @@
 #include "Sudoku.h"
 
+/*
+	Default Constructor for the class BOX
+*/
 Box::Box()
 {
 	this->fixed = false;
 	this->wrong = false;
 }
 
+/*
+	Parameterized Constructor for the class BOX
+	\param font Pointer to the referenced font to be used in its text
+	\param width Width of the shape
+	\param height height of the shape
+*/
 Box::Box(sf::Font* font, float width, float height)
 {
 	this->text.setFont(*font);
@@ -17,16 +26,30 @@ Box::Box(sf::Font* font, float width, float height)
 	this->wrong = false;
 }
 
+/*
+	Member function for setting the size of the text
+	\param size Size of the character
+*/
 void Box::Set_Text_Size(int size)
 {
 	this->text.setCharacterSize(size);
 }
 
-
+/*
+	Default Constructor	
+*/
 Bar::Bar()
 {
 }
 
+/*
+	Parameterized Constructor
+	Its object creates the vertical and horizontal line in the canvas
+	\param x_count X-position adjustment offset
+	\param y-count Y-position adjustment offset
+	\param w Width of the line
+	\param h Height of the line
+*/
 Bar::Bar(int x_count, int y_count, float w, float h)
 {
 	float x_line_pos =  0.f;
@@ -69,6 +92,10 @@ Bar::Bar(int x_count, int y_count, float w, float h)
 	this->line_shape.setFillColor(sf::Color(52, 72, 97));
 }
 
+/*
+	Class for instanciating SUDOKU APP
+	Non-Parameterized Constructor
+*/
 Sudoku::Sudoku()
 {
 	this->canvas.setSize({ CANVAS_W, CANVAS_H });
@@ -150,6 +177,10 @@ Sudoku::Sudoku()
 	};
 }
 
+/*
+	Identifiers Initializers 
+	Made for the purpose of starting new game
+*/
 void Sudoku::Load_All_Functions()
 {
 	this->Generate_Sudoku();
@@ -188,13 +219,19 @@ void Sudoku::Load_All_Functions()
 	this->time_taken = sf::Text("Time Taken : ", this->roboto_font, 28);
 	this->time_taken.setFillColor(sf::Color::White);
 	this->seconds = 0;
+	this->start_stop_watch = false;
 }
 
-
+/*
+	Default Destructor
+*/
 Sudoku::~Sudoku()
 {
 }
 
+/*
+	Initializes the required UI components to the Window
+*/
 void Sudoku::Load_UI_Components()
 {
 	Bars.push_back(Bar(3, 0, 2.f, CANVAS_H));
@@ -209,6 +246,10 @@ void Sudoku::Load_UI_Components()
 	this->assist_text.setFillColor(sf::Color::Black);
 }
 
+/*
+	Loads 9x9 2D boxes to the app
+	Also loads Num Pads to the app
+*/
 void Sudoku::Load_Boxes()
 {
 	Boxes = std::vector<std::vector<Box>>(9, std::vector<Box>(9, Box(&roboto_font,54.f, 54.f)));
@@ -260,7 +301,6 @@ void Sudoku::Load_Boxes()
 				Boxes[i][j].fixed = false;
 				check_box[j][i] = "";
 			}
-			
 		}
 	}
 
@@ -281,6 +321,9 @@ void Sudoku::Load_Boxes()
 	}
 }
 
+/*
+	Loads the font from the directory
+*/
 void Sudoku::Load_Font()
 {
 	if (!roboto_font.loadFromFile("Fonts/Roboto-Light.ttf"))
@@ -291,6 +334,10 @@ void Sudoku::Load_Font()
 		throw "Error in loading the 'Roboto-Medium.ttf'";
 }
 
+/*
+	Renders all the components of the sudoko app to the window
+	\param &window Reference main window where the components are rendered
+*/
 void Sudoku::Render_To_Main_Window(sf::RenderWindow& window)
 {
 	window.draw(this->background);
@@ -319,6 +366,7 @@ void Sudoku::Render_To_Main_Window(sf::RenderWindow& window)
 			window.draw(pads.text);
 		}
 	}
+
 	remove_btn->DrawTo(window);
 	window.draw(this->main_rect);
 	window.draw(this->c_left);
@@ -326,15 +374,22 @@ void Sudoku::Render_To_Main_Window(sf::RenderWindow& window)
 	window.draw(this->rect_circle);
 	window.draw(this->assist_text);
 	home_back_btn->DrawTo(window);
+
 	if (end_game)
 	{
 		window.draw(this->overlay);
 		this->new_game_btn->DrawTo(window);
 		window.draw(this->time_taken);
 	}
-	
 }
 
+/*
+	Run all the events / updates in the app
+	\param &window Main window where the components are rendered
+	\param even All the event related to the window
+	\param &run_main_window Bool referenced to the the Main Window Running
+	\param &run_app Bool referenced to the SUDOKU APP
+*/
 void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_main_window, bool& run_app)
 {
 	if (!end_game && !is_game_over)
@@ -381,37 +436,35 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 					{
 						selected_cell_pos.x += 1;
 					}
+
 					if (event.key.code == sf::Keyboard::Up && selected_cell_pos.y > 0)
 					{
 						selected_cell_pos.y -= 1;
 					}
+
 					if (event.key.code == sf::Keyboard::Left && selected_cell_pos.x > 0)
 					{
 						selected_cell_pos.x -= 1;
 					}
+
 					if (event.key.code == sf::Keyboard::Down && selected_cell_pos.y < 8)
 					{
 						selected_cell_pos.y += 1;
 					}
+
 					key_held = true;
-					//selected_num_pad = static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString());
 					
 					if (prev_box_x != -1)
 					{
 						Color_Boxes_On_Select(prev_box_x, prev_box_y, true);
 					}
+
 					selected_box_string = Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString();
 					Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, false);
 					prev_box_x = selected_cell_pos.x;
 					prev_box_y = selected_cell_pos.y;
 					Boxes[selected_cell_pos.x][selected_cell_pos.y].shape.setFillColor(sf::Color(187, 222, 251));
-					
-					
-
-					
 				}
-
-
 			}
 		}
 		else
@@ -436,13 +489,16 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 								{
 									Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
 								}
+
 								Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
 								value_inserted_in_cell = true;
 								this->Run_Other_Events(event);
+
 								if (this->assists)
 								{
 									this->Check_Wrong_Inputs();
 								}
+
 								int x = 0;
 								int y = 0;
 								int temp = 0;
@@ -454,6 +510,7 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 								{
 									Num_Pads[prev_NP_x][prev_NP_y].shape.setFillColor(sf::Color(250, 250, 250));
 								}
+
 								prev_NP_x = y;
 								prev_NP_y = x;
 								Num_Pads[y][x].shape.setFillColor(sf::Color(187, 222, 251));
@@ -474,8 +531,13 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 			Check_For_Completion();
 		}
 
-		// Timer things
-		if (this->stop_watch.getElapsedTime().asSeconds() >= 1)
+		if (this->selected && !this->start_stop_watch)
+		{
+			this->start_stop_watch = true;
+			this->stop_watch.restart();
+		}
+
+		if (this->stop_watch.getElapsedTime().asSeconds() >= 1 && this->start_stop_watch)
 		{
 			this->seconds++;
 			this->timer_string = std::to_string(seconds / 60).size() == 2 ? std::to_string(seconds / 60) : "0" + std::to_string(seconds / 60);
@@ -485,7 +547,9 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 			this->stop_watch.restart();
 		}
 	}
+
 	home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
+
 	if (home_back_btn_clicked)
 	{
 		home_back_btn_clicked = false;
@@ -514,17 +578,21 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 			}
 		}
 	}
+
 	if (end_game)
 	{
 		this->new_game_btn->BtnEvents(window, event, this->new_game_btn_func);
 		this->time_taken.setString("Time Taken: " + this->timer_string);
 		this->time_taken.setPosition({ 30.f + 248.f - this->time_taken.getGlobalBounds().width / 2.f, 300.f });
-		//this->time_taken.setFillColor(sf::Color::Black);
 	}
-
 }
 
-void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
+/*
+	Run the events of the NUMBER PADS
+	\param &window Main window for the components to be rendered
+	\param event Events related to the main window
+*/
+void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event event)
 {
 	for (int i = 0; i < 3; ++i)
 	{
@@ -557,13 +625,17 @@ void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
 						break;
 					}
 				}
-
 			}
 		}
 	}
 }
 
-void Sudoku::Run_Box_Events(sf::RenderWindow&, sf::Event)
+/*
+	Runs the events related with the BOXES / CANVAS
+	\param &window Main window for the components to be rendered
+	\prram event Events related to the main window
+*/
+void Sudoku::Run_Box_Events(sf::RenderWindow& window, sf::Event event)
 {
 	for (int i = 0; i < 9; ++i)
 	{
@@ -573,6 +645,7 @@ void Sudoku::Run_Box_Events(sf::RenderWindow&, sf::Event)
 			if (Detect_Click(mouse_pos, selected_bos_pos, { 54.f, 54.f }))
 			{
 				selected_box_string = Boxes[i][j].text.getString();
+
 				if (prev_box_x != -1)
 				{
 					Color_Boxes_On_Select(prev_box_x, prev_box_y, true);
@@ -590,8 +663,11 @@ void Sudoku::Run_Box_Events(sf::RenderWindow&, sf::Event)
 	}
 }
 
-
-void Sudoku::Run_Other_Events(sf::Event)
+/*
+	Run other related Events / Updaters
+	\param event Events related to the main window
+*/
+void Sudoku::Run_Other_Events(sf::Event event)
 {
 	if (value_inserted_in_cell)
 	{
@@ -617,6 +693,10 @@ void Sudoku::Run_Other_Events(sf::Event)
 	}
 }
 
+/*
+	Updates the cell previously highlighted for a particular cell value to the regular style
+	\param item The cell data passed
+*/
 void Sudoku::Same_Cell_Update(std::string item)
 {
 	for (int i = 0; i < 9; ++i)
@@ -630,9 +710,11 @@ void Sudoku::Same_Cell_Update(std::string item)
 			}
 		}
 	}
-	
 }
 
+/*
+	Loads the assist toggler
+*/
 void Sudoku::Load_Toggler()
 {
 	this->main_rect.setSize({ TOGGLER_WIDTH, 20.f });
@@ -657,6 +739,9 @@ void Sudoku::Load_Toggler()
 	this->rect_circle.setFillColor(sf::Color(157, 92, 183));
 }
 
+/*
+	Clears all the boxes colors
+*/
 void Sudoku::Clear_Box_Color()
 {
 	for (int i = 0; i < 9; ++i)
@@ -668,6 +753,10 @@ void Sudoku::Clear_Box_Color()
 	}
 }
 
+/*
+	Check for the possible wrong input comparing with the solved container
+	Highlights the wrong cell with the definitive color
+*/
 void Sudoku::Check_Wrong_Inputs()
 {
 	for (int i = 0; i < 9; ++i)
@@ -683,6 +772,7 @@ void Sudoku::Check_Wrong_Inputs()
 			{
 				Boxes[j][i].wrong = false;
 			}
+
 			if (Boxes[j][i].wrong)
 			{
 				Boxes[j][i].shape.setFillColor(sf::Color(247, 207, 214));
@@ -691,6 +781,10 @@ void Sudoku::Check_Wrong_Inputs()
 	}
 }
 
+/*
+	Runs the events related to the assist toggler
+	\param event Events related to the main window
+*/
 void Sudoku::Run_Toggler_Event(sf::Event event)
 {
 	if (event.type == sf::Event::MouseButtonPressed)
@@ -722,6 +816,9 @@ void Sudoku::Run_Toggler_Event(sf::Event event)
 	}
 }
 
+/*
+	Undo all the cell previously highlighted for the wrong input
+*/
 void Sudoku::Undo_Wrong_Highlight()
 {
 	for (int i = 0; i < 9; ++i)
@@ -736,12 +833,24 @@ void Sudoku::Undo_Wrong_Highlight()
 	}
 }
 
+/*
+	Detects the click of the mouse within the entity passed
+	\param m_click A float vector for the position of the mouse
+	\param entity_click A 2D float vector for the entity clicked position
+	\param DMNS Dimension of the entity
+*/
 bool Sudoku::Detect_Click(sf::Vector2f m_click, sf::Vector2f entity_click, sf::Vector2f DMNS)
 {
 	return (m_click.x >= entity_click.x && m_click.x <= entity_click.x + DMNS.x &&
 		m_click.y >= entity_click.y && m_click.y <= entity_click.y + DMNS.y);
 }
 
+/*
+	Colors the row, column and the related nearby 3x3 Matrix for the selected cell
+	\param i Rowth of the cell selected
+	\param j Columnth of the cell selected
+	\param clear Boolean that decides if the action is to clear the previous select or highlight the new select
+*/
 void Sudoku::Color_Boxes_On_Select(int i, int j, bool clear)
 {
 	int a = (i / 3) * 3, b = (j / 3) * 3;
@@ -751,7 +860,7 @@ void Sudoku::Color_Boxes_On_Select(int i, int j, bool clear)
 	std::string numStr = Boxes[i][j].text.getString();
 	if (numStr != "")
 	{
-		// Highlighting the other than selected number in the BOX
+		// Highlighting other than selected number in the BOX
 		for (int i = 0; i < 9; i++)
 		{
 			for (int j = 0; j < 9; j++)
@@ -776,13 +885,11 @@ void Sudoku::Color_Boxes_On_Select(int i, int j, bool clear)
 			for (int j = 0; j < 9; j++)
 			{
 				
-					Boxes[i][j].shape.setFillColor(sf::Color(250, 250, 250));
-					Boxes[i][j].text.setStyle(sf::Text::Regular);
-				
+				Boxes[i][j].shape.setFillColor(sf::Color(250, 250, 250));
+				Boxes[i][j].text.setStyle(sf::Text::Regular);
 			}
 		}
 	}
-
 
 	// For the 3x3 matrix extracted from the supplied ith and jth index
 	for (int cI = 0; cI < 3; cI++)
@@ -808,11 +915,19 @@ void Sudoku::Color_Boxes_On_Select(int i, int j, bool clear)
 	}
 }
 
+/*
+	Main Generating algorithm for the SUDOKU
+	ALGORITHM:
+	- First randomly select any super 3x3 matrix from the 9x9 matrix
+	- Randomly fill the selected super matrix from 1 - 9
+	- Then feed this 9x9 grid to the sudoku solving algorithm
+*/
 void Sudoku::Generate_Sudoku()
 {
-	
 	sudoku = std::vector<std::vector<int>>(9, std::vector<int>(9, 0));
 	rem.clear();
+
+	// Randomly filling the selected supermatrix from 1-9
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -826,13 +941,22 @@ void Sudoku::Generate_Sudoku()
 		}
 	}
 
+	// Solving the partially filled 9x9 grid
 	Solve_Sudoku(sudoku);
 	copy_vec = sudoku;
 
 	int r, c, back_up, another_backup;
 	int xT, yT;
 	
-	for (int i = 0; i < 1; i++)
+	/*
+		This specific loop here is a compromised algorithm.
+		This loop randomly selects any two cell values and 
+		checks for the validity of the solved sudoku grid on 
+		the removal of those seleccted values for each loop.
+		The idea is that the sudoku grid at any point shouldn't 
+		have more than one solution i.e. it's solution should be unique.
+	*/
+	for (int i = 0; i < 25; i++)
 	{
 		copy_sudoku = sudoku;
 		Find_Random_Pos(copy_sudoku, r, c);
@@ -864,11 +988,24 @@ void Sudoku::Generate_Sudoku()
 	this->check_box = std::vector<std::vector<std::string>>(9, std::vector<std::string>(9, ""));
 }
 
+/*
+	Recursive funtion that takes an unsolved 9x9 GRID and 
+	solves recursively.
+	ALGORITHM (BACKTRACKING)
+	- First find any position void of value
+	- Assign values looping from 1 - 9
+	- Recursively fill the 9x9 GRID checking for the completion
+	- If at any instant the algorithm fails to assign the value the 
+	  recursion tree break and back tracks for other value from the loop
+	  hence the name 'BACKTRACKING'
+*/
 bool Sudoku::Solve_Sudoku(std::vector<std::vector<int>>& graph)
 {
 	int row, column;
 	if (!Find_Zero(graph, row, column))
+	{
 		return true;
+	}
 
 	for (int num = 1; num <= 9; num++)
 	{
@@ -885,6 +1022,12 @@ bool Sudoku::Solve_Sudoku(std::vector<std::vector<int>>& graph)
 	return false;
 }
 
+/*
+	Find any zero value cell in the GRID
+	\param graph 9x9 GRID
+	\param &r Row position referenced
+	\param &c Column position referenced
+*/
 bool Sudoku::Find_Zero(std::vector<std::vector<int>> graph, int& r, int& c)
 {
 	for (r = 0; r < 9; r++)
@@ -894,6 +1037,13 @@ bool Sudoku::Find_Zero(std::vector<std::vector<int>> graph, int& r, int& c)
 	return false;
 }
 
+/*
+	Provides boolean whether the provided cell in the GRID is safe to assign or not
+	\param graph 9x9 GRID
+	\param i X-Position in the GRID
+	\param j Y-Position in the GRID
+	\param num Number to be assigned
+*/
 bool Sudoku::Safe_To_Assign(std::vector<std::vector<int>> graph, int i, int j, int num)
 {
 	int a = (i / 3) * 3, b = (j / 3) * 3;
@@ -920,6 +1070,9 @@ bool Sudoku::Safe_To_Assign(std::vector<std::vector<int>> graph, int i, int j, i
 	return true;
 }
 
+/*
+	Compares two GRIDS - Solved and the Preparing Sudoku GRID for the uniqueness
+*/
 bool Sudoku::Compare(std::vector<std::vector<int>> test1, std::vector<std::vector<int>> test2)
 {
 	for (int i = 0; i < 9; i++)
@@ -935,6 +1088,9 @@ bool Sudoku::Compare(std::vector<std::vector<int>> test1, std::vector<std::vecto
 	return true;
 }
 
+/*
+	Find random cell with non-zero value in the 9x9 GRID
+*/
 void Sudoku::Find_Random_Pos(std::vector<std::vector<int>> graph, int& r, int& c)
 {
 	do
@@ -944,6 +1100,9 @@ void Sudoku::Find_Random_Pos(std::vector<std::vector<int>> graph, int& r, int& c
 	} while (graph[r][c] == 0);
 }
 
+/*
+	Checks for the completion of the sudoku
+*/
 void Sudoku::Check_For_Completion()
 {
 	bool flag = false;
@@ -958,6 +1117,7 @@ void Sudoku::Check_For_Completion()
 			}
 		}
 	}
+
 	if (!flag)
 	{
 		this->is_game_over = true;
@@ -970,14 +1130,21 @@ void Sudoku::Check_For_Completion()
 				Boxes[i][j].text.setStyle(sf::Text::Regular);
 			}
 		}
-
 	}
 }
 
+/*
+	Default Constructor
+*/
 NumPad::NumPad()
 {
 }
 
+/*
+	Parameterized Constructor
+	\param font Pointer to the referenced font
+	\prarm radius Radius of the shape for the Number Pad
+*/
 NumPad::NumPad(sf::Font* font, float radius)
 {
 	this->text.setFont(*font);
@@ -987,6 +1154,10 @@ NumPad::NumPad(sf::Font* font, float radius)
 	this->text.setFillColor(sf::Color(52, 72, 97));
 }
 
+/*
+	Member Function
+	\param size Character size
+*/
 void NumPad::Set_Text_Size(int size)
 {
 	this->text.setCharacterSize(size);
