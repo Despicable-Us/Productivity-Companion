@@ -11,7 +11,7 @@
 #define CANVAS_H 496.f
 #define TOGGLER_C_R 15.f
 #define TOGGLER_WIDTH 30.f
-#define ANIMATION_TIMER 2
+#define ANIMATION_TIMER 3
 
 class NumPad
 {
@@ -63,6 +63,7 @@ class Sudoku
 		sf::Text assist_text;
 		sf::Texture background_tex;
 		sf::Sprite background;
+		sf::RectangleShape overlay;
 
 		// TOGGLER
 		sf::RectangleShape main_rect;
@@ -79,8 +80,10 @@ class Sudoku
 
 		Btn* remove_btn;
 		Btn* home_back_btn;
+		Btn* new_game_btn;
 		std::function<void()> home_back_btn_func;
 		std::function<void()> remove_btn_func;
+		std::function<void()> new_game_btn_func;
 
 		int prev_NP_x;
 		int prev_NP_y;
@@ -102,7 +105,7 @@ class Sudoku
 		bool key_held;
 		bool text_held;
 		bool check_completion;
-
+		bool end_game;
 
 		// CONTAINERS
 		std::vector<Bar> Bars;
@@ -118,6 +121,7 @@ class Sudoku
 		void Load_Boxes();
 		void Load_Font();
 		void Load_Toggler();
+		void Load_All_Functions();
 
 		// HELPER && EVENT FUNCTIONS
 		void Run_Events(sf::RenderWindow& , sf::Event, bool&, bool&);
@@ -145,6 +149,12 @@ class Sudoku
 		void Find_Random_Pos(std::vector<std::vector<int>> graph, int& r, int& c);
 		void Check_For_Completion();
 
+		// TIMER COMPONENTS
+		sf::Text timer_text;
+		sf::Text time_taken;
+		sf::Clock stop_watch;
+		int seconds;
+		std::string timer_string;
 
 		// RENDERING 
 		void Render_To_Main_Window(sf::RenderWindow& );

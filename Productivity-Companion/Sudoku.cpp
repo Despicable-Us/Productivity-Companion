@@ -76,24 +76,12 @@ Sudoku::Sudoku()
 	this->canvas.setFillColor(sf::Color(211, 216, 226));
 	this->canvas.setOutlineThickness(2.f);
 	this->canvas.setOutlineColor(sf::Color(52, 72, 97));
+
 	this->Load_Font();
-	this->Generate_Sudoku();
-	this->Load_UI_Components();
-	this->Load_Boxes();
+	this->Load_All_Functions();
 
-	this->mouse_held = false;
-	this->prev_NP_x = -1;
-	this->prev_NP_y = -1;
-	this->prev_box_x = -1;
-	this->prev_box_y = -1;
-	this->selected_cell_pos = { -1, -1 };
-	this->selected = false;
-	this->value_inserted_in_cell = false;
-	this->x = -1;
-	this->y = -1;
-
-	this->remove_btn = new Btn("Remove", { 640.f, 240.f }, 16, this->roboto_font);
-	this->remove_btn->SetTextColor(sf::Color(220,20,60));
+	this->remove_btn = new Btn("Remove", { 634.f, 245.f }, 16, this->roboto_font);
+	this->remove_btn->SetTextColor(sf::Color(142, 50, 179));
 
 	this->remove_btn_func = [&]()
 	{
@@ -112,8 +100,6 @@ Sudoku::Sudoku()
 			}
 		}
 	};
-	this->assists = false;
-	this->toggler_held = false;
 
 	if (!this->background_tex.loadFromFile("Texture/sudoku_background.png"))
 		throw "Something that doesn't  matter";
@@ -123,21 +109,12 @@ Sudoku::Sudoku()
 
 	this->home_back_btn_clicked = false;
 	this->home_back_btn = new Btn("Home", { 55.f, 30.f }, 14, this->roboto_font);
-	this->home_back_btn->SetFillColor(sf::Color(1,22,38));
+	this->home_back_btn->SetFillColor(sf::Color(157, 92, 183));
 	this->home_back_btn->SetTextColor(sf::Color::White);
 	this->home_back_btn_func = [&]()
 	{
 		this->home_back_btn_clicked = true;
 	};
-
-	this->is_game_over = false;
-	this->key_held = false;
-	this->text_held = false;
-	this->check_completion = true;
-	this->animation_counter = ANIMATION_TIMER;
-	this->animation_x_pos = 0;
-	this->animation_y_pos = 0;
-	this->pattern_pos = 0;
 
 	this->animation_pattern =
 	{
@@ -159,7 +136,61 @@ Sudoku::Sudoku()
 		{3, 4},
 		{4, 4}
 	};
+
+	this->overlay.setSize({CANVAS_W, CANVAS_H});
+	this->overlay.setPosition({30.f, 145.f});
+	this->overlay.setFillColor(sf::Color(20, 20, 20, 50));
+	
+	this->new_game_btn = new Btn("New Game", { 278.f, 393.f }, 16, this->roboto_font);
+	this->new_game_btn->SetTextColor(sf::Color(142, 50, 179));
+	this->new_game_btn_func = [&]()
+	{
+		this->Load_All_Functions();
+		this->stop_watch.restart();
+	};
 }
+
+void Sudoku::Load_All_Functions()
+{
+	this->Generate_Sudoku();
+	this->Load_UI_Components();
+	this->Load_Boxes();
+
+	this->mouse_held = false;
+	this->prev_NP_x = -1;
+	this->prev_NP_y = -1;
+	this->prev_box_x = -1;
+	this->prev_box_y = -1;
+	this->selected_cell_pos = { -1, -1 };
+	this->selected = false;
+	this->value_inserted_in_cell = false;
+	this->x = -1;
+	this->y = -1;
+
+	this->assists = false;
+	this->toggler_held = false;
+	this->is_game_over = false;
+	this->key_held = false;
+	this->text_held = false;
+	this->check_completion = true;
+	this->animation_counter = ANIMATION_TIMER;
+	this->animation_x_pos = 0;
+	this->animation_y_pos = 0;
+	this->pattern_pos = 0;
+	this->end_game = false;
+
+	this->timer_text.setFont(this->roboto_font);
+	this->timer_text.setCharacterSize(18);
+	this->timer_text.setFillColor(sf::Color::Black);
+	this->timer_text.setPosition({ 421.f, 105.f });
+	this->timer_text.setString("00:00");
+
+	this->time_taken = sf::Text("Time Taken : ", this->roboto_font, 22);
+	this->time_taken.setStyle(sf::Text::Bold);
+	this->time_taken.setFillColor(sf::Color::White);
+	this->seconds = 0;
+}
+
 
 Sudoku::~Sudoku()
 {
@@ -174,7 +205,7 @@ void Sudoku::Load_UI_Components()
 
 	this->Load_Toggler();
 
-	this->assist_text = sf::Text("Auto-Check: ", this->roboto_font, 18);
+	this->assist_text = sf::Text("Auto-Check for Mistakes: ", this->roboto_font, 18);
 	this->assist_text.setPosition({ 30.f, 105.f });
 	this->assist_text.setFillColor(sf::Color::Black);
 }
@@ -244,7 +275,7 @@ void Sudoku::Load_Boxes()
 			Num_Pads[i][j].text.setStyle(sf::Text::Bold);
 			Num_Pads[i][j].text.setPosition({ Num_Pads[i][j].shape.getPosition().x + 23.f, Num_Pads[i][j].shape.getPosition().y + 14.f });
 			Num_Pads[i][j].text.setString(std::to_string(j * 3 + i + 1));
-			Num_Pads[i][j].text.setFillColor(sf::Color(0, 114, 227));
+			Num_Pads[i][j].text.setFillColor(sf::Color(157, 92, 183));
 			Num_Pads[i][j].shape.setOutlineThickness(2.f);
 			Num_Pads[i][j].shape.setOutlineColor(sf::Color(44, 62, 82));
 		}
@@ -263,6 +294,7 @@ void Sudoku::Render_To_Main_Window(sf::RenderWindow& window)
 {
 	window.draw(this->background);
 	window.draw(this->canvas);
+	window.draw(this->timer_text);
 
 	for (auto bar : Bars)
 	{
@@ -293,37 +325,115 @@ void Sudoku::Render_To_Main_Window(sf::RenderWindow& window)
 	window.draw(this->rect_circle);
 	window.draw(this->assist_text);
 	home_back_btn->DrawTo(window);
+	if (end_game)
+	{
+		window.draw(this->overlay);
+		this->new_game_btn->DrawTo(window);
+		window.draw(this->time_taken);
+	}
 	
 }
 
 void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_main_window, bool& run_app)
 {
-	if (event.type == sf::Event::MouseButtonPressed)
+	if (!end_game && !is_game_over)
 	{
-		if (event.mouseButton.button == sf::Mouse::Left)
+		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			mouse_pos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-			if (!mouse_held)
+			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				this->Run_Box_Events(window, event);
-				this->Run_Num_Pads_Events(window, event);
-				this->Run_Other_Events(event);
-				if (this->assists)
+				mouse_pos = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+				if (!mouse_held)
 				{
-					this->Check_Wrong_Inputs();
-
+					this->Run_Box_Events(window, event);
+					this->Run_Num_Pads_Events(window, event);
+					this->Run_Other_Events(event);
+					if (this->assists)
+					{
+						this->Check_Wrong_Inputs();
+					}
+					this->Run_Toggler_Event(event);
+					mouse_held = true;
 				}
-				this->Run_Toggler_Event(event);
-				mouse_held = true;
 			}
 		}
-	}
-	else
-	{
-		mouse_held = false;
-	}
+		else
+		{
+			mouse_held = false;
+		}
 
-	remove_btn->BtnEvents(window, event, this->remove_btn_func);
+		remove_btn->BtnEvents(window, event, this->remove_btn_func);
+		
+		if (event.type == sf::Event::KeyPressed)
+		{
+			if (!key_held)
+			{
+				if (event.key.code == sf::Keyboard::Delete)
+				{
+					this->remove_btn_func();
+					key_held = true;
+				}
+			}
+		}
+		else
+		{
+			key_held = false;
+		}
+
+		if (event.type == sf::Event::TextEntered && selected)
+		{
+			if (!text_held)
+			{
+				if (event.text.unicode < 128)
+				{
+					if (event.text.unicode > 48 && event.text.unicode < 58)
+					{
+						selected_num_pad = static_cast<char>(event.text.unicode);
+						if (selected_num_pad != Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString())
+						{
+							if (selected && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
+							{
+								if (static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString()) != "")
+								{
+									Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
+								}
+								Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
+								value_inserted_in_cell = true;
+								this->Run_Other_Events(event);
+								if (this->assists)
+								{
+									this->Check_Wrong_Inputs();
+								}
+							}
+						}
+					}
+				}
+				text_held = true;
+			}
+		}
+		else
+		{
+			text_held = false;
+		}
+
+		if (check_completion)
+		{
+			Check_For_Completion();
+		}
+
+		// Timer things
+		if (this->stop_watch.getElapsedTime().asSeconds() >= 1)
+		{
+			this->seconds++;
+			std::cout << seconds << std::endl;
+
+			this->timer_string = std::to_string(seconds / 60).size() == 2 ? std::to_string(seconds / 60) : "0" + std::to_string(seconds / 60);
+			this->timer_string += ":";
+			this->timer_string += std::to_string(seconds % 60).size() == 2 ? std::to_string(seconds % 60) : "0" + std::to_string(seconds % 60);
+			this->timer_text.setString(this->timer_string);
+			this->stop_watch.restart();
+		}
+	}
 	home_back_btn->BtnEvents(window, event, this->home_back_btn_func);
 	if (home_back_btn_clicked)
 	{
@@ -331,78 +441,33 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 		run_main_window = true;
 		run_app = false;
 	}
-	if (event.type == sf::Event::KeyPressed)
-	{
-		if (!key_held)
-		{
-			if (event.key.code == sf::Keyboard::Delete)
-			{
-				this->remove_btn_func();
-				key_held = true;
-			}
-		}
-	}
-	else
-	{
-		key_held = false;
-	}
-
-	if (event.type == sf::Event::TextEntered)
-	{
-		if (!text_held)
-		{
-			if (event.text.unicode < 128)
-			{
-				if (event.text.unicode > 48 && event.text.unicode < 58)
-				{
-					selected_num_pad = static_cast<char>(event.text.unicode);
-					if (selected && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
-					{
-						if (static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString()) != "")
-						{
-							Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
-						}
-						Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
-						value_inserted_in_cell = true;
-						this->Run_Other_Events(event);
-						if (this->assists)
-						{
-							this->Check_Wrong_Inputs();
-						}
-					}
-				}
-			}
-			text_held = true;
-		}
-	}
-	else
-	{
-		text_held = false;
-	}
-
-	if (check_completion)
-	{
-		Check_For_Completion();
-	}
 
 	if (is_game_over)
 	{
 		if (animation_counter < ANIMATION_TIMER)
+		{
 			animation_counter++;
+		}
 		else if (animation_counter >= ANIMATION_TIMER)
 		{
-
 			animation_x_pos = animation_pattern[pattern_pos][0];
 			animation_y_pos = animation_pattern[pattern_pos][1];
 			pattern_pos++;
 
-			Boxes[animation_x_pos][animation_y_pos].shape.setFillColor(sf::Color(169, 192, 219));
+			Boxes[animation_x_pos][animation_y_pos].shape.setFillColor(sf::Color(197, 163, 211));
 			animation_counter = 0;
 			if (pattern_pos >= animation_pattern.size())
 			{
 				is_game_over = false;
+				end_game = true;
 			}
 		}
+	}
+	if (end_game)
+	{
+		this->new_game_btn->BtnEvents(window, event, this->new_game_btn_func);
+		this->time_taken.setString("Time Taken: " + this->timer_string);
+		this->time_taken.setPosition({ 30.f + 248.f - this->time_taken.getGlobalBounds().width / 2.f, 340.f });
 	}
 
 }
@@ -417,6 +482,22 @@ void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
 			if (Detect_Click(mouse_pos, selected_num_pad_pos, { 50.f, 70.f }))
 			{
 				selected_num_pad = Num_Pads[i][j].text.getString();
+				if (selected)
+				{
+					if (selected_num_pad != Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString())
+					{
+						if (selected && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
+						{
+							if (static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString()) != "")
+							{
+								Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
+							}
+							Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
+							value_inserted_in_cell = true;
+						}
+						break;
+					}
+				}
 				if (prev_NP_x != -1)
 				{
 					Num_Pads[prev_NP_x][prev_NP_y].shape.setFillColor(sf::Color(250, 250, 250));
@@ -424,17 +505,6 @@ void Sudoku::Run_Num_Pads_Events(sf::RenderWindow& window, sf::Event)
 				Num_Pads[i][j].shape.setFillColor(sf::Color(187, 222, 251));
 				prev_NP_x = i;
 				prev_NP_y = j;
-
-				if (selected && !Boxes[selected_cell_pos.x][selected_cell_pos.y].fixed)
-				{
-					if (static_cast<std::string>(Boxes[selected_cell_pos.x][selected_cell_pos.y].text.getString()) != "")
-					{
-						Color_Boxes_On_Select(selected_cell_pos.x, selected_cell_pos.y, true);
-					}
-					Boxes[selected_cell_pos.x][selected_cell_pos.y].text.setString(selected_num_pad);
-					value_inserted_in_cell = true;
-				}
-				break;
 			}
 		}
 	}
@@ -454,6 +524,7 @@ void Sudoku::Run_Box_Events(sf::RenderWindow&, sf::Event)
 				{
 					Color_Boxes_On_Select(prev_box_x, prev_box_y, true);
 				}
+				
 				Color_Boxes_On_Select(i, j, false);
 				selected_cell_pos = { i, j };
 				prev_box_x = i;
@@ -491,7 +562,6 @@ void Sudoku::Run_Other_Events(sf::Event)
 			}
 		}
 	}
-
 }
 
 void Sudoku::Same_Cell_Update(std::string item)
@@ -507,14 +577,14 @@ void Sudoku::Same_Cell_Update(std::string item)
 			}
 		}
 	}
-
+	
 }
 
 void Sudoku::Load_Toggler()
 {
 	this->main_rect.setSize({ TOGGLER_WIDTH, 20.f });
 	this->main_rect.setOrigin({ TOGGLER_WIDTH / 2.f, this->main_rect.getSize().y / 2.f });
-	this->main_rect.setPosition({ 160.f, 115.f });
+	this->main_rect.setPosition({ 260.f, 118.f });
 	this->main_rect.setFillColor(sf::Color(250, 250, 250));
 
 	this->rect_circle.setRadius(TOGGLER_C_R);
@@ -531,7 +601,7 @@ void Sudoku::Load_Toggler()
 	this->c_right.setFillColor(sf::Color(250, 250, 250));
 	
 	this->rect_circle.setPosition({ this->main_rect.getPosition().x - TOGGLER_WIDTH / 2.f, this->main_rect.getPosition().y });
-	this->rect_circle.setFillColor(sf::Color(50, 50, 50));
+	this->rect_circle.setFillColor(sf::Color(157, 92, 183));
 }
 
 void Sudoku::Clear_Box_Color()
@@ -625,9 +695,7 @@ void Sudoku::Color_Boxes_On_Select(int i, int j, bool clear)
 	int Ix, Iy;
 	sf::Color c;
 	clear ? c = sf::Color(250, 250, 250) : c = sf::Color(226, 235, 243);
-
 	std::string numStr = Boxes[i][j].text.getString();
-	std::cout << numStr << std::endl;
 	if (numStr != "")
 	{
 		// Highlighting the other than selected number in the BOX
@@ -689,8 +757,9 @@ void Sudoku::Color_Boxes_On_Select(int i, int j, bool clear)
 
 void Sudoku::Generate_Sudoku()
 {
-	sudoku = std::vector<std::vector<int>>(9, std::vector<int>(9, 0));
 	
+	sudoku = std::vector<std::vector<int>>(9, std::vector<int>(9, 0));
+	rem.clear();
 	for (int i = 0; i < 3; i++)
 	{
 		for (int j = 0; j < 3; j++)
@@ -820,21 +889,16 @@ bool Sudoku::Safe_To_Assign(std::vector<std::vector<int>> graph, int i, int j, i
 
 bool Sudoku::Compare(std::vector<std::vector<int>> test1, std::vector<std::vector<int>> test2)
 {
-
 	for (int i = 0; i < 9; i++)
 	{
-		
 		for (int j = 0; j < 9; j++)
 		{
-			
 			if (test1[i][j] != test2[i][j])
 			{
-				std::cout << "Here" << std::endl;
 				return false;
 			}
 		}
 	}
-		
 	return true;
 }
 
