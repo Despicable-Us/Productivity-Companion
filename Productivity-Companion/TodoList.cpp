@@ -80,7 +80,6 @@ void TodoList::Reset_Functions(std::string planner_name)
 	{
 		home_back_btn_clicked = true;
 	};
-	std::cout << plan_sheet_name << std::endl;
 	background_text.setFont(fonts);
 	background_text.setString(plan_sheet_name);
 	background_text.setFillColor(sf::Color::White);

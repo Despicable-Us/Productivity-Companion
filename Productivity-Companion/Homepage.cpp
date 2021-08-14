@@ -45,11 +45,12 @@ int main()
 	sf::VideoMode video_mode;
 	video_mode.width = WIN_WIDTH;
 	video_mode.height = WIN_HEIGHT;
+	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close,settings);
+	window.setFramerateLimit(120);
+
 	srand(static_cast<unsigned>(time(NULL)));
 	int exit = sqlite3_open("Productivity_companion.db", &DB);
 
-	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close,settings);
-	window.setFramerateLimit(120);
 	sf::Event event;
 	sf::View scroll_view;
 	sf::Image homepage_icon_image;
@@ -60,15 +61,16 @@ int main()
 		throw "Error in loading 'app_icon.png'";
 	window.setIcon(homepage_icon_image.getSize().x, homepage_icon_image.getSize().y, homepage_icon_image.getPixelsPtr());
 
-	// LOADING AND SETTING THE BACKGROUND IMAGE
+	// LOADING AND SETTING THE BACKGROUND IMAGE (PRIMARY AND SECONDARY)
 	if (!home_bg_tex.loadFromFile("Texture/homepage.PNG"))
 		throw "Error in loading the 'homepage.PNG'";
+
 	sf::Sprite home_bg(home_bg_tex);
 	home_bg.setPosition({ 0.f, 0.f });
 	scroll_view.reset(sf::FloatRect(0.f, 0.f, WIN_WIDTHF, WIN_HEIGHTF));
 	scroll_view.setViewport(sf::FloatRect(0.f, VIEW_START, 1.f, 1.f));
-
 	sf::Texture sec_back;
+
 	if (!sec_back.loadFromFile("Texture/low_background_cover.jpg"))
 		throw "Error in loading 'low_background_cover.jpg'";
 
@@ -107,7 +109,6 @@ int main()
 	Study_Planner study_planner(window); // STUDY PLANNER
 	Sudoku sudoku_app;
 
-
 	//creating tables
 	udh::createPlannerTable();
 	udh::createPlannerListTable();
@@ -145,7 +146,6 @@ int main()
 		sudoku_app.stop_watch.restart();
 	};
 
-
 	// APP NAMES
 	sf::Text pomo_timer_text("Pomo Timer", roboto_font, 14),
 		     session_tracker_text("Session Tracker", roboto_font, 14),
@@ -171,11 +171,10 @@ int main()
 	study_planner_text.setFillColor(sf::Color::Black);
 	sudoku_text.setFillColor(sf::Color::Black);
 
-
-	std::cout << quote_vec[rand() % quote_vec.size()] << std::endl;
 	sf::Font kaushan_font;
 	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading the font 'KaushanScript-Regular.ttf";
+
 	sf::Text quote("\"" + quote_vec[rand() % quote_vec.size()]  + "\"" , kaushan_font, 24);
 	quote.setFillColor(sf::Color::Black);
 	quote.setOrigin({ quote.getGlobalBounds().width / 2, quote.getGlobalBounds().height / 2 });
@@ -192,14 +191,17 @@ int main()
 				{
 					session_app.Run_Inside_Event(window, event, scroll_view);
 				}
+
 				if (run_pomo_timer)
 				{
 					timeDial.dialPollEvents(window, event);
 				}
+
 				if (run_todo_list)
 				{
 					todolist.RunTodo(window, event, scroll_view, run_main_window, run_todo_list);
 				}
+
 				if (run_study_planner)
 				{
 					study_planner.Run_Inside_Event(window, event, scroll_view);
@@ -223,12 +225,14 @@ int main()
 			window.setTitle("Productivity Companion");
 			window.clear(sf::Color::White);
 		}
+
 		if (run_session_tracker)
 		{
 			session_app.Run_Outside_Event(window, event, run_main_window, run_session_tracker);
 			window.setTitle("Session Tracker");
 			window.clear(sf::Color::White);
 		}
+
 		if (run_pomo_timer)
 		{
 			timeDial.dialUpdateFromEvents(window, event, run_main_window, run_pomo_timer);
@@ -241,12 +245,14 @@ int main()
 			window.setTitle("To-do List");
 			window.clear(sf::Color::White);
 		}
+
 		if (run_study_planner)
 		{
 			window.setTitle("Study Planner");
 			study_planner.Run_Outside_Event(window, event, run_main_window, run_study_planner);
 			window.clear(sf::Color::White);
 		}
+
 		if (run_sudoku)
 		{
 			window.setTitle("Sudoku");

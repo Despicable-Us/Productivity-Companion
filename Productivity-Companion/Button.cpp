@@ -202,7 +202,6 @@ bool udh::Button::isclicked(sf::Event event, sf::RenderWindow& window)
 	{
 		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
 		{
-			std::cout << "clicked:";
 			this->state = true;
 			this->setbtntext("");
 		}

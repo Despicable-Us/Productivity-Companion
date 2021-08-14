@@ -6,10 +6,12 @@
 class Pop_Up_Message
 {
 	public:
+		// CONSTRUCTORS AND DESTRUCTORS
 		Pop_Up_Message();
 		Pop_Up_Message(std::string, sf::Font&);
 		~Pop_Up_Message();
 
+		// BUTTON AND FIELD 
 		Btn* cancel_btn, *confirm_btn;
 		InputField* field;
 		sf::Font roboto_font;
@@ -47,7 +49,8 @@ class Pop_Up_Message
 
 		// UPDATE AND RENDER
 		void Draw_To(sf::RenderWindow& window);
-
+		
+		// UI TEXT
 		sf::Text sure_text;
 		sf::Text confirm_text;
 
@@ -55,10 +58,10 @@ class Pop_Up_Message
 		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& show_btn, bool& show_pop_up, bool& delete_db_data);
 		void Set_Session_Name(std::string);
 
+		// LAMBDA EXPRESSIONS, BOOLEAN AND STRINGS
 		std::function<void()> input_func;
 		std::function<void()> confirm_func;
 		std::function<void()> cancel_func;
 		std::string input_field_string;
-
 		bool* overlay, * popup, *run_delete;
 };

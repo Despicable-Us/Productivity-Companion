@@ -28,7 +28,6 @@ void Points::initiatePoints(sf::RenderWindow &window)
 	int tempPoints;
 	file.open("pomoPoints.txt", std::ios::in);
 	if (!file.is_open()) {
-		std::cout << "this must run here" << std::endl;
 		file.open("pomoPoints.txt", std::ios::out);
 		file << 0;
 	}

@@ -138,7 +138,6 @@ class Session_Tracker
 		void Update_DB_Data();
 		const char* dir;
 		std::string selected_session_name;
-
 		void Set_DB_Data_To_View();
 		void Set_DB_Total_Time_List();
 		sf::RectangleShape blur_overlay;
@@ -152,7 +151,6 @@ class Session_Tracker
 		Btn* home_back_btn;
 		std::function<void()> home_back_btn_func;
 		bool home_back_btn_clicked;
-
 		bool first_time;
 };
 

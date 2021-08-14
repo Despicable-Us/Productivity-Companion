@@ -1,5 +1,10 @@
 #include "InputField.h"
 
+/// <summary>
+/// Parameterized Constructors
+/// </summary>
+/// <param name="fieldPos">Position of the inputfield</param>
+/// <param name="font">Font of the text within the field</param>
 InputField::InputField(sf::Vector2f fieldPos, sf::Font& font)
 {
 	this->inputFont = font;
@@ -8,6 +13,9 @@ InputField::InputField(sf::Vector2f fieldPos, sf::Font& font)
 	this->CreateInputShape();
 }
 
+/// <summary>
+/// Loading and setting the text within the field
+/// </summary>
 void InputField::LoadText()
 {
 	text.setFont(inputFont);
@@ -15,12 +23,19 @@ void InputField::LoadText()
 	text.setFillColor(sf::Color::Black);
 }
 
+/// <summary>
+/// Setter for the text string
+/// </summary>
+/// <param name="inText">Text string data</param>
 void InputField::SetText(std::string inText)
 {
 	text.setString(inText);
 	text.setPosition({ wholeInputRect.left + padX, wholeInputRect.top + padY });
 }
 
+/// <summary>
+/// Initialize the shape of the inputfield
+/// </summary>
 void InputField::CreateInputShape()
 {
 	shape.setSize({ this->fieldWidth, float(charSize) + this->padX });
@@ -39,6 +54,9 @@ void InputField::CreateInputShape()
 	SetWholeRect();
 }
 
+/// <summary>
+/// Set the dimension for the whole inputfield rect
+/// </summary>
 void InputField::SetWholeRect()
 {
 	wholeInputRect.width = Cleft.getRadius() * 2.f + shape.getSize().x;
@@ -47,6 +65,15 @@ void InputField::SetWholeRect()
 	wholeInputRect.height = Cleft.getRadius() * 2.f;
 }
 
+/// <summary>
+/// Event handler for inputfield
+/// </summary>
+/// <param name="window">Main Window referenced</param>
+/// <param name="event">Events related to the main window</param>
+/// <param name="inputHide">Referenced boolean</param>
+/// <param name="btnHide">Boolean for hiding button</param>
+/// <param name="inputTexts">Input text data in the field</param>
+/// <param name="enter_pressed">Boolean for the enter key pressed</param>
 void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event, 
 	bool &inputHide, bool &btnHide, std::vector<std::string> &inputTexts, 
 	bool& enter_pressed)
@@ -154,6 +181,12 @@ void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event,
 	}
 }
 
+/// <summary>
+/// Overloaded function for input field event handler
+/// </summary>
+/// <param name="window">Main Window referenced</param>
+/// <param name="event">Events related to the main window</param>
+/// <param name="func">Lambda expressions</param>
 void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event,
 	std::function<void()>func)
 {
@@ -201,7 +234,6 @@ void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event,
 			inputText += '_';
 			SetText(inputText);
 		}
-		// first time focussed
 		if (inputText.size() == 0)
 		{
 			inputText += "_";
@@ -229,7 +261,6 @@ void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event,
 
 					inputText.clear();
 					inputText += bufferString + "_";
-					std::cout << bufferString << std::endl;
 					SetText(inputText);
 				}
 			}
@@ -256,6 +287,13 @@ void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event,
 	}
 }
 
+/// <summary>
+/// Overloaded input field event handler
+/// </summary>
+/// <param name="window">Main Window referenced</param>
+/// <param name="event">Events related to the main window</param>
+/// <param name="func">Lambda expressions</param>
+/// <param name="entered_field_string">String data</param>
 void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, std::string& entered_field_string)
 {
 	mousePos = sf::Mouse::getPosition(window);
@@ -302,7 +340,6 @@ void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event, std::fun
 			inputText += '_';
 			SetText(inputText);
 		}
-		// first time focussed
 		if (inputText.size() == 0)
 		{
 			inputText += "_";
@@ -354,6 +391,10 @@ void InputField::InputEvent(sf::RenderWindow& window, sf::Event& event, std::fun
 	}
 }
 
+/// <summary>
+/// Rendering components of the inpufield to the main window
+/// </summary>
+/// <param name="window">Main Window Referenced</param>
 void InputField::DrawTo(sf::RenderWindow& window)
 {
 	window.draw(Cleft);
