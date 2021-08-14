@@ -40,10 +40,12 @@ class Icon
 		bool mouse_held;
 		int iconClickedStatus;
 		
+		// CONSTRUCTORS AND DESTRUCTOR
 		Icon();
 		Icon(sf::Texture& btn_texture, sf::Vector2f pos);
 		Icon(sf::Texture& btn_texture);
 		
+		// SETTER
 		void Set_Icon_Pos(sf::Vector2f pos);
 		void Set_Dimensions();
 		void Set_Icon_Shadow_Dimension();
@@ -51,9 +53,10 @@ class Icon
 		void Set_Shadow_Color();
 		void Set_Unheld();
 
+		// RENDERER
 		void Draw_To(sf::RenderWindow& window);
 
-		//ALL EVENTS
+		// ALL EVENTS AND BOOLEAN
 		void Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::function<void()> func);
 		bool Run_Outside_Event(sf::RenderWindow& window, sf::Event& event);
 };

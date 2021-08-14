@@ -9,13 +9,13 @@
 class Btn
 {
 	public:
-		// Button UI components
+		// COMPONENTS FOR SHAPE
 		sf::RectangleShape shape;
 		sf::CircleShape C1, C2;
 		sf::Text text;
 		sf::Font uiFont;
 
-		// Vectors and Rects
+		// CONTAINERS AND BOUNDS
 		sf::Vector2f inputBtnPos;
 		sf::FloatRect textBounds;
 		sf::FloatRect shapeBounds;
@@ -23,26 +23,27 @@ class Btn
 		sf::Vector2f mousePosView;
 		sf::FloatRect wholeBtnRect;
 
-		// String and other
+		// STRING DATATYPES
 		std::string btnText;
 		std::string btnId;
 
-		// Initialized values
+		// INITIALIZERS
 		float fixFactor = 4.5f;
 		float btnScale = 1.02f;
 		uint8_t charSize = 0;
 
-		// Boolean data members
+		// BOOLEAN DATA MEMBERS
 		bool mouseInside = false;
 		bool mouseHeld = false;
 
 		int btnClickedStatus;
 
-		// Constructors and Destructor
-		Btn() {}
+		// CONSTRUCTORS AND DESTRUCTOR
+		Btn(){}
 		Btn(std::string BtnText, sf::Vector2f btnPos, uint8_t charSize, sf::Font& font, const std::string& id = "");
-		~Btn() {}
+		~Btn(){}
 
+		// REQUIRED LOADERS AND HELPER FUNCTIONS
 		void LoadText();
 		void SetBtnShape();
 		void SetBtnPosition(sf::Vector2f pos);
@@ -58,6 +59,8 @@ class Btn
 		void BtnEvents(sf::RenderWindow& window, sf::Event& event, bool& btn_show);
 		void BtnEvents(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, bool& first, bool& second);
 		std::string BtnEvents(sf::RenderWindow& window, sf::Event& event);
+
+		// RENDER FUNCTION
 		void DrawTo(sf::RenderWindow &window);
 };
 

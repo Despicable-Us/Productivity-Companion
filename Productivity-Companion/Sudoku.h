@@ -11,6 +11,7 @@
 #define CANVAS_H 496.f
 #define TOGGLER_C_R 15.f
 #define TOGGLER_WIDTH 30.f
+#define ANIMATION_TIMER 3
 
 class NumPad
 {
@@ -47,7 +48,6 @@ class Bar
 		Bar(int, int, float, float);
 };
 
-
 class Sudoku
 {
 	public:
@@ -59,9 +59,11 @@ class Sudoku
 		sf::RectangleShape canvas;
 		sf::Font roboto_font;
 		sf::Font kaushan_font;
+		sf::Font roboto_medium;
 		sf::Text assist_text;
 		sf::Texture background_tex;
 		sf::Sprite background;
+		sf::RectangleShape overlay;
 
 		// TOGGLER
 		sf::RectangleShape main_rect;
@@ -76,35 +78,56 @@ class Sudoku
 		std::string selected_box_string;
 		sf::Vector2i selected_cell_pos;
 
+		// BUTTONS AND RELATED LAMBDA EXPRESSIONS
+		Btn* remove_btn;
+		Btn* home_back_btn;
+		Btn* new_game_btn;
+		std::function<void()> home_back_btn_func;
+		std::function<void()> remove_btn_func;
+		std::function<void()> new_game_btn_func;
+
+		// INTEGER DATATYPES
 		int prev_NP_x;
 		int prev_NP_y;
 		int prev_box_x;
 		int prev_box_y;
 		int x, y;
+		int animation_counter;
+		int animation_x_pos;
+		int animation_y_pos;
+		int pattern_pos;
+		int random_int;
+		int seconds;
+
+		// BOOLEAN DATATYPES
 		bool mouse_held;
 		bool selected;
 		bool value_inserted_in_cell;
 		bool assists;
 		bool toggler_held;
-		Btn* remove_btn;
-		Btn* home_back_btn;
 		bool home_back_btn_clicked;
-		std::function<void()> home_back_btn_func;
+		bool is_game_over;
+		bool key_held;
+		bool text_held;
+		bool check_completion;
+		bool end_game;
+		bool start_stop_watch;
 
-		// CONTAINERS
+		// STL CONTAINERS
 		std::vector<Bar> Bars;
 		std::vector<std::vector<Box>> Boxes;
 		std::vector<std::vector<int>> sudoku;
 		std::vector<std::vector<std::string>> solved;
 		std::vector<std::vector<std::string>> check_box;
-		//std::vector<std::vector<Box>> Num_Pads;
 		std::vector<std::vector<NumPad>> Num_Pads;
+		std::vector<std::vector<int>> animation_pattern;
 
 		// LOADER FUNCTIONS
 		void Load_UI_Components();
 		void Load_Boxes();
 		void Load_Font();
 		void Load_Toggler();
+		void Load_All_Functions();
 
 		// HELPER && EVENT FUNCTIONS
 		void Run_Events(sf::RenderWindow& , sf::Event, bool&, bool&);
@@ -118,12 +141,10 @@ class Sudoku
 		void Clear_Box_Color();
 		void Check_Wrong_Inputs();
 		void Undo_Wrong_Highlight();
-		std::function<void()> remove_btn_func;
 
-		// SUDOKU GENERATOR
+		// COMPONENTS REQUIREMENT FOR THE BACKTRACKING SUDOKU SOLVING ALGORITHM
 		void Generate_Sudoku();
 		std::vector<int> rem;
-		int random_int;
 		bool Solve_Sudoku(std::vector<std::vector<int>>&);
 		bool Find_Zero(std::vector<std::vector<int>>, int&, int&);
 		bool Safe_To_Assign(std::vector<std::vector<int>> graph, int i, int j, int num);
@@ -131,7 +152,13 @@ class Sudoku
 		std::vector<std::vector<int>> copy_sudoku;
 		std::vector<std::vector<int>> copy_vec;
 		void Find_Random_Pos(std::vector<std::vector<int>> graph, int& r, int& c);
+		void Check_For_Completion();
 
+		// TIMER COMPONENTS
+		sf::Text timer_text;
+		sf::Text time_taken;
+		sf::Clock stop_watch;
+		std::string timer_string;
 
 		// RENDERING 
 		void Render_To_Main_Window(sf::RenderWindow& );

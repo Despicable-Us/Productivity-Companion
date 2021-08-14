@@ -103,7 +103,6 @@ int udh::createPlannerListTable()
 int udh::insertTaskDB(std::string sql_data)
 {
 	char* messageError;
-	std::cout << sql_data << std::endl;
 	int exit;
 	exit = sqlite3_exec(DB, sql_data.c_str(), NULL, 0, &messageError);
 	if (exit != SQLITE_OK) {
@@ -118,12 +117,9 @@ int udh::insertTaskDB(std::string sql_data)
 
 int udh::AddTask (udh::inputField task)
 {
-	
 	char* messageError;
 	std::string sql = "INSERT INTO TASKS (Task,Status,Day) VALUES('" + task.SanitizedData() + "', '" +
 		std::to_string(task.getstatus()) + "','" + std::to_string(task.getDay()) + "');";
-
-	std::cout << sql << std::endl;
 
 	int exit;
 	/* An open database, SQL to be evaluated, Callback function, 1st argument to callback, Error msg written here */
@@ -333,10 +329,7 @@ int udh::select_plan_sheet_data(const char* s, std::string name)
 {
 	sqlite3* DB;
 	char* messageError;
-
 	std::string sql = "SELECT * FROM PLANNER_LIST WHERE plan_sheet_name = '" +  name + "';";
-	std::cout << sql << std::endl;
-
 	int exit = sqlite3_open(s, &DB);
 	exit = sqlite3_exec(DB, sql.c_str(), udh::callback, NULL, &messageError);
 
@@ -345,7 +338,9 @@ int udh::select_plan_sheet_data(const char* s, std::string name)
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records selected Successfully!" << std::endl;
+	}
 	sqlite3_close(DB);
 	return 0;
 }

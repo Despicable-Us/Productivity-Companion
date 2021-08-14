@@ -782,7 +782,9 @@ static int session_detail::select_data(const char* s, std::string selected_data 
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records selected Successfully!" << std::endl;
+	}
 	return 0;
 }
 
@@ -811,7 +813,9 @@ static int session_detail::insert_data(const char* s, std::string total_time)
 			sqlite3_free(messageError);
 		}
 		else
+		{
 			std::cout << "Records inserted Successfully!" << std::endl;
+		}
 	}
 	return 0;
 }

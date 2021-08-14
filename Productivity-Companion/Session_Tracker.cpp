@@ -46,6 +46,9 @@ void Session_Tracker::Update_Rects_After_DB()
 	}
 }
 
+/// <summary>
+/// Update and alter the tab view with new SESSION TABS
+/// </summary>
 void Session_Tracker::Alter_Session_Tab_View()
 {
 	for (size_t i = 0; i < this->input_texts.size(); ++i)
@@ -126,6 +129,9 @@ void Session_Tracker::Update_DB_Data()
 	}
 }
 
+/// <summary>
+/// Fetch and set the total time of all the session from the database
+/// </summary>
 void Session_Tracker::Set_DB_Total_Time_List()
 {
 	for (size_t i = 0; i < session_tab_vec.size(); ++i)
@@ -141,6 +147,9 @@ void Session_Tracker::Set_DB_Total_Time_List()
 	}
 }
 
+/// <summary>
+/// Fetch the session tabs data from the related database
+/// </summary>
 void Session_Tracker::Set_DB_Data_To_View()
 {
 	db_total_time_list.clear();
@@ -169,6 +178,7 @@ void Session_Tracker::Init_Variables()
 	this->show_session_tab = true;
 	this->dir = "Productivity_companion.db";
 	this->update_total_time_list = false;
+
 	this->btn_event_func = [&]()
 	{
 		this->show_session = true;
@@ -201,6 +211,7 @@ void Session_Tracker::Init_Background()
 {
 	if (!this->texture.loadFromFile("Texture/session_tracker_mainpage.png"))
 		throw "Error in loading the 'session_tracker_mainpage.png'";
+
 	this->background.setTexture(texture);
 	this->background.setPosition({ 0.f, 0.f });
 }
@@ -225,17 +236,20 @@ void Session_Tracker::Init_UI_Components()
 	this->add_session_btn = new Btn("+ Add new session", { win_sizeF.x / 2, 110.f }, static_cast<uint8_t>(16), roboto_font);
 	this->add_session_btn->SetFillColor(sf::Color(BLUE_THEMED_C));
 	this->add_session_btn->text.setFillColor(sf::Color::White);
+
 	this->add_rect = [&]()
 	{
 		btn_hide = true;
 		input_hide = false;
 	};
+
 	this->input_session_field = new InputField({ win_sizeF.x / 2, 110.f }, roboto_font);
 
 	this->home_back_btn = new Btn("Home", { 55.f, 30.f }, 14, this->roboto_font);
 	this->home_back_btn->SetFillColor(sf::Color(23,137, 252));
 	this->home_back_btn->text.setFillColor(sf::Color::White);
 	this->home_back_btn_clicked = false;
+
 	this->home_back_btn_func = [&]()
 	{
 		this->home_back_btn_clicked = true;
@@ -395,66 +409,68 @@ void Session_Tracker::Render_In_View(sf::RenderWindow& window)
 /// <param name="event"></param>
 void Session_Tracker::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app)
 {
-	if (window.hasFocus())
-	{
 
-		if (show_session_tab)
+	if (show_session_tab && window.hasFocus())
+	{
+		if (!show_pop_up)
 		{
-			if (!show_pop_up)
+			add_session_btn->BtnEvents(window, event, add_rect, btn_hide);
+			if (first_time)
 			{
-				add_session_btn->BtnEvents(window, event, add_rect, btn_hide);
-				if (first_time)
-				{
-					for (size_t i = 0; i < session_tab_vec.size(); ++i)
-					{
-						session_tab_vec[i].session_btn->mouseHeld = true;
-						session_tab_vec[i].delete_btn->mouseHeld = true;
-					}
-					this->first_time = false;
-				}
 				for (size_t i = 0; i < session_tab_vec.size(); ++i)
 				{
-					session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
-					session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
+					session_tab_vec[i].session_btn->mouseHeld = true;
+					session_tab_vec[i].delete_btn->mouseHeld = true;
 				}
+				this->first_time = false;
 			}
-			home_back_btn->BtnEvents(window, event, home_back_btn_func);
-			
-			if (home_back_btn_clicked)
+			for (size_t i = 0; i < session_tab_vec.size(); ++i)
 			{
-				run_main_window = true;
-				run_app = false;
-				home_back_btn_clicked = false;
-				btn_hide = false;
-				input_hide = true;
-				input_session_field->bufferString = "";
-				input_session_field->SetText("");
-				input_session_field->inputText = "";
+				session_tab_vec[i].session_btn->BtnEvents(window, event, btn_event_func, input_texts[i], selected_session_name);
+				session_tab_vec[i].delete_btn->BtnEvents(window, event, delete_event_func, input_texts[i], selected_session_name);
 			}
 		}
-		if (show_session)
+
+		home_back_btn->BtnEvents(window, event, home_back_btn_func);
+			
+		if (home_back_btn_clicked)
 		{
-			session->Run_Events(window, event, show_session, show_session_tab, update_total_time_list);
+			run_main_window = true;
+			run_app = false;
+			home_back_btn_clicked = false;
+			btn_hide = false;
+			input_hide = true;
+			input_session_field->bufferString = "";
+			input_session_field->SetText("");
+			input_session_field->inputText = "";
 		}
-		if (update_total_time_list)
-		{
-			update_total_time_list = false;
-			Set_DB_Data_To_View();
-		}
-		if (show_pop_up)
-		{
-			pop_up->Run_Outside_Event(window, event, show_blur_overlay, show_pop_up, delete_db_data);
-		}
-		if (delete_db_data)
-		{
-			delete_db_data = false;
-			session_tracker::delete_session_tab(dir, selected_session_name);
-			db_session_list_data.clear();
-			db_total_time_list.clear();
-			db_total_time_string.clear();
-			session_tab_vec.clear();
-			Get_DB_Data();
-		}
+	}
+
+	if (show_session)
+	{
+		session->Run_Events(window, event, show_session, show_session_tab, update_total_time_list);
+	}
+
+	if (update_total_time_list)
+	{
+		update_total_time_list = false;
+		Set_DB_Data_To_View();
+	}
+
+	if (show_pop_up)
+	{
+		pop_up->Run_Outside_Event(window, event, show_blur_overlay, show_pop_up, delete_db_data);
+	}
+
+	if (delete_db_data)
+	{
+		delete_db_data = false;
+		session_tracker::delete_session_tab(dir, selected_session_name);
+		db_session_list_data.clear();
+		db_total_time_list.clear();
+		db_total_time_string.clear();
+		session_tab_vec.clear();
+		Get_DB_Data();
 	}
 }
 
@@ -592,6 +608,10 @@ void Session_Tab::Draw_To(sf::RenderWindow& window)
 	delete_btn->DrawTo(window);
 }
 
+/// <summary>
+/// Set the total time text for each session tab
+/// </summary>
+/// <param name="total_time_string">Total time data as std::string</param>
 void Session_Tab::Set_Total_Time_Text(std::string total_time_string)
 {
 	total_time_info.setString(total_time_string);
@@ -619,7 +639,6 @@ static int session_tracker::callback(void* NotUsed, int argc, char** argv, char*
 /// <returns>Returns success/failure</returns>
 static int session_tracker::select_data(const char* s)
 {
-	//sqlite3* DB;
 	char* messageError;
 	std::string sql = "SELECT * FROM SESSION;";
 	//int exit = sqlite3_open(s, &DB);
@@ -630,7 +649,9 @@ static int session_tracker::select_data(const char* s)
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records selected Successfully!" << std::endl;
+	}
 	return 0;
 }
 
@@ -641,9 +662,7 @@ static int session_tracker::select_data(const char* s)
 /// <returns>Returns success/failure</returns>
 static int session_tracker::insert_data(const char* s)
 {
-	//sqlite3* DB;
 	char* messageError;
-	//int exit = sqlite3_open(s, &DB);
 	int exit = 0;
 	std::string sql;
 	if (!new_input_texts.empty())
@@ -661,17 +680,23 @@ static int session_tracker::insert_data(const char* s)
 			sqlite3_free(messageError);
 		}
 		else
+		{
 			std::cout << "Records inserted Successfully!" << std::endl;
+		}
 	}
 	return 0;
 }
 
+/// <summary>
+/// Fetch the total time for each session tab
+/// </summary>
+/// <param name="s">Daatabase location</param>
+/// <param name="session_name">Session Tab Name</param>
+/// <returns>Success / Failure</returns>
 int session_tracker::fetch_total_time_list(const char* s, std::string session_name)
 {
-	//sqlite3* DB;
 	char* messageError;
 	std::string sql = "SELECT total_time FROM SESSION_LIST where session_id_name = '" + session_name + "' ORDER BY id DESC LIMIT 1;";
-	//int exit = sqlite3_open(s, &DB);
 	int exit = 0;
 	exit = sqlite3_exec(DB, sql.c_str(), session_tracker::call_back_total_time_list, &session_name, &messageError);
 	if (exit != SQLITE_OK) {
@@ -679,10 +704,20 @@ int session_tracker::fetch_total_time_list(const char* s, std::string session_na
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records selected Successfully!" << std::endl;
+	}
 	return 0;
 }
 
+/// <summary>
+/// Call back function for the total time list for each session tab
+/// </summary>
+/// <param name="something">Session Tab Name passed</param>
+/// <param name="argc">Number of arguments</param>
+/// <param name="argv">Row values</param>
+/// <param name="azColName">Columns values</param>
+/// <returns>Success / Failure</returns>
 int session_tracker::call_back_total_time_list(void* something, int argc, char** argv, char** azColName)
 {
 	db_total_time_string.clear();
@@ -692,14 +727,17 @@ int session_tracker::call_back_total_time_list(void* something, int argc, char**
 	return 0;
 }
 
+/// <summary>
+/// Deletes all the records related to a particular session
+/// </summary>
+/// <param name="s">Database location</param>
+/// <param name="name">Name of Session tab to be deleted</param>
+/// <returns>Success / Failure</returns>
 int session_tracker::delete_session_tab(const char* s, std::string name)
 {
-	//sqlite3* DB;
 	char* messageError;
 	std::string sql = "DELETE FROM SESSION WHERE session_name = '" + name + "';"
 					  "DELETE FROM SESSION_LIST WHERE session_id_name = '" + name + "';";
-
-	//int exit = sqlite3_open(s, &DB);
 	int exit = 0;
 	exit = sqlite3_exec(DB, sql.c_str(), NULL, NULL, &messageError);
 	if (exit != SQLITE_OK) {
@@ -707,16 +745,21 @@ int session_tracker::delete_session_tab(const char* s, std::string name)
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records deleted Successfully!" << std::endl;
-
+	}
 	return 0;
 }
 
+/// <summary>
+/// Insert new Session Tab to the SESSION table
+/// </summary>
+/// <param name="s">Database locationgb</param>
+/// <param name="session_name">Name of the session for the QUERRY</param>
+/// <returns>Success / Failure</returns>
 int session_tracker::insert_new_session(const char* s, std::string session_name)
 {
-	//sqlite3* DB;
 	char* messageError;
-	//int exit = sqlite3_open(s, &DB);
 	int exit = 0;
 	std::string sql;
 	sql = "INSERT INTO SESSION (session_name) VALUES('" + session_name + "');";
@@ -726,6 +769,8 @@ int session_tracker::insert_new_session(const char* s, std::string session_name)
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records inserted Successfully!" << std::endl;
+	}
 	return 0;
 }

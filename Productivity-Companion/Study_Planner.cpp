@@ -1,12 +1,27 @@
 #include "Study_Planner.h"
 
+/// <summary>
+/// db_planner_list_data => STL container for the PLANNER SHEET
+/// new_input_data => STL container for the new added PLANNER SHEET
+/// </summary>
 std::vector<std::string> db_planner_list_data;
 std::vector<std::string> new_input_data;
 
+/// <summary>
+/// Default constructor for the planner_tab
+/// </summary>
 Planner_Tab::Planner_Tab()
 {
 }
 
+/// <summary>
+/// Parameterized Constructor for the planner_tab
+/// PLANNER SHEET Instanciator
+/// </summary>
+/// <param name="name">Planner Sheet Name</param>
+/// <param name="pos">Position of the planner sheet</param>
+/// <param name="size">Size of the planner sheeet</param>
+/// <param name="font">Font for the text within the planner sheet</param>
 Planner_Tab::Planner_Tab(std::string name, sf::Vector2f pos, sf::Vector2f size, sf::Font& font)
 {
 	this->plan_sheet_name = name;
@@ -18,16 +33,25 @@ Planner_Tab::Planner_Tab(std::string name, sf::Vector2f pos, sf::Vector2f size, 
 	Set_Button();
 }
 
+/// <summary>
+/// Default Destructor for the planner_tab
+/// </summary>
 Planner_Tab::~Planner_Tab()
 {
 }
 
+/// <summary>
+/// Set the component properties for the planner sheet
+/// </summary>
 void Planner_Tab::Set_Components()
 {
 	circle_radius = BORDER_RADIUS_S;
 	background_color = sf::Color(APP_THEME_COLOR);
 }
 
+/// <summary>
+/// Set the dimension for the rounded rectangle
+/// </summary>
 void Planner_Tab::Set_Dimension()
 {
 	main_rect.setSize(rect_size);
@@ -80,6 +104,9 @@ void Planner_Tab::Set_Dimension()
 	main_rect.setFillColor(background_color);
 }
 
+/// <summary>
+/// Set the Button UI Components for the planner_tab
+/// </summary>
 void Planner_Tab::Set_Button()
 {
 	planner_btn = new Btn(plan_sheet_name, { main_rect_pos.x, main_rect_pos.y - 20.f }, 15, roboto_font);
@@ -87,7 +114,10 @@ void Planner_Tab::Set_Button()
 	delete_btn->SetFillColor(sf::Color(209, 9, 42));
 	delete_btn->text.setFillColor(sf::Color::White);
 }
-
+/// <summary>
+/// Render all the components of the planner_tab to the main window
+/// </summary>
+/// <param name="window">Main Window for rendering</param>
 void Planner_Tab::Draw_To(sf::RenderWindow& window)
 {
 	window.draw(main_rect);
@@ -103,10 +133,17 @@ void Planner_Tab::Draw_To(sf::RenderWindow& window)
 	delete_btn->DrawTo(window);
 }
 
+/// <summary>
+/// Default Constructor for study planner
+/// </summary>
 Study_Planner::Study_Planner()
 {
 }
 
+/// <summary>
+/// Parameterized Constructor for study planner
+/// </summary>
+/// <param name="window">Main Window for rendering</param>
 Study_Planner::Study_Planner(sf::RenderWindow& window)
 {
 	this->win_size = window.getSize();
@@ -119,12 +156,18 @@ Study_Planner::Study_Planner(sf::RenderWindow& window)
 	this->Get_DB_Data();
 }
 
+/// <summary>
+/// Default Destructor for stuyd planner
+/// </summary>
 Study_Planner::~Study_Planner()
 {
 	delete this->add_planner_btn;
 	delete this->input_planner_field;
 }
 
+/// <summary>
+/// Initializes all the required variables
+/// </summary>
 void Study_Planner::Init_Variables()
 {
 	this->rect.setPosition({ 0.f, 0.f });
@@ -163,25 +206,35 @@ void Study_Planner::Init_Variables()
 	show_pop_up = false;
 
 	this->first_time = false;
-
 }
 
+/// <summary>
+/// Initializes the components for the background
+/// </summary>
 void Study_Planner::Init_Background()
 {
 	if (!this->texture.loadFromFile("Texture/study_planner_background.PNG"))
 		throw "Error in loading the 'study_planner_back1.png'";
+
 	this->background.setTexture(texture);
 	this->background.setPosition({ 0.f, 0.f });
 }
 
+/// <summary>
+/// Initializes required fonts
+/// </summary>
 void Study_Planner::Init_UI_Font()
 {
 	if (!kaushan_font.loadFromFile("Fonts/KaushanScript-Regular.ttf"))
 		throw "Error in loading the 'KaushanScript-Regular.ttf'";
+
 	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the 'Roboto-Medium.ttf'";
 }
 
+/// <summary>
+/// Initializes required UI components
+/// </summary>
 void Study_Planner::Init_UI_Components()
 {
 	Init_UI_Font();
@@ -205,6 +258,9 @@ void Study_Planner::Init_UI_Components()
 	};
 }
 
+/// <summary>
+/// Updates all the rects i.e. the planner sheets tabs for every tabs inserted / updated
+/// </summary>
 void Study_Planner::Update_Rects()
 {
 	if (input_texts.back() != "")
@@ -267,6 +323,9 @@ void Study_Planner::Update_Rects()
 	}
 }
 
+/// <summary>
+/// Updates the planner sheets tabs after fetching data from the database
+/// </summary>
 void Study_Planner::Update_Rects_After_DB()
 {
 	if (this->planner_tab_vec.size() < 12)
@@ -275,6 +334,9 @@ void Study_Planner::Update_Rects_After_DB()
 	}
 }
 
+/// <summary>
+/// Alters / Updates planner sheet tabs after fetching data from the database
+/// </summary>
 void Study_Planner::Alter_Planner_Tab_View()
 {
 	for (size_t i = 0; i < this->input_texts.size(); ++i)
@@ -328,6 +390,12 @@ void Study_Planner::Alter_Planner_Tab_View()
 	}
 }
 
+/// <summary>
+/// Run all the events related to the Study Planner within the event loop
+/// </summary>
+/// <param name="window">Main Window</param>
+/// <param name="event">Event related to the main window</param>
+/// <param name="view">View passed for the scrolling effect</param>
 void Study_Planner::Run_Inside_Event(sf::RenderWindow& window, sf::Event& event, sf::View& view)
 {
 	if (show_planner_tab)
@@ -351,7 +419,13 @@ void Study_Planner::Run_Inside_Event(sf::RenderWindow& window, sf::Event& event,
 	}
 }
 
-
+/// <summary>
+/// Run all the updaters / modifiers events / functions
+/// </summary>
+/// <param name="window">Main Window</param>
+/// <param name="event">Event related to the main window</param>
+/// <param name="run_main_window">Bool referenced to the main window</param>
+/// <param name="run_app">Bool referenced to the Study Planner</param>
 void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& run_main_window, bool& run_app)
 {
 	if (window.hasFocus())
@@ -408,20 +482,27 @@ void Study_Planner::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event
 	}
 }
 
+/// <summary>
+/// Render all the UI components related to the Study Planner to the main window
+/// </summary>
+/// <param name="window">Main Window referenced for rendering</param>
 void Study_Planner::Render_In_Main_Window(sf::RenderWindow& window)
 {
 	if (show_planner_tab)
 	{
 		window.draw(this->background);
 		this->home_back_button->DrawTo(window);
+
 		if (!btn_hide)
 		{
 			add_planner_btn->DrawTo(window);
 		}
+
 		if (!input_hide)
 		{
 			input_planner_field->DrawTo(window);
 		}
+
 		if (!planner_tab_vec.empty() and btn_show)
 		{
 			for (auto& planner_tab : planner_tab_vec)
@@ -429,23 +510,28 @@ void Study_Planner::Render_In_Main_Window(sf::RenderWindow& window)
 				planner_tab.Draw_To(window);
 			}
 		}
+
 		if (show_blur_overlay)
 		{
 			window.draw(this->blur_overlay);
 		}
+
 		if (show_pop_up)
 		{
 			pop_up->Draw_To(window);
 		}
-		
 	}
+
 	if (show_planner_list)
 	{
 		this->plan_sheet->DrawTodoMainWindow(window);
 	}
-	
 }
 
+/// <summary>
+/// Render Components in the scroll view
+/// </summary>
+/// <param name="window">Main Window for rendering</param>
 void Study_Planner::Render_In_View(sf::RenderWindow& window)
 {
 	if (show_planner_list)
@@ -454,6 +540,9 @@ void Study_Planner::Render_In_View(sf::RenderWindow& window)
 	}
 }
 
+/// <summary>
+/// Fetch the Study Planner sheet list from the related database
+/// </summary>
 void Study_Planner::Get_DB_Data()
 {
 	study_planner::select_data(dir);
@@ -461,6 +550,9 @@ void Study_Planner::Get_DB_Data()
 	this->Update_Rects_After_DB();
 }
 
+/// <summary>
+/// Update any changes to the Planner sheet list to the related database
+/// </summary>
 void Study_Planner::Update_DB_Data()
 {
 	if (!new_input_data.empty())
@@ -469,13 +561,25 @@ void Study_Planner::Update_DB_Data()
 	}
 }
 
-
+/// <summary>
+/// Callback function for the selector function for updating the db_planner_list_data Container
+/// </summary>
+/// <param name="NotUsed">Unspecified</param>
+/// <param name="argc">Number of args</param>
+/// <param name="argv">Row values</param>
+/// <param name="azColName">Column values</param>
+/// <returns>Success / Failure</returns>
 int study_planner::callback(void* NotUsed, int argc, char** argv, char** azColName)
 {
 	db_planner_list_data.push_back(argv[1]);
 	return 0;
 }
 
+/// <summary>
+/// Selects / Fetches data from the database
+/// </summary>
+/// <param name="s">Database local location</param>
+/// <returns>Success / Failure</returns>
 int study_planner::select_data(const char* s)
 {
 	sqlite3* DB;
@@ -488,10 +592,17 @@ int study_planner::select_data(const char* s)
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records selected Successfully!" << std::endl;
+	}
 	return 0;
 }
 
+/// <summary>
+/// Inserts the data to the related database
+/// </summary>
+/// <param name="s">Database local location</param>
+/// <returns>Success / Failure</returns>
 int study_planner::insert_data(const char* s)
 {
 	sqlite3* DB;
@@ -513,16 +624,23 @@ int study_planner::insert_data(const char* s)
 			sqlite3_free(messageError);
 		}
 		else
+		{
 			std::cout << "Records inserted Successfully!" << std::endl;
+		}
 	}
 	return 0;
 }
 
+/// <summary>
+/// Deleted all the records related to a particular study planner
+/// </summary>
+/// <param name="s">Database local location</param>
+/// <param name="name">Sheet name to be deleted</param>
+/// <returns>Success / Failure</returns>
 int study_planner::delete_planner_tab(const char* s, std::string name)
 {
 	sqlite3* DB;
 	char* messageError;
-	std::cout << name << std::endl;
 	std::string sql = "DELETE FROM PLANNER WHERE plan_sheet_name = '" + name + "';"
 
 					"DELETE FROM PLANNER_LIST WHERE plan_sheet_name = '" + name + "';";
@@ -535,11 +653,18 @@ int study_planner::delete_planner_tab(const char* s, std::string name)
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records deleted Successfully!" << std::endl;
-
+	}
 	return 0;
 }
 
+/// <summary>
+/// Insert newly added sheet to the database
+/// </summary>
+/// <param name="s">Database local location</param>
+/// <param name="planner_name">Name of the planner sheet</param>
+/// <returns>Success / Failure</returns>
 int study_planner::insert_new_plan_sheet(const char* s, std::string planner_name)
 {
 	sqlite3* DB;
@@ -553,6 +678,8 @@ int study_planner::insert_new_plan_sheet(const char* s, std::string planner_name
 		sqlite3_free(messageError);
 	}
 	else
+	{
 		std::cout << "Records inserted Successfully!" << std::endl;
+	}
 	return 0;
 }

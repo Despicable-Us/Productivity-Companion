@@ -229,7 +229,6 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 			{
 				itr->completed = true;
 				std::string sql = "UPDATE TASKS SET Status = " + std::to_string(itr->getstatus()) + " WHERE Task = '" + itr->SanitizedData() + "';";
-				std::cout << sql << std::endl;
 				completed.push_back(*itr);
 				list.erase(itr);
 				udh::UpdateStatus(sql);
@@ -240,11 +239,9 @@ void udh::checkAction(sf::Event event,std::vector<udh::inputField>&list, sf::Ren
 			{
 				itr->completed = false;
 				std::string sql = "UPDATE TASKS SET Status = " + std::to_string(itr->getstatus()) + " WHERE Task = '" + itr->SanitizedData() + "';";
-				std::cout << sql << std::endl;
 				textList.push_back(*itr);
 				list.erase(itr);
 				udh::UpdateStatus(sql);
-				std::cout << "Wuta pani" << std::endl;
 				selected = false;
 			}
 			break;

@@ -515,7 +515,6 @@ void dial::timeSetter::dialPollEvents(sf::RenderWindow &window,sf::Event& event)
             //play and pause button
             if (!this->knobPressing) {
                 if (this->checkInStop(currentPos) && this->stopSignDisp) {
-                    std::cout << "stop has been pressed" << std::endl;
                     this->stopPressed = 1;
                 }
                 if (this->checkInPlay(currentPos) && !this->stopSignDisp) {

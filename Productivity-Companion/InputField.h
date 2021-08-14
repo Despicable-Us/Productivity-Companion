@@ -8,13 +8,13 @@
 class InputField
 {
 	public:
-		// UI Components
+		// UI COMPONENTS
 		sf::RectangleShape shape;
 		sf::CircleShape Cleft, Cright;
 		sf::Text text;
 		sf::Font inputFont;
 
-		// Supporting data members
+		// SUPPORTING DATA MEMBERS
 		std::string inputText;
 		std::string bufferString;
 		std::string savedString;
@@ -23,11 +23,11 @@ class InputField
 		float padX = 14.f;
 		float padY = 5.f;
 		
-		// Boolean data members
+		// BOOLEAN DATA MEMBERS
 		bool isFocused = false;
 		bool mouseHeld = false;
 
-		// Vectors and Rects
+		// STL CONTAINERS AND RECTS
 		sf::Vector2i mousePos;
 		sf::Vector2f mousePosView;
 		sf::Vector2f inputFieldPos;
@@ -36,24 +36,18 @@ class InputField
 		sf::FloatRect wholeInputRect;
 		sf::FloatRect rectBounds;
 
-		// Constructors and destructors
+		// CONSTRUCTORS AND DESTRUCTOR
 		InputField() {} // default 
-
 		InputField(sf::Vector2f fieldPos, sf::Font& font);
-
 		~InputField() {}
 
+		// HELPER, LOADER, EVENT HANDLERS, UPDATERS, RENDERERS
 		void LoadText();
 		void SetText(std::string inText);
 		void CreateInputShape();
 		void SetWholeRect();
-		void InputEvent(sf::RenderWindow& window, sf::Event& event, bool& inputHide, 
-						bool& btnHide, std::vector<std::string>& inputTexts,
-						bool& enter_pressed);
-		void InputEvent(sf::RenderWindow& window, sf::Event& event, 
-			std::function<void()> func);
-		void InputEvent(sf::RenderWindow& window, sf::Event& event,
-			std::function<void()> func, std::string& entered_field_string);
-
+		void InputEvent(sf::RenderWindow& window, sf::Event& event, bool& inputHide, bool& btnHide, std::vector<std::string>& inputTexts,bool& enter_pressed);
+		void InputEvent(sf::RenderWindow& window, sf::Event& event, std::function<void()> func);
+		void InputEvent(sf::RenderWindow& window, sf::Event& event, std::function<void()> func, std::string& entered_field_string);
 		void DrawTo(sf::RenderWindow& window);
 };

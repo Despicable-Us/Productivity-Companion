@@ -1,9 +1,17 @@
 #include "Pop_Up_Message.h"
 
+/// <summary>
+/// Default Constructor
+/// </summary>
 Pop_Up_Message::Pop_Up_Message()
 {
 }
 
+/// <summary>
+/// Parameterized Constructor 
+/// </summary>
+/// <param name="name">Tab Name</param>
+/// <param name="font">Font for the text</param>
 Pop_Up_Message::Pop_Up_Message(std::string name, sf::Font& font)
 {
 	this->session_name = name;
@@ -17,16 +25,25 @@ Pop_Up_Message::Pop_Up_Message(std::string name, sf::Font& font)
 	this->session_name = "Prajesh";
 }
 
+/// <summary>
+/// Default Destructor
+/// </summary>
 Pop_Up_Message::~Pop_Up_Message()
 {
 }
 
+/// <summary>
+/// Loading required fonts for the pop up message bar
+/// </summary>
 void Pop_Up_Message::Load_Font()
 {
 	if (!roboto_font.loadFromFile("Fonts/Roboto-Medium.ttf"))
 		throw "Error in loading the font 'Roboto-Medium.ttf'";
 }
 
+/// <summary>
+/// Set all the UI and required components for the pop-up bar
+/// </summary>
 void Pop_Up_Message::Set_Components()
 {
 	circle_radius = 8.f;
@@ -58,6 +75,10 @@ void Pop_Up_Message::Set_Components()
 	};
 }
 
+/// <summary>
+/// Set the required dimension of all the shape
+/// For rounded corner effect
+/// </summary>
 void Pop_Up_Message::Set_Dimension()
 {
 	main_rect.setSize(rect_size);
@@ -110,6 +131,9 @@ void Pop_Up_Message::Set_Dimension()
 	main_rect.setFillColor(background_color);
 }
 
+/// <summary>
+/// Set and initialize the text
+/// </summary>
 void Pop_Up_Message::Set_Text_Font()
 {
 	sure_text.setFont(roboto_font);
@@ -128,6 +152,9 @@ void Pop_Up_Message::Set_Text_Font()
 	confirm_text.setFillColor(sf::Color(247, 12, 55));
 }
 
+/// <summary>
+/// Set the button and inputfields
+/// </summary>
 void Pop_Up_Message::Set_Button_And_InputField()
 {
 	confirm_btn = new Btn("Confirm", { main_rect_pos.x - 75.f, main_rect_pos.y + 50.f }, 14, roboto_font);
@@ -139,6 +166,10 @@ void Pop_Up_Message::Set_Button_And_InputField()
 	field = new InputField({ main_rect_pos.x, main_rect_pos.y }, roboto_font);
 }
 
+/// <summary>
+/// Renders all the required UI components to the UI
+/// </summary>
+/// <param name="window"></param>
 void Pop_Up_Message::Draw_To(sf::RenderWindow& window)
 {
 	window.draw(main_rect);
@@ -157,11 +188,24 @@ void Pop_Up_Message::Draw_To(sf::RenderWindow& window)
 	field->DrawTo(window);
 }
 
+/// <summary>
+/// Events handled within the main event loop
+/// </summary>
+/// <param name="window">Main Window referenced</param>
+/// <param name="event">Events related to the main window</param>
 void Pop_Up_Message::Run_Inside_Event(sf::RenderWindow& window, sf::Event& event)
 {
 	field->InputEvent(window, event, input_func, input_field_string);
 }
 
+/// <summary>
+/// Updater / Modifiers event handler
+/// </summary>
+/// <param name="window">Main Window referenced</param>
+/// <param name="event">Events related to the main window</param>
+/// <param name="show_overlay">Overlay referenced boolean</param>
+/// <param name="show_pop_up">Pop up referenced boolean</param>
+/// <param name="delete_data_db">Signal for deletion of specific tab data</param>
 void Pop_Up_Message::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, bool& show_overlay, bool& show_pop_up, bool& delete_data_db)
 {
 	overlay = &show_overlay;
@@ -171,6 +215,10 @@ void Pop_Up_Message::Run_Outside_Event(sf::RenderWindow& window, sf::Event& even
 	cancel_btn->BtnEvents(window, event, cancel_func, show_overlay, show_pop_up);
 }
 
+/// <summary>
+/// Setter for the pop-up title name
+/// </summary>
+/// <param name="name"></param>
 void Pop_Up_Message::Set_Session_Name(std::string name)
 {
 	this->session_name = name;

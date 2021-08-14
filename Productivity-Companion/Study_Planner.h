@@ -16,7 +16,6 @@
 #define ADD_COLOR 208, 37, 45
 #define APP_THEME_COLOR 217,140,88
 
-//242, 90, 78
 class Planner_Tab
 {
 	public:
@@ -149,11 +148,9 @@ class Study_Planner
 		const char* dir;
 		std::string selected_planner_sheet_name;
 
-
 		Btn* home_back_button;
 		bool home_back_button_clicked;
 		std::function<void()> home_back_button_func;
-
 		bool first_time;
 };
 

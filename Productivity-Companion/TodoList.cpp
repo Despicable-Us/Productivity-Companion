@@ -80,7 +80,6 @@ void TodoList::Reset_Functions(std::string planner_name)
 	{
 		home_back_btn_clicked = true;
 	};
-	std::cout << plan_sheet_name << std::endl;
 	background_text.setFont(fonts);
 	background_text.setString(plan_sheet_name);
 	background_text.setFillColor(sf::Color::White);
@@ -206,7 +205,7 @@ void TodoList::RunTodo(sf::RenderWindow& window, sf::Event event, sf::View& Task
 			run_app = false;
 			textList.clear();
 			completed.clear();
-			TaskView.move(0, -viewPos);
+			TaskView.move(0.f, -float(viewPos));
 			viewPos = 0;
 		}
 	}
@@ -250,10 +249,18 @@ void TodoList::Update_DB()
 			sql_data += "('" + itr->getdata() + "', '" +
 				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "','" + plan_sheet_name + "'),";
 		}
+
+		for (std::vector<udh::inputField>::iterator itr = completed.begin(); itr < completed.end(); itr++)
+		{
+			sql_data += "('" + itr->getdata() + "', '" +
+				std::to_string(itr->getstatus()) + "','" + std::to_string(itr->getDay()) + "','" + plan_sheet_name + "'),";
+		}
+
 		sql_data.pop_back();
 		sql_data.push_back(';');
 
-		if (sql_data.size() > 68)
+		
+		if (!textList.empty())
 		{
 			udh::insertTaskDB(sql_data);
 		}

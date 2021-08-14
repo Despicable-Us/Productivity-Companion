@@ -1,10 +1,18 @@
 #include "Icon.h"
 extern int viewPos;
 
+/// <summary>
+/// Default Constructor
+/// </summary>
 Icon::Icon()
 {
 }
 
+/// <summary>
+/// Parameterized Constructor
+/// </summary>
+/// <param name="btn_texture">Texture of the icon</param>
+/// <param name="pos">Position of the icon</param>
 Icon::Icon(sf::Texture& btn_texture, sf::Vector2f pos)
 {
 	this->icon_texture = btn_texture;
@@ -17,6 +25,10 @@ Icon::Icon(sf::Texture& btn_texture, sf::Vector2f pos)
 	this->Set_Icon_Shadow_Dimension();
 }
 
+/// <summary>
+/// Setter for icon texture
+/// </summary>
+/// <param name="btn_texture"></param>
 Icon::Icon(sf::Texture& btn_texture)
 {
 	this->icon_texture = btn_texture;
@@ -24,21 +36,30 @@ Icon::Icon(sf::Texture& btn_texture)
 	this->show_shadow = false;
 }
 
+/// <summary>
+/// Setter for the position of icon
+/// </summary>
+/// <param name="pos"></param>
 void Icon::Set_Icon_Pos(sf::Vector2f pos)
 {
 	this->icon_pos = pos;
 	this->Set_Icon_Sprite();
 }
 
+/// <summary>
+/// Setting the dimension and components of the icon
+/// </summary>
 void Icon::Set_Dimensions()
 {
-	
 	this->circle_radius = 13.f;
 	this->rect_w = this->rect_h = 74.f;
 	this->rect_size = { this->rect_w, this->rect_h };
 	this->background_color = sf::Color(SHADOW_C);
 }
 
+/// <summary>
+/// Shadow of the icon
+/// </summary>
 void Icon::Set_Icon_Shadow_Dimension()
 {
 	main_rect.setSize(rect_size);
@@ -82,6 +103,9 @@ void Icon::Set_Icon_Shadow_Dimension()
 	this->Set_Shadow_Color();
 }
 
+/// <summary>
+/// Setter for the icon sprite from texture
+/// </summary>
 void Icon::Set_Icon_Sprite()
 {
 	this->icon_background.setTexture(this->icon_texture);
@@ -89,6 +113,9 @@ void Icon::Set_Icon_Sprite()
 	this->icon_background.setPosition(this->icon_pos);
 }
 
+/// <summary>
+/// Setting the color of the shadow
+/// </summary>
 void Icon::Set_Shadow_Color()
 {
 	c_top_left.setFillColor(background_color);
@@ -103,6 +130,10 @@ void Icon::Set_Shadow_Color()
 	main_rect.setFillColor(background_color);
 }
 
+/// <summary>
+/// Rendering every components of the icon to the Main Window
+/// </summary>
+/// <param name="window">Main Window referenced</param>
 void Icon::Draw_To(sf::RenderWindow& window)
 {
 	if (show_shadow)
@@ -120,6 +151,12 @@ void Icon::Draw_To(sf::RenderWindow& window)
 	window.draw(icon_background);
 }
 
+/// <summary>
+/// Event handler for the icon
+/// </summary>
+/// <param name="window">Main Window referenced</param>
+/// <param name="event">Events related to the main window</param>
+/// <param name="func">Lambda expressions</param>
 void Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::function<void()>func)
 {
 	mouse_pos = sf::Mouse::getPosition(window);
@@ -155,7 +192,6 @@ void Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::fu
 		this->iconClickedStatus = 0;
 	}
 
-	//applying shadow effect i guess
 	if (icon_background.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window))))
 	{
 		this->background_color = sf::Color(0,0,0);
@@ -167,13 +203,17 @@ void Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event, std::fu
 	this->Set_Shadow_Color();
 }
 
+/// <summary>
+/// Updaters / Modifiers 
+/// </summary>
+/// <param name="window">Main Window referenced</param>
+/// <param name="event">Events related to the main window</param>
+/// <returns>Button pressed boolean</returns>
 bool Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event)
 {
 	mouse_pos = sf::Mouse::getPosition(window);
 	mouse_pos.y = mouse_pos.y - 220 + viewPos;
 	mouse_pos_view = static_cast<sf::Vector2f>(mouse_pos);
-
-
 
 	if (icon_background.getGlobalBounds().contains(mouse_pos_view))
 	{
@@ -198,6 +238,9 @@ bool Icon::Run_Outside_Event(sf::RenderWindow& window, sf::Event& event)
 	return mouse_held;
 }
 
+/// <summary>
+/// Un hold the mouse left key
+/// </summary>
 void Icon::Set_Unheld()
 {
 	this->mouse_held = false;

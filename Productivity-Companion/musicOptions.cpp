@@ -29,7 +29,6 @@ void musicOptions::musicOptInitialSetup()
 void musicOptions::loadActiveMusic()
 {
 	std::string filename = "Sounds/" + std::to_string(this->activeTrack) + ".ogg";
-	std::cout << filename << std::endl;
 	if (!music.openFromFile(filename)) {
 		throw "Couldn't load the music file";
 	}
