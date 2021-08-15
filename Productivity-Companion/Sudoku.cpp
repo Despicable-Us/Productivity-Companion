@@ -464,6 +464,10 @@ void Sudoku::Run_Events(sf::RenderWindow& window, sf::Event event, bool& run_mai
 					prev_box_x = selected_cell_pos.x;
 					prev_box_y = selected_cell_pos.y;
 					Boxes[selected_cell_pos.x][selected_cell_pos.y].shape.setFillColor(sf::Color(187, 222, 251));
+					if (this->assists)
+					{
+						this->Check_Wrong_Inputs();
+					}
 				}
 			}
 		}
@@ -972,6 +976,21 @@ void Sudoku::Generate_Sudoku()
 			{
 				sudoku[r][c] = 0;
 				sudoku[xT][yT] = 0;
+			}
+		}
+	}
+
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			if (sudoku[i][j] != 0)
+			{
+				if (sudoku[i][j] != copy_sudoku[i][j])
+				{
+					std::cout << "BUG FOUND" << std::endl;
+					sudoku[i][j] = 0;
+				}
 			}
 		}
 	}
