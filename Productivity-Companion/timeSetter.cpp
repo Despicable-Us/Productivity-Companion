@@ -238,6 +238,20 @@ sf::String dial::timeSetter::timeOutString(float secs)
     if (secStr.length() == 1) {
         secStr = "0" + secStr;
     }
+
+    //setting position of timeText
+    {
+        float add = 29.0f;
+        for (int i = 0; i < minStr.length(); i++) {
+            if (minStr[i] != '1') {
+                add += 29.0f;
+            }
+            else {
+                add += 9.0f;
+            }
+        }
+        this->timeText.setOrigin(add, 0);
+    }
     returnStr = minStr + " : " + secStr;
     return returnStr;
 }
