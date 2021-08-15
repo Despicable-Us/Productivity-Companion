@@ -4,7 +4,7 @@ TOGGLE::ToggleMusic::ToggleMusic(sf::RenderWindow& window)
 {
 	float length = 25.0f;
 	float height = 33.0f;
-	sf::Vector2f pos = sf::Vector2f(40.0f, window.getSize().y - 125.0f);
+	sf::Vector2f pos = sf::Vector2f(42.0f, window.getSize().y - 125.0f);
 	this->btnRect.setPosition(pos);
 	this->btnRect.setSize(sf::Vector2f(length, height));
 	this->btnRect.setOrigin(sf::Vector2f(length/2 , height/2));
