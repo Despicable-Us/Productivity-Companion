@@ -319,7 +319,5 @@ int main()
 
 		window.display();
 	}
-	session_app.Update_DB_Data();
-
 	return EXIT_SUCCESS;
 }

@@ -598,7 +598,6 @@ void Session::View_Scroll_Event(sf::Event& event, sf::View& scroll_view)
 	}
 	if (records_table.size() > 13)
 	{
-
 		show_scroll_bar = true;
 		scroll_bar.setSize({ 18.f, 207025 / ((records_table.size() + 1) * 35.f) });
 		float estimated_height = (records_table.size() - 12) * 35.f + 337.5f;
@@ -623,6 +622,10 @@ void Session::View_Scroll_Event(sf::Event& event, sf::View& scroll_view)
 				}
 			}
 		}
+	}
+	if (event.type == sf::Event::Closed)
+	{
+		this->Update_DB_Data();
 	}
 }
 
