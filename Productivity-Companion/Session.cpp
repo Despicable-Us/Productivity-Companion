@@ -424,6 +424,13 @@ void Session::Map_To_Records_Vec()
 {
 	Record date_record(roboto_font, true);
 	Record detail_record(roboto_font);
+
+	//displaying
+	for (it = data_to_map.begin(); it != data_to_map.end(); it++)
+	{
+		std::cout << it->first << std::endl;
+	}
+
 	for (it = data_to_map.begin(); it != data_to_map.end(); it++)
 	{
 		if (it == data_to_map.begin())
@@ -687,14 +694,14 @@ bool Comparator_Func::operator()(const std::string& first, const std::string& se
 {
 	std::vector<int> date_first = Convert_Date_To_Vec(first);
 	std::vector<int> date_second = Convert_Date_To_Vec(second);
-	return date_first[2] > date_second[2] or date_first[1] > date_second[1] or date_first[0] > date_second[0];
+	return (date_first[0] + date_first[1] * 30 + date_first[2]) > (date_second[0] + date_second[1] * 30 + date_second[2]);
 }
 
 /// <summary>
 /// A map for mapping months and the and the index
 /// </summary>
 std::map<std::string, int> month_map ={
-	{ "Jan", 1},
+	{ "Jan", 1 },
 	{ "Feb", 2 },
 	{ "Mar", 3 },
 	{ "Apr", 4 },
