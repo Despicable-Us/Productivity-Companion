@@ -46,7 +46,7 @@ int main()
 	video_mode.width = WIN_WIDTH;
 	video_mode.height = WIN_HEIGHT;
 	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close,settings);
-	window.setFramerateLimit(120);
+	window.setFramerateLimit(60);
 
 	srand(static_cast<unsigned>(time(NULL)));
 	int exit = sqlite3_open("Productivity_companion.db", &DB);
@@ -107,7 +107,7 @@ int main()
 	Session_Tracker session_app(window); // SESSION TRACKER
 	TodoList todolist;					 // TO-DO LIST
 	Study_Planner study_planner(window); // STUDY PLANNER
-	Sudoku sudoku_app;
+	Sudoku sudoku_app;					 //	SUDOKU
 
 	//creating tables
 	udh::createPlannerTable();
