@@ -18,7 +18,7 @@
     <ClCompile Include="toggleMusic.cpp" />
     <ClCompile Include="InputTodo.cpp" />
     <ClCompile Include="Session_Tracker.cpp" />
-    <ClCompile Include="C:\Users\Progosta\Desktop\SQLITE\sqlite3.c" />
+    <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
