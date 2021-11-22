@@ -32,10 +32,21 @@ bool run_sudoku = false;
 std::vector<std::string> quote_vec =
 {
 	"Work hard in silence, let success make the noise.",
-	"Programming is a skill best practice and example rather than from books.",
-	"While there's CODE there's BUG.", 
 	"Experience is the name everyone gives to their mistakes.",
-	"Code is like humour. When you have to explain it, it's bad."
+	"Good things take time and dedication.",
+	"Dream big, work hard.",
+	"Positive mindset enlightens dark paths.",
+	"Do the best, be the best.",
+	"Slow and steady wins the race.",
+	"Belive in yourself and anything is possible.",
+	"A year from now you may wish you started today.",
+	"Be boundless, seek discomfort.",
+	"Don't allow yourself to be ordinary.",
+	"You can and you will !",
+	"Stay positive and never give up.",
+	"Every moment is a fresh beginning.",
+	"Dream more often than you sleep."
+
 };
 
 int main()
@@ -46,7 +57,7 @@ int main()
 	video_mode.width = WIN_WIDTH;
 	video_mode.height = WIN_HEIGHT;
 	sf::RenderWindow window(video_mode, "Productivity Companion", sf::Style::Titlebar | sf::Style::Close,settings);
-	window.setFramerateLimit(120);
+	window.setFramerateLimit(60);
 
 	srand(static_cast<unsigned>(time(NULL)));
 	int exit = sqlite3_open("Productivity_companion.db", &DB);
@@ -107,7 +118,7 @@ int main()
 	Session_Tracker session_app(window); // SESSION TRACKER
 	TodoList todolist;					 // TO-DO LIST
 	Study_Planner study_planner(window); // STUDY PLANNER
-	Sudoku sudoku_app;
+	Sudoku sudoku_app;					 //	SUDOKU
 
 	//creating tables
 	udh::createPlannerTable();

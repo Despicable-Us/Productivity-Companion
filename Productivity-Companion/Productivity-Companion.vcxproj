@@ -37,6 +37,7 @@
     <ClInclude Include="toggleMusic.h" />
   </ItemGroup>
   <ItemGroup>
+
     <ClCompile Include="..\..\sqlite-amalgamation-3360000\sqlite3.c" />
     <ClCompile Include="btn.cpp" />
     <ClCompile Include="Button.cpp" />
